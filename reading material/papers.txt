@@ -1,0 +1,16 @@
+key word: robustness of bayesian neural networks
+
+https://arxiv.org/pdf/2111.08591.pdf
+https://arxiv.org/pdf/2002.04359.pdf
+https://papers.nips.cc/paper_files/paper/2016/hash/a96d3afec184766bfeca7a9f989fc7e7-Abstract.html
+
+
+
+read:
+https://aisecure-workshop.github.io/amlcvpr2021/cr/12.pdf
+https://www.ijcai.org/proceedings/2019/0789.pdf
+https://openaccess.thecvf.com/content/CVPR2021/papers/Zhang_Robust_Bayesian_Neural_Networks_by_Spectral_Expectation_Bound_Regularization_CVPR_2021_paper.pdf
+https://github.com/ginevracoal/robustBNNs
+
+https://ora.ox.ac.uk/objects/uuid:9086791d-4b4d-41ca-9835-7a504cd6c35c
+https://hal.science/hal-03682836v4/file/preprint_benchmark_bnns.pdf

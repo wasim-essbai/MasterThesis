@@ -1,0 +1,21 @@
+The ASAP algorithm to automatically selects the points where to evaluate the accuracy. The best points to select would be those in which the accuracy curve intersects the threshold $\Theta$, to detect the bounds of the various intervals. However, the analytical form of the curve is not known a priori, and it is not possible to compute these intersections, so the idea is to select points as close as possible to $\Theta$.
+
+The method is based on the assumption that, once computed the accuracy for two alteration levels A and B, the real curve between A and B is included in the area between two parabolas passing through the points A and B, and having concavity depth respectively $+\hat{a}$ and $-\hat{a}$. If there is an intersection between that area and the threshold, and the distance between A and B is sufficiently large, then it's possible to compute the accuracy in the middle point M between A and B, and add it to the sample set. Now it's possible to apply the same procedure recursively on the intervals $[A, M]$ and $[M, B]$. In this way, the number of evaluated points is adaptively determined and depends on the value of the parameter $\hat{a}$. Intuitively, the higher is the value of $\hat{a}$ the higher is the number of alteration levels evaluated by the algorithm, that means that it must choosed based on the robustness estimation accuracy needed and available resources.
+
+At the end of the algorithm execution there is a set $RES = \{ \langle l_1, acc_1 \rangle, ...,\langle l_n, acc_n \rangle\}$, starting which it's possible to compute the robustness generalizing Def. 3 as follows:
+\[
+	rob_A(C,P) = \frac{\sum_{j = 2}^{n} H(acc_j - \Theta)(l_j - l_{j-1})}{U_A - L_A}
+\]
+
+It's possible to show that ASAP uses fewer alteration levels than the uniform sampling, so it saves time, but it still provides an accurate approximation of the robustness.
+
+\subsection{Maximum Error Estimation of the Computed Robustness}
+
+With the presented method it's possible to quantify the maximum error in the robustness estimation. Let be $IP = \{(l_j,l_{j+1}) | \langle l_j, acc_j \rangle, \langle l_{j+1}, acc_{j+1} \rangle  \in RES \land (parabIntsct(l_j, acc_j,l_{j+1}, acc_{j+1}, \hat{a}, \Theta) \lor parabIntsct(l_j, acc_j,l_{j+1}, acc_{j+1}, -\hat{a}, \Theta))\}$ the pairs set of two consecutive points from RES such that the parabolas passing from them with concavity depth $\pm \hat{a}$ intersect the threshold $\Theta$. Intuitevely, this means that the real curve may intersect, but ASAP has quit sampling because the two points have alteration levels sufficiently close ($l_{j+1} - l_j < minStep$). Therefore, assuming a correct value for $\hat{a}$, the error that could be done comes only from those intervals in IP. Formally
+
+\textbf{Theorem 1.} Let C be a CNN and A a given alteration type defined in the range $[L_A, U_A]$. Let $rob_A$ be the robustness computed for C and A by ASAP using a given $\hat{a}$. Let $rob_A^*$ be the real robustness value. Under the assumption that $\hat{a}$ is a suitable parameter, i.e., the real accuracy curve is included in the areas of two parabolas with concavity depth $\hat{a}$, the maximum error of the computed robustness has a guaranteed upper bound defined as follows:
+\[
+	|rob_A - rob_A^*| \leq \epsilon_A
+	\ \ \ with \ \
+	\epsilon_A = \frac{\sum_{(l_j, l_{j+1}) \in IP} (l_{j+1} - l_j)}{|U_A - L_A|}
+\]

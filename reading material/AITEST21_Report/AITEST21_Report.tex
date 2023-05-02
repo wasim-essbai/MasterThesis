@@ -1,0 +1,123 @@
+\documentclass[
+	letterpaper,
+	a4paper,
+	cleardoublepage=empty,
+	headings=twolinechapter,
+	numbers=autoenddot,
+]{article}
+\usepackage{amsmath}
+\usepackage{cancel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{epigraph}
+\usepackage{import}
+\usepackage{float}
+
+\usepackage{todonotes}
+\usepackage{verbatim}
+
+\newcommand{\Fig}[0]{Fig.}
+\newcommand{\Eq}[0]{Eq.}
+
+\renewcommand\epigraphflush{flushright}
+\renewcommand\epigraphsize{\normalsize}
+\setlength\epigraphwidth{0.7\textwidth}
+
+\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareFixedFont{\titlefont}{T1}{ppl}{b}{it}{0.5in}
+
+\makeatletter                       
+\def\printauthor{%                  
+	{\large \@author}}              
+\makeatother
+\author{
+	Wasim Essbai
+}
+
+\newcommand\titlepagedecoration{%
+	\begin{tikzpicture}[remember picture,overlay,shorten >= -10pt]
+		
+		\coordinate (aux1) at ([yshift=-15pt]current page.north east);
+		\coordinate (aux2) at ([yshift=-410pt]current page.north east);
+		\coordinate (aux3) at ([xshift=-4.5cm]current page.north east);
+		\coordinate (aux4) at ([yshift=-150pt]current page.north east);
+		
+		\begin{scope}[titlepagecolor!40,line width=12pt,rounded corners=12pt]
+			\draw
+			(aux1) -- coordinate (a)
+			++(225:5) --
+			++(-45:5.1) coordinate (b);
+			\draw[shorten <= -10pt]
+			(aux3) --
+			(a) --
+			(aux1);
+			\draw[opacity=0.6,titlepagecolor,shorten <= -10pt]
+			(b) --
+			++(225:2.2) --
+			++(-45:2.2);
+		\end{scope}
+		\draw[titlepagecolor,line width=8pt,rounded corners=8pt,shorten <= -10pt]
+		(aux4) --
+		++(225:0.8) --
+		++(-45:0.8);
+		\begin{scope}[titlepagecolor!70,line width=6pt,rounded corners=8pt]
+			\draw[shorten <= -10pt]
+			(aux2) --
+			++(225:3) coordinate[pos=0.45] (c) --
+			++(-45:3.1);
+			\draw
+			(aux2) --
+			(c) --
+			++(135:2.5) --
+			++(45:2.5) --
+			++(-45:2.5) coordinate[pos=0.3] (d);   
+			\draw 
+			(d) -- +(45:1);
+		\end{scope}
+	\end{tikzpicture}%
+}
+
+\begin{document}
+	\begin{titlepage}
+		
+		\noindent
+		\titlefont Efficient Computation of Robustness of
+		Convolutional Neural Networks\par
+		\epigraph{Paper report.}
+		\null\vfill
+		\vspace*{1cm}
+		\noindent
+		\hfill
+		\begin{minipage}{0.35\linewidth}
+			\begin{flushright}
+				\printauthor
+			\end{flushright}
+		\end{minipage}
+		%
+		\begin{minipage}{0.02\linewidth}
+			\rule{1pt}{125pt}
+		\end{minipage}
+		\titlepagedecoration
+	\end{titlepage}
+
+	\tableofcontents
+	\pagebreak
+	
+	\section{Introduction}
+	Validation of CNNs is based mainly on their robustness, i.e., their ability to correctly classify perturbed input data. The idea is then to check CNN's accuracy over different datasets, obtained from the original one by perturbing it. The problem is that this approach is time consuming, since data can be altered in many ways.
+	The described paper aims to present an efficient technique to compute robustness of a CNN by selecting only the relevant alteration levels. 
+	
+	Moreover, the alteration of data should be done considering real alterations, coming from the domain knowledge, and not by exploiting the internal structure of the network. However, for a correct robustness estimation, input data have to be perturbed at different level, and this is time and resource computing. The presented method, ASAP (Adaptive Sampling by Parabolic Estimation), aims to do it efficiently. It's clear that there is some trade off between the robustness estimated and computation time. ASAP tries to estimate the accuracy curve using a parabolic approximation. By doing this it's possible to trade off the precision of the computed
+	robustness against the time required to compute it.
+	
+	\section{Background and basic definitions}
+	\import{./TextFiles/}{section_ii.tex}
+	
+	\section{Adaptive Ssampling by Parabolic Estimation}
+	\import{./TextFiles/}{section_iii.tex}
+	
+	
+\end{document}

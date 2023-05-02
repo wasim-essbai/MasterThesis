@@ -1,0 +1,10 @@
+https://archive.ics.uci.edu/ml/datasets/Bar+Crawl%3A+Detecting+Heavy+Drinking
+https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems
+https://www.kaggle.com/datasets/behrad3d/nasa-cmaps
+https://www.interviewquery.com/takehomes/clearmotion-1
+https://archive.ics.uci.edu/ml/datasets/Accelerometer#
+
+https://archive.ics.uci.edu/ml/datasets/Cuff-Less+Blood+Pressure+Estimation#
+https://archive.ics.uci.edu/ml/datasets/PPG-DaLiA
+https://archive.ics.uci.edu/ml/datasets/Power+consumption+of+Tetouan+city
+https://archive.ics.uci.edu/ml/datasets/Risk+Factor+prediction+of+Chronic+Kidney+Disease

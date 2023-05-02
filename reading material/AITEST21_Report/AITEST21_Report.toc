@@ -1,0 +1,5 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{}%
+\contentsline {section}{\numberline {2}Background and basic definitions}{2}{}%
+\contentsline {subsection}{\numberline {2.1}The limits of the uniform sampling approach}{3}{}%
+\contentsline {section}{\numberline {3}Adaptive Ssampling by Parabolic Estimation}{3}{}%
+\contentsline {subsection}{\numberline {3.1}Maximum Error Estimation of the Computed Robustness}{4}{}%

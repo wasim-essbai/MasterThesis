@@ -1,0 +1,52 @@
+\subsection{Problem 1: a}
+
+\textbf{Conditions:}
+
+The Hamiltonian is: 
+
+$H(x, u, \lambda, \lambda_0) = \lambda_0 ((x_1 - 1)^2 + 0.0025u^2) + \lambda_1 x_2 + \lambda_2 (2x_1 - x_2 + u)$.
+
+$K(x(5)) = (x_1(5) - 1)^2, \ K_x(x(5)) = \begin{bmatrix}
+	2(x_1(5) - 1) \\
+	0
+\end{bmatrix}$
+\underline{1. Canonical equations}
+
+\[
+	\dot{x}^* = H_{\lambda} = \begin{bmatrix}
+		x_2^* \\
+		2x_1^* - x_2^* + u^*
+	\end{bmatrix}, \
+	\dot{\lambda}^* = -H_{x} = \begin{bmatrix}
+		-2\lambda_0^*(x_1^* - 1) - 2\lambda_2^* \\
+		\lambda_2^* - \lambda_1^*
+	\end{bmatrix}
+\]
+With 
+\[
+	x^*(0) = \begin{bmatrix}
+		0 \\
+		0 
+	\end{bmatrix}, \
+	\lambda^*(5) = \begin{bmatrix}
+		-2(x_1^*(5) - 1) \\
+		0 
+	\end{bmatrix},
+\]
+
+\underline{2. Hamiltonian maximization}
+
+\[
+	u^* = \argmax_u \ \lambda_0^* ((x_1^* - 1)^2 + 0.0025u^2 + \lambda_1^* x_2^* + \lambda_2^* (2x_1^* - x_2^* + u)
+\]
+
+\underline{3.} $H(x^*, u^*, \lambda^*, \lambda_0^*) = 0$
+
+\[
+	\lambda_0^* ((x_1^* - 1)^2 + 0.0025u^{*^2} + \lambda_1^* x_2^* + \lambda_2^* (2x_1^* - x_2^* + u^*) = 0 
+\]
+
+\textbf{Expression of u as function of states:}
+
+From the necessary condition for $u$ to be a maximum it must hold
+$H_u(x^*, u^*, \lambda^*, \lambda_0^*) = 0.005\lambda_0^* u^* + \lambda_2^* = 0$. This leads to $u^* = -\frac{\lambda_2^*}{0.005\lambda_0^*}$.

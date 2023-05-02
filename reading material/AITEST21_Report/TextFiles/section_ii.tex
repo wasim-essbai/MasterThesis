@@ -1,0 +1,35 @@
+\textbf{Defintion 1:} Alteration. An alteration of type A of an input
+t is a transformation of t that mimics the possible effect on
+t when a problem during its acquisition, or in its elaboration,
+occurs in reality. The altered data are denoted with $P^{A_l}$, that is the set obtained altering the original data in $P$ with alteration of type $A$ and level $l$.
+
+Intuitively, given an alteration interval $[L_A, U_A]$ the robustness is the portion of that interval in which the CNN stil has an acceptable accuracy.
+
+\textbf{Defintion 2:} Robustness. Let be $\Theta$ a threshold representing
+the minimum accepted accuracy. The robustness of a CNN C
+w.r.t. alteration of type A in the range $[L_A, U_A]$ is:
+\[
+	rob_A(C,P) = \frac{\int_{L_A}^{U_A} H(acc(C,P^{A_l}) - \Theta)\ dl}{L_A - U_A}
+\]
+where $H(x) = \begin{cases}
+	1 \ if \ x \geq 0 \\
+	0 \ if \ x < 0
+\end{cases}$.
+
+Computing the robustness using the above formula is clearly hard, and sometimes also not feasible. A naive solution is to uniformly sample in $[L_A, U_A]$ and compute the accuracy for the sampled points. More formally:
+
+\textbf{Definition 3:} (Uniform robustness). Given n equidistributed
+points $SP = \{l_1, ...,l_n\}$ sampled in the interval $[L_A, U_A]$, the uniform robustness is defined as:
+\[
+	rob_A(C,P) = \frac{n_{acc}}{n} = \frac{| \{l \in SP | acc(C,P^{A_l}) \geq \ Theta\} |}{|SP|}
+\]
+
+Numerical integration approaches are based also on points sampling, but the user has no control over the sampled points. This may result in oversampling
+not relevant areas and/or undersampling relevant ones.
+
+\subsection{The limits of the uniform sampling approach}
+
+Following this approach the total time required to
+perform robustness analysis is $t_{tot} = n \cdot k \cdot t_A$, where $n$ is the number of alteration levels, n the inputs number and $t_A$ the time required for applying the alteration $A$ to single input. In general, it's possible to act on $n$ to reduce the computational effort, but this has some drawbacks, especially when analyzing networks whose accuracy varies a lot.
+
+Thus, a way to solve these problems is to adaptively select the points to be sampled, and not only uniformly, following the usual approach done for input values in software testing.

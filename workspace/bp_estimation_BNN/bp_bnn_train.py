@@ -10,8 +10,8 @@ warnings.filterwarnings('ignore')
 
 from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
 
-data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
-# data_path = './drive/MyDrive/MasterThesis/workspace/dataset'
+# data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
+data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading a sample .mat file to understand the data dimensions
 test_sample = scipy.io.loadmat(f'{data_path}/part_{1}.mat')['p']
@@ -98,10 +98,14 @@ bp_bnn.compile(loss='Huber',
                metrics=['MeanAbsoluteError'])
 bp_bnn.summary()
 
-# history = bp_bnn.fit(X_train[:1000000],  # using the first 1million rows for speed.
-#                    y_train[:1000000].squeeze(),
-#                   epochs=5,
-#                  batch_size=128,
-#                 verbose=1)
+history = bp_bnn.fit(X_train,
+                    y_train.squeeze(),
+                   epochs=5,
+                  batch_size=128,
+                 verbose=1)
 
-# bp_bnn.save('./MasterThesis/workspace/bp_estimation_BNN/model/bp_bnn_model')
+bp_bnn.save('./MasterThesis/workspace/bp_estimation_BNN/model/bp_bnn_model')
+X_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train')
+y_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train')
+X_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test')
+y_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test')

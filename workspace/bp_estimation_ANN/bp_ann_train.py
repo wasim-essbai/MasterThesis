@@ -109,10 +109,14 @@ bp_ann.compile(loss='Huber',
 bp_ann.summary()
 
 # Training the model
-history = bp_ann.fit(X_train[:1000000],  # using the first 1million rows for speed.
-                     y_train[:1000000].squeeze(),
+history = bp_ann.fit(X_train,  # using the first 1million rows for speed.
+                     y_train.squeeze(),
                      epochs=5,
                      batch_size=128,
                      verbose=1)
 
 bp_ann.save('./MasterThesis/workspace/bp_estimation_ANN/model/bp_ann_model')
+X_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train')
+y_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train')
+X_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test')
+y_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test')

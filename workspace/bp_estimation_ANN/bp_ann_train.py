@@ -20,7 +20,8 @@ from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
 
 import os  # system-wide functions
 
-data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
+#data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
+data_path = './drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading a sample .mat file to understand the data dimensions
 test_sample = scipy.io.loadmat(f'{data_path}/part_{1}.mat')['p']
@@ -104,8 +105,7 @@ num_classes = 1
 bp_ann = create_bp_ann(input_dim=input_dim, activation=activation, num_class=num_classes)
 bp_ann.compile(loss='Huber',
                optimizer=optimizers.Adam(lr=0.001),
-               metrics=['MeanAbsoluteError']
-               )
+               metrics=['MeanAbsoluteError'])
 bp_ann.summary()
 
 # Training the model
@@ -113,5 +113,6 @@ history = bp_ann.fit(X_train[:1000000],  # using the first 1million rows for spe
                      y_train[:1000000].squeeze(),
                      epochs=5,
                      batch_size=128,
-                     verbose=1
-                     )
+                     verbose=1)
+
+bp_ann.save('./MasterThesis/workspace/bp_estimation_ANN/model/bp_ann_model')

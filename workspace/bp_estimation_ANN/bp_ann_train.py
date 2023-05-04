@@ -21,7 +21,7 @@ from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
 import os  # system-wide functions
 
 #data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
-data_path = './drive/MyDrive/MasterThesis/workspace/dataset'
+data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading a sample .mat file to understand the data dimensions
 test_sample = scipy.io.loadmat(f'{data_path}/part_{1}.mat')['p']

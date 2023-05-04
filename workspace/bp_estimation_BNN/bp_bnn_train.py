@@ -1,14 +1,18 @@
 # importing libraries
 import numpy as np
 import scipy.io
+import tensorflow as tf
+import warnings
 from sklearn.model_selection import train_test_split  # cross validation split
 from bp_bnn import create_bp_bnn
 from keras import optimizers
-import warnings
 
 warnings.filterwarnings('ignore')
 
 from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
+
+print(tf.__version__)
+print(tf.config.list_physical_devices('GPU'))
 
 # data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
 data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'

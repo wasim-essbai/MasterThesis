@@ -3,9 +3,9 @@ import numpy as np  # For numerical computation
 import pandas as pd  # Data manipulation
 import seaborn as sns  # plotting
 import scipy.io  # reading matlab files in python
+import tensorflow as tf
 from scipy import signal  # signal processing
 from scipy.fftpack import fft, dct  # signal processing
-
 from sklearn.linear_model import LinearRegression  # linear regression model
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import KFold, train_test_split  # cross validation split
@@ -19,6 +19,9 @@ warnings.filterwarnings('ignore')
 from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
 
 import os  # system-wide functions
+
+print(tf.__version__)
+print(tf.config.list_physical_devices('GPU'))
 
 #data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
 data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
@@ -116,7 +119,7 @@ history = bp_ann.fit(X_train,  # using the first 1million rows for speed.
                      verbose=1)
 
 bp_ann.save('./MasterThesis/workspace/bp_estimation_ANN/model/bp_ann_model')
-X_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train')
-y_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train')
-X_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test')
-y_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test')
+X_train.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train')
+y_train.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train')
+X_test.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test')
+y_test.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test')

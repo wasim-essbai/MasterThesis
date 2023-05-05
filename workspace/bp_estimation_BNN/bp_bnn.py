@@ -47,26 +47,29 @@ def posterior(kernel_size, bias_size, dtype=None):
 
 
 def create_bp_bnn(input_dim, activation, train_size, num_class):
-    inputs = Input(name="featureinput", shape=(input_dim,), dtype=tf.float32)
+    model = Sequential()
 
-    features = tfp.layers.DenseVariational(
-            units=35,
-            make_prior_fn=prior,
-            make_posterior_fn=posterior,
-            kl_weight=1 / train_size,
-            activation=activation,
-        )(inputs)  
+    model.add(Input(input_dim, name='featureinput'))
 
-    features = tfp.layers.DenseVariational(
-            units=20,
-            make_prior_fn=prior,
-            make_posterior_fn=posterior,
-            kl_weight=1 / train_size,
-            activation=activation,
-        )(features)
+    model.add(tfp.layers.DenseVariational(
+        units=35,
+        make_prior_fn=prior,
+        make_posterior_fn=posterior,
+        kl_weight=1 / train_size,
+        activation=activation,
+    ))
+    model.add(Dropout(0.5))
 
-    distribution_params = Dense(units=2)(features)
-    outputs = tfp.layers.IndependentNormal(num_class)(distribution_params)
+    model.add(tfp.layers.DenseVariational(
+        units=20,
+        make_prior_fn=prior,
+        make_posterior_fn=posterior,
+        kl_weight=1 / train_size,
+        activation=activation,
+    ))
+    model.add(Dropout(0.5))
 
-    model = Model(inputs=inputs, outputs=outputs)
+    model.add(Dense(2))
+    model.add(tfp.layers.IndependentNormal(num_class))
+    
     return model

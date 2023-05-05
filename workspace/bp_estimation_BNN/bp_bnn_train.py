@@ -12,8 +12,6 @@ warnings.filterwarnings('ignore')
 
 from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
 
-tf.config.experimental_run_functions_eagerly(True)
-
 print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 
@@ -97,7 +95,7 @@ def negative_loglikelihood(targets, estimated_distribution):
     return -estimated_distribution.log_prob(targets)
 
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(ppg[:1000000], bp[:1000000], test_size=0.30)
+X_train, X_test, y_train, y_test = train_test_split(ppg, bp, test_size=0.30)
 
 input_dim = X_train.shape[1]
 
@@ -109,14 +107,14 @@ bp_bnn.compile(loss=negative_loglikelihood,
                metrics=[metrics.MeanAbsoluteError()])
 bp_bnn.summary()
 
-history = bp_bnn.fit(tf.convert_to_tensor(X_train),
-                    tf.convert_to_tensor(y_train.squeeze()),
+history = bp_bnn.fit(X_train,
+                    y_train.squeeze(),
                     epochs=5,
                     batch_size=1024,
                     verbose=1)
 
 print("Training done!")
-prediction_distribution = bp_bnn(tf.convert_to_tensor(X_test))
+prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')

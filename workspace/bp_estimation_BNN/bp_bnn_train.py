@@ -91,15 +91,19 @@ ax[2].plot(bp[:125])
 
 plt.show()
 
+# loss function definition
+def negative_loglikelihood(targets, estimated_distribution):
+    return -estimated_distribution.log_prob(targets)
+
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(ppg, bp, test_size=0.30)
+X_train, X_test, y_train, y_test = train_test_split(ppg[:2000000], bp[:2000000], test_size=0.30)
 
 input_dim = X_train.shape[1]
 
 activation = 'relu'
 num_classes = 1
 bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_train.shape[0], num_class=num_classes)
-bp_bnn.compile(loss='Huber',
+bp_bnn.compile(loss=negative_loglikelihood,
                optimizer=optimizers.RMSprop(learning_rate=0.001),
                metrics=['MeanAbsoluteError'])
 bp_bnn.summary()

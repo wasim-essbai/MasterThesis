@@ -95,14 +95,14 @@ def negative_loglikelihood(targets, estimated_distribution):
     return -estimated_distribution.log_prob(targets)
 
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(ppg[:5000000], bp[:5000000], test_size=0.30)
+X_train, X_test, y_train, y_test = train_test_split(ppg, bp, test_size=0.30)
 
 input_dim = X_train.shape[1]
 
 activation = 'relu'
 num_classes = 1
 bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_train.shape[0], num_class=num_classes)
-bp_bnn.compile(loss=negative_loglikelihood,
+bp_bnn.compile(loss='Huber',
                optimizer=optimizers.RMSprop(learning_rate=0.001),
                metrics=[metrics.MeanAbsoluteError()])
 bp_bnn.summary()
@@ -110,7 +110,7 @@ bp_bnn.summary()
 history = bp_bnn.fit(X_train,
                     y_train.squeeze(),
                     epochs=5,
-                    batch_size=1024,
+                    batch_size=256,
                     verbose=1)
 
 print("Training done!")

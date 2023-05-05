@@ -11,7 +11,7 @@ def create_bp_ann(input_dim, activation, num_class):
     model.add(Activation(activation))
     model.add(Dropout(0.5))
 
-    model.add(Dense(30))
+    model.add(Dense(35))
     model.add(Activation(activation))
     model.add(Dropout(0.5))
 

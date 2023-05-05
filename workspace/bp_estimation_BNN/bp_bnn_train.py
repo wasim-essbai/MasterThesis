@@ -3,6 +3,7 @@ import numpy as np
 import scipy.io
 import tensorflow as tf
 import warnings
+from keras import metrics
 from sklearn.model_selection import train_test_split  # cross validation split
 from bp_bnn import create_bp_bnn
 from keras import optimizers
@@ -105,7 +106,7 @@ num_classes = 1
 bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_train.shape[0], num_class=num_classes)
 bp_bnn.compile(loss=negative_loglikelihood,
                optimizer=optimizers.RMSprop(learning_rate=0.001),
-               metrics=['MeanAbsoluteError'])
+               metrics=[metrics.MeanAbsoluteError()])
 bp_bnn.summary()
 
 history = bp_bnn.fit(X_train,

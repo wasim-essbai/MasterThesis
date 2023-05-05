@@ -47,8 +47,7 @@ def posterior(kernel_size, bias_size, dtype=None):
 
 
 def create_bp_bnn(input_dim, activation, train_size, num_class):
-    inputs = create_model_inputs()
-    features = layers.concatenate(list(inputs.values()))
+    inputs = Input(name="FeatureInput", shape=(input_dim,), dtype=tf.float32)
 
     features = tfp.layers.DenseVariational(
             units=35,
@@ -56,7 +55,7 @@ def create_bp_bnn(input_dim, activation, train_size, num_class):
             make_posterior_fn=posterior,
             kl_weight=1 / train_size,
             activation="sigmoid",
-        )(features)
+        )(inputs)
     features = Dropout(0.5)(features)    
   
 

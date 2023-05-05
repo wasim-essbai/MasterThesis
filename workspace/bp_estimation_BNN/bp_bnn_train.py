@@ -97,7 +97,7 @@ def negative_loglikelihood(targets, estimated_distribution):
     return -estimated_distribution.log_prob(targets)
 
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(ppg[:2000000], bp[:2000000], test_size=0.30)
+X_train, X_test, y_train, y_test = train_test_split(ppg[:1000000], bp[:1000000], test_size=0.30)
 
 input_dim = X_train.shape[1]
 

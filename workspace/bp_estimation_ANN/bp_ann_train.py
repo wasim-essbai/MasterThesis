@@ -119,7 +119,7 @@ history = bp_ann.fit(X_train,  # using the first 1million rows for speed.
                      verbose=1)
 
 print("Training done!")
-bp_ann.save('./MasterThesis/workspace/bp_estimation_ANN/model/bp_ann_model')
+bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train',X_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train',y_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test',X_test)

@@ -11,6 +11,8 @@ warnings.filterwarnings('ignore')
 
 from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
 
+tf.config.experimental_run_functions_eagerly(True)
+
 print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 
@@ -98,18 +100,18 @@ activation = 'relu'
 num_classes = 1
 bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_train.shape[0], num_class=num_classes)
 bp_bnn.compile(loss='Huber',
-               optimizer=optimizers.Adam(lr=0.001),
+               optimizer=optimizers.RMSprop(learning_rate=0.001),
                metrics=['MeanAbsoluteError'])
 bp_bnn.summary()
 
 history = bp_bnn.fit(X_train,
                     y_train.squeeze(),
-                   epochs=5,
-                  batch_size=1024,
-                 verbose=1)
+                    epochs=5,
+                    batch_size=1024,
+                    verbose=1)
 
 print("Training done!")
-bp_bnn.save('./MasterThesis/workspace/bp_estimation_BNN/model/bp_bnn_model')
+bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train',X_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train',y_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test',X_test)

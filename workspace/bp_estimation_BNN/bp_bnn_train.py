@@ -117,7 +117,7 @@ history = bp_bnn.fit(tf.convert_to_tensor(X_train),
 
 print("Training done!")
 prediction_distribution = bp_bnn(tf.convert_to_tensor(X_test))
-prediction_distribution
+print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train',X_train)

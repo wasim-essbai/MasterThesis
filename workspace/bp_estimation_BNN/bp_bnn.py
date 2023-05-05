@@ -47,7 +47,7 @@ def posterior(kernel_size, bias_size, dtype=None):
 
 
 def create_bp_bnn(input_dim, activation, train_size, num_class):
-    inputs = Input(name="FeatureInput", shape=(input_dim,), dtype=tf.float32)
+    inputs = Input(name="featureinput", shape=(input_dim,), dtype=tf.float32)
 
     features = tfp.layers.DenseVariational(
             units=35,

@@ -54,21 +54,18 @@ def create_bp_bnn(input_dim, activation, train_size, num_class):
             make_prior_fn=prior,
             make_posterior_fn=posterior,
             kl_weight=1 / train_size,
-            activation="sigmoid",
-        )(inputs)
-    features = Dropout(0.5)(features)    
-  
+            activation=activation,
+        )(inputs)  
 
     features = tfp.layers.DenseVariational(
             units=20,
             make_prior_fn=prior,
             make_posterior_fn=posterior,
             kl_weight=1 / train_size,
-            activation="sigmoid",
+            activation=activation,
         )(features)
-    features = Dropout(0.5)(features) 
 
-    distribution_params = layers.Dense(units=2)(features)
+    distribution_params = Dense(units=2)(features)
     outputs = tfp.layers.IndependentNormal(num_class)(distribution_params)
 
     model = Model(inputs=inputs, outputs=outputs)

@@ -109,13 +109,16 @@ bp_bnn.compile(loss=negative_loglikelihood,
                metrics=[metrics.MeanAbsoluteError()])
 bp_bnn.summary()
 
-history = bp_bnn.fit(X_train,
-                    y_train.squeeze(),
+history = bp_bnn.fit(tf.convert_to_tensor(X_train),
+                    tf.convert_to_tensor(y_train.squeeze()),
                     epochs=5,
                     batch_size=1024,
                     verbose=1)
 
 print("Training done!")
+prediction_distribution = bp_bnn(tf.convert_to_tensor(X_test))
+prediction_distribution
+
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train',X_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train',y_train)

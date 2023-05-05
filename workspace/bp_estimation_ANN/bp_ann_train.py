@@ -115,11 +115,12 @@ bp_ann.summary()
 history = bp_ann.fit(X_train,  # using the first 1million rows for speed.
                      y_train.squeeze(),
                      epochs=5,
-                     batch_size=128,
+                     batch_size=1024,
                      verbose=1)
 
+print("Training done!")
 bp_ann.save('./MasterThesis/workspace/bp_estimation_ANN/model/bp_ann_model')
-X_train.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train')
-y_train.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train')
-X_test.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test')
-y_test.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test')
+np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train',X_train)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train',y_train)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test',X_test)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test',y_test)

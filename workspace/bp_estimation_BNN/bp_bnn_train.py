@@ -105,11 +105,12 @@ bp_bnn.summary()
 history = bp_bnn.fit(X_train,
                     y_train.squeeze(),
                    epochs=5,
-                  batch_size=128,
+                  batch_size=1024,
                  verbose=1)
 
+print("Training done!")
 bp_bnn.save('./MasterThesis/workspace/bp_estimation_BNN/model/bp_bnn_model')
-X_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train')
-y_train.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train')
-X_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test')
-y_test.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test')
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train',X_train)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train',y_train)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test',X_test)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test',y_test)

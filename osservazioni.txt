@@ -1,5 +1,0 @@
--Cosa succede se la variabile originale ha varianza elevata?
--Vogliamo veramente penalizzare la varianza?
--Capire meglio il significato dell'uscita e della sua distribuzione
--Un'uscita incerta ma sbagliata è meglio di un'uscita sbagliata ma poco incerta (Analogamente nel caso giusto)
-	score = f(Errore, sigma) **Considerare un iperboloide come misura

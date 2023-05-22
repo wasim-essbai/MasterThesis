@@ -6,8 +6,8 @@ load('F:/Università/Magistrale/Tesi/workspace/dataset/part_1');
 output_file=[];
 samples_deleted = 0;
 
-filerow_header = ["sbp" "dbp"];
-filerow_header = [filerow_header "ID" "cp" "sut" "dt"];
+filerow_header = ["ID" "sbp" "dbp"];
+filerow_header = [filerow_header "cp" "sut" "dt"];
 filerow_header = [filerow_header "dt10" "st10_p_dt10" "st10_d_dt10"];
 filerow_header = [filerow_header "dt25" "st25_p_dt25" "st25_d_dt25"];
 filerow_header = [filerow_header "dt33" "st33_p_dt33" "st33_d_dt33"];

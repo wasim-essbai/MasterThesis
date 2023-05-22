@@ -14,16 +14,19 @@ warnings.filterwarnings('ignore')
 print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 
-# data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
-data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
+data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
+#data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
-dataset = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
+dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
+dataset2 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
+
+dataset = pd.concat([dataset1, dataset2])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
 X = dataset.iloc[0:, 3:].to_numpy()
-y = dataset.iloc[0:, 0:2].to_numpy()
+y = dataset.iloc[0:, 1:3].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, shuffle=False)
@@ -42,12 +45,12 @@ bp_ann.summary()
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=5,
+                     epochs=15,
                      batch_size=128,
                      verbose=1)
 
 print("Training done!")
-bp_ann.save('./model/bp_ann_model')
+bp_ann.save('.workspace/bp_estimation_ANN/model/bp_ann_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train', X_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train', y_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_test)

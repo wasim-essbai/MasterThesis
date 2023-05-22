@@ -22,8 +22,9 @@ dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
 dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
 dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+dataset5 = pd.read_csv(f'{data_path}/dataset_part{5}.csv')
 
-dataset = pd.concat([dataset1, dataset2, dataset3, dataset4])
+dataset = pd.concat([dataset1, dataset2, dataset3, dataset4, dataset5])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
@@ -51,14 +52,14 @@ def MAE_DBP(y_true, y_pred):
 
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.Adam(lr=0.001),
-               metrics=['MeanAbsoluteError', 'MeanAbsolutePercentageError', MAE_SBP])
+               metrics=['MeanAbsolutePercentageError', MAE_SBP])
 bp_ann.summary()
 
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=15,
-                     batch_size=8,
+                     epochs=20,
+                     batch_size=64,
                      verbose=1)
 
 print("Training done!")
@@ -67,3 +68,7 @@ np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train', X_t
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train', y_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_test)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test', y_test)
+
+print("Evaluate on test data")
+results = bp_ann.evaluate(X_test, y_test, batch_size=128)
+print(results)

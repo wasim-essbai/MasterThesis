@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all; 
-load('F:/Università/Magistrale/Tesi/workspace/dataset/part_2');
+load('F:/Università/Magistrale/Tesi/workspace/dataset/part_1');
 
 output_file=[];
 samples_deleted = 0;
@@ -25,14 +25,14 @@ f = waitbar(0,'Extracting features...');
 for d=1:1000
     Y=p{1,d};
     PPG_original=Y(1,1:1000);
-    BP_original=Y(2,1:1000);
+    BP=Y(2,1:1000);
     
-%     figure('Name','PPG and BP');
-%     subplot(2,1,1);
-%     plot(PPG_original);
-% 
-%     subplot(2,1,2);
-%     plot(BP);
+    figure('Name','PPG and BP');
+    subplot(2,1,1);
+    plot(PPG);
+
+    subplot(2,1,2);
+    plot(BP);
 
   
     % Filtering    
@@ -41,13 +41,10 @@ for d=1:1000
     [b,a]=butter(3,[0.5*2*Ts,5*2*Ts]); % Bandpass digital filter design 
     PPG = filtfilt(b, a, PPG_original);
     
-    [b,a]=butter(3,7*2*Ts); % Bandpass digital filter design 
-    BP = filtfilt(b, a, BP_original);
-    
     T =(0:Ts:(length(PPG)-1)*Ts); %time vector based on sampling rate
     
-    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence', max(PPG)/15); % max values of PPG signal
-    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence', max(-PPG)/15); % min values of PPG signal
+    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence',max(PPG)/20); % max values of PPG signal
+    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence',-max(-PPG)/20); % min values of PPG signal
     dias_pk = -dias_pk;
     
     
@@ -133,10 +130,7 @@ for d=1:1000
             samples_deleted = samples_deleted + 1;
             break;
         end
-        
-        if(sbp <= 180 && abp <= 130)
-            output_record = [output_record; d filerow_target filerow_features];
-        end
+        output_record = [output_record; d filerow_target filerow_features];
     end
     
     output_file = [output_file; output_record];
@@ -144,7 +138,7 @@ for d=1:1000
 end 
 
 
-writematrix(output_file,'dataset_part2.csv');
+writematrix(output_file,'dataset_part1.csv');
 %writematrix(output_file,'dataset_part1.csv','WriteMode','append');
 close(f);
 toc

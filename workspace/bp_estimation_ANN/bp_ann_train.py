@@ -4,7 +4,7 @@ import pandas as pd  # Data manipulation
 import tensorflow as tf
 from sklearn.model_selection import train_test_split  # cross validation split
 from sklearn.preprocessing import StandardScaler
-
+from keras import backend as K
 from bp_ann import create_bp_ann
 from keras import optimizers
 import warnings
@@ -14,8 +14,8 @@ warnings.filterwarnings('ignore')
 print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 
-data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
-#data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
+# data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
+data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
@@ -37,16 +37,26 @@ print('Input size', input_dim)
 activation = 'relu'
 num_classes = y_train.shape[1]
 bp_ann = create_bp_ann(input_dim=input_dim, activation=activation, num_class=num_classes)
+
+
+def MAE_SBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
+
+
+def MAE_DBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
+
+
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.Adam(lr=0.001),
-               metrics=['MeanAbsoluteError', 'MeanAbsolutePercentageError'])
+               metrics=['MeanAbsoluteError', 'MeanAbsolutePercentageError', MAE_SBP, MAE_DBP])
 bp_ann.summary()
 
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=15,
-                     batch_size=128,
+                     epochs=20,
+                     batch_size=16,
                      verbose=1)
 
 print("Training done!")

@@ -14,6 +14,5 @@ def create_bp_ann(input_dim, activation, num_class):
     model.add(Activation(activation))
 
     model.add(Dense(num_class))
-    model.add(Activation('linear'))
 
     return model

@@ -19,14 +19,16 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
-dataset2 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
+dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
+dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
+dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-dataset = pd.concat([dataset1, dataset2])
+dataset = pd.concat([dataset1, dataset2, dataset3, dataset4])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
 X = dataset.iloc[0:, 3:].to_numpy()
-y = dataset.iloc[0:, 1:3].to_numpy()
+y = dataset.iloc[0:, 1:2].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, shuffle=False)
@@ -49,13 +51,13 @@ def MAE_DBP(y_true, y_pred):
 
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.Adam(lr=0.001),
-               metrics=['MeanAbsoluteError', 'MeanAbsolutePercentageError', MAE_SBP, MAE_DBP])
+               metrics=['MeanAbsoluteError', 'MeanAbsolutePercentageError', MAE_SBP])
 bp_ann.summary()
 
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=20,
+                     epochs=15,
                      batch_size=16,
                      verbose=1)
 

@@ -80,5 +80,5 @@ np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_te
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test', y_test)
 
 print("Evaluate on validation data")
-results = bp_ann.evaluate(X_val, y_val, batch_size=32)
+results = bp_ann.evaluate(X_val, y_val, batch_size=64)
 print(results)

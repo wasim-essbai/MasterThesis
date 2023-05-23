@@ -29,7 +29,7 @@ print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
 X = dataset.iloc[0:, 3:].to_numpy()
-y = dataset.iloc[0:, 1:2].to_numpy()
+y = dataset.iloc[0:, 1:3].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, shuffle=False)
@@ -52,15 +52,15 @@ def MAE_DBP(y_true, y_pred):
 
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.Adam(lr=0.001),
-               metrics=['MeanAbsolutePercentageError', MAE_SBP])
+               metrics=['MeanAbsolutePercentageError', MAE_SBP, MAE_DBP])
 bp_ann.summary()
 
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=20,
+                     epochs=30,
                      batch_size=64,
-                     verbose=1)
+                     verbose=2)
 
 print("Training done!")
 bp_ann.save('.workspace/bp_estimation_ANN/model/bp_ann_model')

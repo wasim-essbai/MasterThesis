@@ -1,19 +1,20 @@
 clc;
 clear all;
 close all; 
-load('F:/Università/Magistrale/Tesi/workspace/dataset/part_2');
+prt_number = 5;
+load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 output_file=[];
 samples_deleted = 0;
 
 filerow_header = ["ID" "sbp" "dbp"];
 filerow_header = [filerow_header "cp" "sut" "dt"];
-filerow_header = [filerow_header "dt10" "st10_p_dt10" "st10_d_dt10"];
-filerow_header = [filerow_header "dt25" "st25_p_dt25" "st25_d_dt25"];
-filerow_header = [filerow_header "dt33" "st33_p_dt33" "st33_d_dt33"];
-filerow_header = [filerow_header "dt50" "st50_p_dt50" "st50_d_dt50"];
-filerow_header = [filerow_header "dt66" "st66_p_dt66" "st66_d_dt66"];
-filerow_header = [filerow_header "dt75" "st75_p_dt75" "st75_d_dt75"];
+filerow_header = [filerow_header "dt10" "st10" "st10_p_dt10" "st10_d_dt10"];
+filerow_header = [filerow_header "dt25" "st25" "st25_p_dt25" "st25_d_dt25"];
+filerow_header = [filerow_header "dt33" "st33" "st33_p_dt33" "st33_d_dt33"];
+filerow_header = [filerow_header "dt50" "st50" "st50_p_dt50" "st50_d_dt50"];
+filerow_header = [filerow_header "dt66" "st66" "st66_p_dt66" "st66_d_dt66"];
+filerow_header = [filerow_header "dt75" "st75" "st75_p_dt75" "st75_d_dt75"];
 output_file = [output_file;filerow_header];
 
 
@@ -24,15 +25,15 @@ tic
 f = waitbar(0,'Extracting features...');
 for d=1:1000
     Y=p{1,d};
-    PPG_original=Y(1,1:1000);
-    BP_original=Y(2,1:1000);
+    PPG_original=Y(1,100:900);
+    BP_original=Y(2,100:900);
     
 %     figure('Name','PPG and BP');
 %     subplot(2,1,1);
 %     plot(PPG_original);
 % 
 %     subplot(2,1,2);
-%     plot(BP);
+%     plot(BP_original);
 
   
     % Filtering    
@@ -41,7 +42,7 @@ for d=1:1000
     [b,a]=butter(3,[0.5*2*Ts,5*2*Ts]); % Bandpass digital filter design 
     PPG = filtfilt(b, a, PPG_original);
     
-    [b,a]=butter(3,7*2*Ts); % Bandpass digital filter design 
+    [b,a]=butter(1,8*2*Ts); % Bandpass digital filter design 
     BP = filtfilt(b, a, BP_original);
     
     T =(0:Ts:(length(PPG)-1)*Ts); %time vector based on sampling rate
@@ -84,6 +85,21 @@ for d=1:1000
     end
     
     output_record = [];
+    
+%     fig = figure('Name','PPG and BP', 'visible','off');
+%     subplot(2,1,1);
+%     plot(PPG);
+%     hold on
+%     scatter(sys_loc, sys_pk)
+%     scatter(dias_loc, dias_pk)
+%     hold off
+% 
+%     subplot(2,1,2);
+%     plot(BP);
+%     hold on
+%     scatter(sys_loc, BP(sys_loc))
+%     hold off
+%     saveas(fig,strcat('C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction/images/ppg_bp_',int2str(d)),'png');
     %last_index = min([length(sys_pk)-1, length(dias_loc)-1, length(sys_bp_loc), length(dias_bp_loc)]);
     last_index = min([length(sys_pk)-1, length(dias_loc)-1]);
     for k=(1+shift_index):last_index
@@ -115,7 +131,7 @@ for d=1:1000
         end
         filerow_features = [];
         for i=1:length(v)
-            filerow_features = [filerow_features ppg_dt(i) ppg_st(i)+ppg_dt(i) ppg_dt(i)/ppg_st(i)];
+            filerow_features = [filerow_features ppg_dt(i) ppg_st(i) ppg_st(i)+ppg_dt(i) ppg_dt(i)/ppg_st(i)];
         end
         filerow_features = [cp sys_time dias_time filerow_features];
         
@@ -123,20 +139,58 @@ for d=1:1000
         %if(any(filerow_features < 0) || any(filerow_features == 0) || any(isinf(filerow_features)))
         %    continue
         %end
-        bp_final_index = min(sys_loc(1,k+1)+5,1000);
-        sbp = max(BP(1,sys_loc(1,k)-5:bp_final_index));
-        abp = min(BP(1,sys_loc(1,k)-5:bp_final_index));
+        bp_final_index = min(sys_loc(1,k+1),1000);
+        sbp = max(BP(1,sys_loc(1,k):bp_final_index));
+        abp = min(BP(1,sys_loc(1,k):bp_final_index));
         filerow_target = [sbp abp];
         
-        if(any(filerow_features < 0))
+        if(sbp >= 180 || abp >= 130 || sbp <= 80)
+%             h=0;
+%             figure('Name','PPG and BP');
+% 
+%             subplot(2,1,1);
+%             plot(PPG);
+%             hold on
+%             scatter(sys_loc, sys_pk)
+%             scatter(dias_loc, dias_pk)
+%             hold off
+% 
+%             subplot(2,1,2);
+%             plot(BP);
+%             hold on
+%             scatter(sys_loc, BP(sys_loc))
+%             hold off
+        end
+
+        if(any(filerow_features < 0) || sbp >= 180 || abp >= 130 || sbp <= 80 || abp <= 60)
             output_record = [];
             samples_deleted = samples_deleted + 1;
             break;
         end
         
-        if(sbp <= 180 && abp <= 130)
-            output_record = [output_record; d filerow_target filerow_features];
-        end
+        output_record = [output_record; d filerow_target filerow_features];
+        
+
+        %if(sbp < 180 && abp < 130 && sbp > 80)
+            %output_record = [output_record; d filerow_target filerow_features];
+        %else
+            %continue
+%             figure('Name','PPG and BP');
+% 
+%             subplot(2,1,1);
+%             plot(PPG);
+%             hold on
+%             scatter(sys_loc, sys_pk)
+%             scatter(dias_loc, dias_pk)
+%             hold off
+% 
+%             subplot(2,1,2);
+%             plot(BP);
+%             hold on
+%             scatter(sys_loc, BP(sys_loc))
+%             scatter(dias_loc, BP(dias_loc))
+%             hold off
+        %end
     end
     
     output_file = [output_file; output_record];
@@ -144,7 +198,8 @@ for d=1:1000
 end 
 
 
-writematrix(output_file,'dataset_part2.csv');
+writematrix(output_file,strcat('dataset_part',int2str(prt_number),'.csv'));
 %writematrix(output_file,'dataset_part1.csv','WriteMode','append');
 close(f);
 toc
+disp(samples_deleted)

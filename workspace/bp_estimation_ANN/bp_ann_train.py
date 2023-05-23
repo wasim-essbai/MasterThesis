@@ -68,8 +68,8 @@ bp_ann.summary()
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=25,
-                     batch_size=32,
+                     epochs=100,
+                     batch_size=64,
                      verbose=2)
 
 print("Training done!")
@@ -79,6 +79,6 @@ np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train', y_t
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_test)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test', y_test)
 
-print("Evaluate on test data")
+print("Evaluate on validation data")
 results = bp_ann.evaluate(X_val, y_val, batch_size=32)
 print(results)

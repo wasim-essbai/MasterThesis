@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all; 
-prt_number = 2;
+prt_number = 1;
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 output_file=[];
@@ -150,7 +150,7 @@ for d=1:1000
         filerow_target = [sbp abp];
         
         %sbp >= 180 || abp >= 130 || sbp <= 80
-        if(any(filerow_features <= 0) || any(isinf(filerow_features)))
+        if(any(filerow_features <= 0) || any(isinf(filerow_features)) || sbp >= 180 || abp >= 130)
             output_record = [];
             samples_deleted = samples_deleted + 1;
             break;
@@ -180,8 +180,14 @@ for d=1:1000
 %             hold off
         %end
     end
-    
-    output_file = [output_file; output_record];
+    if(~isempty(output_record))
+        s = size(output_record);
+        if(s(1)>1)
+            output_file = [output_file; mean(output_record)];
+        else
+            output_file = [output_file; output_record];
+        end
+    end
     waitbar((d-1)/1000,f,'Extracting features...');
 end 
 

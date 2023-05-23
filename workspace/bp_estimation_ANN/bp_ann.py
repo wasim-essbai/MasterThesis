@@ -7,11 +7,15 @@ from keras.models import Sequential
 def create_bp_ann(input_dim, activation, num_class):
     model = Sequential()
 
-    model.add(Dense(50, input_dim=input_dim))
+    model.add(Dense(70, input_dim=input_dim))
     model.add(Activation(activation))
     model.add(Dropout(0.4))
 
-    model.add(Dense(30))
+    model.add(Dense(100))
+    model.add(Activation(activation))
+    model.add(Dropout(0.4))
+
+    model.add(Dense(150))
     model.add(Activation(activation))
     model.add(Dropout(0.4))
 

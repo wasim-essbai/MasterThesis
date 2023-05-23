@@ -6,6 +6,7 @@ load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt
 
 output_file=[];
 samples_deleted = 0;
+bad_peaks = 0;
 
 filerow_header = ["ID" "sbp" "dbp"];
 filerow_header = [filerow_header "cp" "sut" "dt"];
@@ -39,20 +40,20 @@ for d=1:1000
     % Filtering    
     %windowSize = 15;
     %PPG = filter((1/windowSize)*ones(1,windowSize),1,PPG_original);
-    [b,a]=butter(3,[0.5*2*Ts,5*2*Ts]); % Bandpass digital filter design 
+    [b,a]=butter(3,[0.5*2*Ts,8*2*Ts]); % Bandpass digital filter design 
     PPG = filtfilt(b, a, PPG_original);
     
     [b,a]=butter(1,8*2*Ts); % Bandpass digital filter design 
     BP = filtfilt(b, a, BP_original);
     
-    PPG = PPG_original;
+    %PPG = PPG_original;
     BP = BP_original;
     
     T =(0:Ts:(length(PPG)-1)*Ts); %time vector based on sampling rate
     
     max_prom = max(PPG)/10;
-    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence', max_prom,'MinPeakDistance',30);
-    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence', max_prom,'MinPeakDistance',30);
+    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence', max_prom);
+    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence', max_prom);
     dias_pk = -dias_pk;
     
     if(any(sys_pk < mean(sys_pk)/4))
@@ -95,7 +96,7 @@ for d=1:1000
     
     output_record = [];
     
-%     fig = figure('Name','PPG and BP', 'visible','off');
+%     fig = figure('Name','PPG and BP', 'visible','on');
 %     subplot(2,1,1);
 %     plot(PPG);
 %     hold on
@@ -109,7 +110,6 @@ for d=1:1000
 %     scatter(sys_loc, BP(sys_loc))
 %     hold off
 %     saveas(fig,strcat('C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction/images/ppg_bp_',int2str(d)),'png');
-    %last_index = min([length(sys_pk)-1, length(dias_loc)-1, length(sys_bp_loc), length(dias_bp_loc)]);
     last_index = min([length(sys_loc)-1, length(dias_loc)-1]);
     for k=(1+shift_index):last_index
         sys_time = T(sys_loc(1,k)) - T(dias_loc(1,k-shift_index));
@@ -180,14 +180,36 @@ for d=1:1000
 %             hold off
         %end
     end
-    if(~isempty(output_record))
-        s = size(output_record);
-        if(s(1)>1)
-            output_file = [output_file; mean(output_record)];
+    
+    good = 1;
+    sys = 0;
+    dias_counter = 1;
+    sys_counter = 1 + shift_index;
+    for j=1:(length(sys_loc) + length(dias_loc) - shift_index - 1)
+        if(sys)
+            if(sys_loc(1,sys_counter) > dias_loc(1,dias_counter))
+                good = 0;
+                break;
+            end
+            sys_counter = sys_counter + 1;
+            sys=0;
         else
-            output_file = [output_file; output_record];
+            if(sys_loc(1,sys_counter) < dias_loc(1,dias_counter))
+                good = 0;
+                break;
+            end
+            dias_counter = dias_counter + 1;
+            sys=1;
         end
     end
+    
+    if(good == 0)
+        bad_peaks = bad_peaks + 1;
+        output_record = [];
+        samples_deleted = samples_deleted + 1;
+    end
+    
+    output_file = [output_file; output_record];
     waitbar((d-1)/1000,f,'Extracting features...');
 end 
 
@@ -196,4 +218,7 @@ writematrix(output_file,strcat('dataset_part',int2str(prt_number),'.csv'));
 %writematrix(output_file,'dataset_part1.csv','WriteMode','append');
 close(f);
 toc
+disp('samples_deleted')
 disp(samples_deleted)
+disp('bad_peaks')
+disp(bad_peaks)

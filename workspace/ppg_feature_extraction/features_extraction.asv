@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all; 
-prt_number = 2;
+prt_number = 1;
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 output_file=[];
@@ -25,8 +25,8 @@ tic
 f = waitbar(0,'Extracting features...');
 for d=1:1000
     Y=p{1,d};
-    PPG_original=Y(1,250:750);
-    BP_original=Y(2,250:750);
+    PPG_original=Y(1,200:900);
+    BP_original=Y(2,200:800);
     
 %     figure('Name','PPG and BP');
 %     subplot(2,1,1);
@@ -45,21 +45,12 @@ for d=1:1000
     [b,a]=butter(1,8*2*Ts); % Bandpass digital filter design 
     BP = filtfilt(b, a, BP_original);
     
-    PPG = PPG_original;
-    BP = BP_original;
-    
     T =(0:Ts:(length(PPG)-1)*Ts); %time vector based on sampling rate
     
-    max_prom = max(PPG)/10;
-    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence', max_prom,'MinPeakDistance',30);
-    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence', max_prom,'MinPeakDistance',30);
+    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence', max(PPG)/15); % max values of PPG signal
+    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence', max(-PPG)/15); % min values of PPG signal
     dias_pk = -dias_pk;
     
-    if(any(sys_pk < mean(sys_pk)/4))
-        output_record = [];
-        samples_deleted = samples_deleted + 1;
-        continue;
-    end
     
 %     figure('Name','PPG');
 %     plot(PPG(1,1:end));
@@ -110,11 +101,11 @@ for d=1:1000
 %     hold off
 %     saveas(fig,strcat('C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction/images/ppg_bp_',int2str(d)),'png');
     %last_index = min([length(sys_pk)-1, length(dias_loc)-1, length(sys_bp_loc), length(dias_bp_loc)]);
-    last_index = min([length(sys_loc)-1, length(dias_loc)-1]);
+    last_index = min([length(sys_pk)-1, length(dias_loc)-1]);
     for k=(1+shift_index):last_index
-        sys_time = T(sys_loc(1,k)) - T(dias_loc(1,k-shift_index));
-        dias_time = T(dias_loc(1,k+1-shift_index)) - T(sys_loc(1,k));
-        cp = T(sys_loc(1,k+1)) - T(sys_loc(1,k));
+        sys_time = T(sys_loc(1,k))-T(dias_loc(1,k-shift_index));
+        dias_time = T(dias_loc(1,k+1-shift_index))-T(sys_loc(1,k));
+        cp = T(sys_loc(1,k+1))-T(sys_loc(1,k));
 
         v = [0.1,0.25,0.33,0.5,0.66,0.75];
 
@@ -135,22 +126,43 @@ for d=1:1000
                 end
             end
 
-            ppg_st(j) = (sys_loc(1,k) - lim_1)*Ts;
-            ppg_dt(j) = (lim_2 - sys_loc(1,k))*Ts;
+            ppg_st(j) = (sys_loc(1,k)-lim_1)*Ts;
+            ppg_dt(j) = (lim_2-sys_loc(1,k))*Ts;
         end
         filerow_features = [];
         for i=1:length(v)
-            filerow_features = [filerow_features ppg_dt(i) ppg_st(i) ppg_st(i) + ppg_dt(i) ppg_dt(i)/ppg_st(i)];
+            filerow_features = [filerow_features ppg_dt(i) ppg_st(i) ppg_st(i)+ppg_dt(i) ppg_dt(i)/ppg_st(i)];
         end
-        
         filerow_features = [cp sys_time dias_time filerow_features];
         
-        sbp = max(BP(1,sys_loc(1,k):sys_loc(1,k+1)));
-        abp = min(BP(1,sys_loc(1,k):sys_loc(1,k+1)));
+        %
+        %if(any(filerow_features < 0) || any(filerow_features == 0) || any(isinf(filerow_features)))
+        %    continue
+        %end
+        bp_final_index = min(sys_loc(1,k+1),1000);
+        sbp = max(BP(1,sys_loc(1,k):bp_final_index));
+        abp = min(BP(1,sys_loc(1,k):bp_final_index));
         filerow_target = [sbp abp];
         
-        %sbp >= 180 || abp >= 130 || sbp <= 80
-        if(any(filerow_features <= 0) || any(isinf(filerow_features)))
+        if(sbp >= 180 || abp >= 130 || sbp <= 80)
+%             h=0;
+%             figure('Name','PPG and BP');
+% 
+%             subplot(2,1,1);
+%             plot(PPG);
+%             hold on
+%             scatter(sys_loc, sys_pk)
+%             scatter(dias_loc, dias_pk)
+%             hold off
+% 
+%             subplot(2,1,2);
+%             plot(BP);
+%             hold on
+%             scatter(sys_loc, BP(sys_loc))
+%             hold off
+        end
+
+        if(any(filerow_features < 0) || sbp >= 180 || abp >= 130 || sbp <= 80 || abp <= 60)
             output_record = [];
             samples_deleted = samples_deleted + 1;
             break;

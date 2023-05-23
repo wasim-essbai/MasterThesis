@@ -6,6 +6,7 @@ load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt
 
 output_file=[];
 samples_deleted = 0;
+bad_peaks = 0;
 
 filerow_header = ["ID" "sbp" "dbp"];
 filerow_header = [filerow_header "cp" "sut" "dt"];
@@ -181,6 +182,31 @@ for d=1:1000
         %end
     end
     
+    good = 1;
+    sys = 1;
+    dias_counter = 1 + shift_index;
+    sys_counter = 1 + shift_index;
+    for j=1:(length(sys_loc) + length(dias_loc) - 1)
+        if(sys)
+            if(sys_loc(1,sys_counter+1) < dias_loc(1,dias_counter - shift_index + 1))
+                good = 0;
+                break;
+            end
+            sys_counter = sys_counter + 1;
+            sys=0;
+        else
+            if(sys_loc(1,sys_counter+1) > dias_loc(1,dias_counter - shift_index + 1))
+                good = 0;
+                break;
+            end
+            dias_counter = dias_counter + 1;
+            sys=1;
+        end
+    end
+    
+    if(good == 0)
+        bad_peaks = bad_peaks + 1;
+    end
     output_file = [output_file; output_record];
     waitbar((d-1)/1000,f,'Extracting features...');
 end 
@@ -191,3 +217,4 @@ writematrix(output_file,strcat('dataset_part',int2str(prt_number),'.csv'));
 close(f);
 toc
 disp(samples_deleted)
+disp(bad_peaks)

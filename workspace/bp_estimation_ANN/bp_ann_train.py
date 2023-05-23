@@ -20,11 +20,11 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
-#dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
-#dataset5 = pd.read_csv(f'{data_path}/dataset_part{5}.csv')
+dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
+dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+dataset5 = pd.read_csv(f'{data_path}/dataset_part{5}.csv')
 
-dataset = pd.concat([dataset1, dataset2])
+dataset = pd.concat([dataset1, dataset2, dataset3, dataset4, dataset5])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
@@ -73,7 +73,7 @@ history = bp_ann.fit(X_train,
                      verbose=2)
 
 print("Training done!")
-bp_ann.save('.workspace/bp_estimation_ANN/model/bp_ann_model')
+bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train', X_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train', y_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_test)

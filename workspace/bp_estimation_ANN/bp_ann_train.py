@@ -68,8 +68,8 @@ bp_ann.summary()
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=100,
-                     batch_size=64,
+                     epochs=50,
+                     batch_size=32,
                      verbose=2)
 
 print("Training done!")

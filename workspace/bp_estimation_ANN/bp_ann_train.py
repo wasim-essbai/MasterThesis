@@ -20,11 +20,10 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
-dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
-dataset5 = pd.read_csv(f'{data_path}/dataset_part{5}.csv')
+#dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
+#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-dataset = pd.concat([dataset1, dataset2, dataset3, dataset4, dataset5])
+dataset = pd.concat([dataset1, dataset2])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
@@ -68,7 +67,7 @@ bp_ann.summary()
 # Training the model
 history = bp_ann.fit(X_train,
                      y_train,
-                     epochs=50,
+                     epochs=40,
                      batch_size=32,
                      verbose=2)
 

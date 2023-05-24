@@ -13,6 +13,7 @@ warnings.filterwarnings('ignore')
 
 print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
+device_name = tf.test.gpu_device_name()
 
 # data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
 data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
@@ -65,12 +66,19 @@ bp_ann.compile(loss='MeanAbsoluteError',
 bp_ann.summary()
 
 # Training the model
-history = bp_ann.fit(X_train,
-                     y_train,
-                     epochs=100,
-                     batch_size=32,
-                     verbose=2)
-
+if device_name == '/device:GPU:0':
+  with tf.device('/device:GPU:0'):
+    history = bp_ann.fit(X_train,
+                        y_train,
+                        epochs=100,
+                        batch_size=32,
+                        verbose=2)
+else:
+    history = bp_ann.fit(X_train,
+                        y_train,
+                        epochs=100,
+                        batch_size=32,
+                        verbose=2)
 print("Training done!")
 bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train', X_train)

@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all; 
-prt_number = 1;
+prt_number = 4;
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 output_file=[];
@@ -24,8 +24,8 @@ Ts=1/125;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic
 f = waitbar(0,'Extracting features...');
-for d=1:length(Part_1)
-    Y=Part_1{1,d};
+for d=1:length(Part_4)
+    Y=Part_4{1,d};
     PPG_original=Y(1,1:1000);
     BP_original=Y(2,1:1000);
     
@@ -44,11 +44,6 @@ for d=1:length(Part_1)
     PPG = filtfilt(b, a, PPG_original);
     %PPG = PPG_original;
     PPG = PPG(250:750);
-    
-    [b,a]=butter(4,8*2*Ts);
-    BP = filtfilt(b, a, BP_original);
-    %BP = BP_original;
-    BP = BP(250:750);
     
     T =(0:Ts:(length(PPG)-1)*Ts); %time vector based on sampling rate
     
@@ -83,9 +78,14 @@ for d=1:length(Part_1)
 %     scatter(sys_loc, sys_pk)
 %     scatter(dias_loc, dias_pk)
 %     hold off
+        
+      [b,a]=butter(4,8*2*Ts);
+      BP = filtfilt(b, a, BP_original);
+      %BP = BP_original;
+      BP = BP(250:750);
     
-      [sys_bp_pk,sys_bp_loc]=findpeaks(BP, max(BP)/10); 
-      [dias_bp_pk,dias_bp_loc]=findpeaks(-BP, max(BP)/15); % min value of BP(diastole) signal    
+      [sys_bp_pk,sys_bp_loc]=findpeaks(BP, 'MinPeakProminence', max(BP)/10); 
+      [dias_bp_pk,dias_bp_loc]=findpeaks(-BP, 'MinPeakProminence', max(BP)/15); % min value of BP(diastole) signal    
       dias_bp_pk = -dias_bp_pk;
       
       if(abs(length(dias_bp_loc) - length(sys_bp_loc)) >  2)

@@ -22,9 +22,9 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
 dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-dataset = pd.concat([dataset1, dataset2, dataset3])
+dataset = pd.concat([dataset1, dataset2, dataset3, dataset4])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
@@ -68,18 +68,23 @@ bp_ann.summary()
 # Training the model
 if device_name == '/device:GPU:0':
   with tf.device('/device:GPU:0'):
+    print('Training using GPU')
     history = bp_ann.fit(X_train,
                         y_train,
-                        epochs=100,
+                        epochs=300,
+                        shuffle=True,
                         batch_size=32,
                         verbose=2)
 else:
+    print('Training using CPU')
     history = bp_ann.fit(X_train,
                         y_train,
-                        epochs=100,
+                        epochs=300,
+                        shuffle=True,
                         batch_size=32,
                         verbose=2)
 print("Training done!")
+
 bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model')
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train', X_train)
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train', y_train)
@@ -87,5 +92,5 @@ np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_te
 np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test', y_test)
 
 print("Evaluate on validation data")
-results = bp_ann.evaluate(X_val, y_val, batch_size=64)
+results = bp_ann.evaluate(X_val, y_val, batch_size=32)
 print(results)

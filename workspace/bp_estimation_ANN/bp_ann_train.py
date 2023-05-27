@@ -20,11 +20,11 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
-dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
-dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+#dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
+#dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
+#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-dataset = pd.concat([dataset1, dataset2, dataset3, dataset4])
+dataset = pd.concat([dataset1])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
@@ -71,7 +71,7 @@ if device_name == '/device:GPU:0':
     print('Training using GPU')
     history = bp_ann.fit(X_train,
                         y_train,
-                        epochs=300,
+                        epochs=1500,
                         shuffle=True,
                         batch_size=32,
                         verbose=2)

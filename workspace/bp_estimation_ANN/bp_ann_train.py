@@ -36,8 +36,8 @@ X = dataset.iloc[0:, 3:].to_numpy()
 y = dataset.iloc[0:, 1:3].to_numpy()
 
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=True)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=True)
 
 input_dim = X_train.shape[1]
 print('Input size', input_dim)

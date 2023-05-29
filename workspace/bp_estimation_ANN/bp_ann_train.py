@@ -22,9 +22,9 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
 dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-dataset = pd.concat([dataset1, dataset2, dataset3])
+dataset = pd.concat([dataset1, dataset2, dataset3, dataset4])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 

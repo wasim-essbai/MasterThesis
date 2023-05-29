@@ -29,6 +29,7 @@ print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
 features_to_exclude = ['st10','st25','st33','st50','st66','st75']
+#features_to_exclude=[]
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
 X = dataset.iloc[0:, 3:].to_numpy()
@@ -58,10 +59,16 @@ def MAE_DBP(y_true, y_pred):
 def STD_DBP(y_true, y_pred):
     return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
+def MAE_MBP(y_true, y_pred):
+    mbp_true = y_true[:, 0]/3 + y_true[:, 1]*2/3;
+    mbp_pred = y_pred[:, 0]/3 + y_pred[:, 1]*2/3;
+    return K.mean(K.abs(mbp_pred - mbp_true))
+
+
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.Adam(lr=0.001),
                metrics=['MeanAbsolutePercentageError', 
-               MAE_SBP, STD_SBP, MAE_DBP, STD_DBP])
+               MAE_SBP, STD_SBP, MAE_DBP, STD_DBP, MAE_MBP])
                
 bp_ann.summary()
 
@@ -73,7 +80,7 @@ if device_name == '/device:GPU:0':
                         y_train,
                         epochs=100,
                         shuffle=True,
-                        batch_size=16,
+                        batch_size=32,
                         verbose=2)
 else:
     print('Training using CPU')

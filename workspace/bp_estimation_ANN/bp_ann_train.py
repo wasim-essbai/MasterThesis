@@ -44,22 +44,24 @@ print('Input size', input_dim)
 
 activation = 'relu'
 num_classes = y_train.shape[1]
-num_classes = 1
+#num_classes = 1
 bp_ann = create_bp_ann(input_dim=input_dim, activation=activation, num_class=num_classes)
 
 
 def MAE_SBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
-
-def STD_SBP(y_true, y_pred):
-    return K.std(K.abs(y_pred[:, 0] - y_true[:, 0]))
-
-def MAE_DBP(y_true, y_pred):
     return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
-def STD_DBP(y_true, y_pred):
+def STD_SBP(y_true, y_pred):
     return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
+def MAE_DBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 2] - y_true[:, 2]))
+
+def STD_DBP(y_true, y_pred):
+    return K.std(K.abs(y_pred[:, 2] - y_true[:, 2]))
+
+def MAE_MBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
 
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.Adam(lr=0.001),

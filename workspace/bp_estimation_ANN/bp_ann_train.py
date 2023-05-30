@@ -21,10 +21,10 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
-dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+#dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
+#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-dataset = pd.concat([dataset1, dataset2, dataset3, dataset4])
+dataset = pd.concat([dataset1, dataset2])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
@@ -36,8 +36,8 @@ X = dataset.iloc[0:, 4:].to_numpy()
 y = dataset.iloc[0:, 1:4].to_numpy()
 
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=True)
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
 
 input_dim = X_train.shape[1]
 print('Input size', input_dim)
@@ -76,9 +76,9 @@ if device_name == '/device:GPU:0':
     print('Training using GPU')
     history = bp_ann.fit(X_train,
                         y_train,
-                        epochs=100,
+                        epochs=20,
                         shuffle=True,
-                        batch_size=32,
+                        batch_size=256,
                         verbose=2)
 else:
     print('Training using CPU')

@@ -76,9 +76,9 @@ if device_name == '/device:GPU:0':
     print('Training using GPU')
     history = bp_ann.fit(X_train,
                         y_train,
-                        epochs=20,
+                        epochs=100,
                         shuffle=True,
-                        batch_size=256,
+                        batch_size=128,
                         verbose=2)
 else:
     print('Training using CPU')

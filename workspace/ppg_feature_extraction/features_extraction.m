@@ -1,12 +1,13 @@
 clc;
 clear all;
 close all; 
-prt_number = 4;
+prt_number = 1;
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 output_file=[];
 samples_deleted = 0;
 bad_peaks = 0;
+added=[];
 
 filerow_header = ["ID" "sbp" "dbp"];
 filerow_header = [filerow_header "cp" "sut" "dt"];
@@ -24,10 +25,10 @@ Ts=1/125;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic
 f = waitbar(0,'Extracting features...');
-for d=1:length(Part_4)
-    Y=Part_4{1,d};
-    PPG_original=Y(1,1:1000);
-    BP_original=Y(2,1:1000);
+for d=1:length(Part_1)
+    Y=Part_1{1,d};
+    PPG_original=Y(1,length(Y)/2-499:length(Y)/2+500);
+    BP_original=Y(2, length(Y)/2-499:length(Y)/2+500);
     
 %     figure('Name','PPG and BP');
 %     subplot(2,1,1);
@@ -66,7 +67,7 @@ for d=1:length(Part_4)
         continue;
     end
     
-    if(any(abs(dias_pk) > abs(mean(dias_pk)*1.25)))
+    if(any(abs(dias_pk) > abs(mean(dias_pk)*2)))
         output_record = [];
         samples_deleted = samples_deleted + 1;
         continue;
@@ -85,7 +86,7 @@ for d=1:length(Part_4)
       BP = BP(250:750);
     
       [sys_bp_pk,sys_bp_loc]=findpeaks(BP, 'MinPeakProminence', max(BP)/10); 
-      [dias_bp_pk,dias_bp_loc]=findpeaks(-BP, 'MinPeakProminence', max(BP)/15); % min value of BP(diastole) signal    
+      [dias_bp_pk,dias_bp_loc]=findpeaks(-BP, 'MinPeakProminence', max(BP)/10);
       dias_bp_pk = -dias_bp_pk;
       
       if(abs(length(dias_bp_loc) - length(sys_bp_loc)) >  2)
@@ -101,7 +102,7 @@ for d=1:length(Part_4)
         continue;
       end
 
-      if(any(abs(dias_bp_pk) > abs(mean(dias_bp_pk)*1.2)))
+      if(any(abs(dias_bp_pk) > abs(mean(dias_bp_pk)*2)))
         output_record = [];
         samples_deleted = samples_deleted + 1;
         continue;
@@ -243,7 +244,9 @@ for d=1:length(Part_4)
         output_record = [];
         samples_deleted = samples_deleted + 1;
     end
-    
+    if(not(isempty(output_record)))
+        added = [added d];
+    end
     output_file = [output_file; output_record];
     waitbar((d-1)/3000,f,'Extracting features...');
 end 
@@ -251,6 +254,7 @@ end
 
 writematrix(output_file,strcat('dataset_part',int2str(prt_number),'.csv'));
 %writematrix(output_file,'dataset_part1.csv','WriteMode','append');
+save('added.mat','added');
 close(f);
 toc
 disp('samples_deleted')

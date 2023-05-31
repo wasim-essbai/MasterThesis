@@ -22,7 +22,7 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 #dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
 #dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-#dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
+dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
 dataset = pd.concat([dataset2])
 print(f'dataset Data type: {type(dataset)}')
@@ -90,7 +90,7 @@ else:
     print('Training using CPU')
     history = bp_ann.fit(X_train,
                         y_train,
-                        epochs=100,
+                        epochs=60,
                         shuffle=True,
                         batch_size=64,
                         verbose=2)

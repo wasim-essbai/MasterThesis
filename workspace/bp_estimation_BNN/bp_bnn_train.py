@@ -1,124 +1,118 @@
 # importing libraries
 import numpy as np
 import scipy.io
+import pandas as pd
 import tensorflow as tf
 import warnings
-from keras import metrics
-from sklearn.model_selection import train_test_split  # cross validation split
+from keras import backend as K
+from sklearn.model_selection import train_test_split
 from bp_bnn import create_bp_bnn
 from keras import optimizers
 
 warnings.filterwarnings('ignore')
 
-from matplotlib import pyplot as plt  # For plotting graphs(Visualization)
-
 print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
+device_name = tf.test.gpu_device_name()
 
 # data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
 data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
-# Loading a sample .mat file to understand the data dimensions
-test_sample = scipy.io.loadmat(f'{data_path}/part_{1}.mat')['p']
-print(f'test_sample Data type: {type(test_sample)}')
-print(f'test_sample shape/dimensions: {test_sample.shape}')
+# Loading the dataset
+dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
+dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}_rest.csv')
+dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
+dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
-## Try printing out the entire array to see its data.
-print(f"Total Samples: {len(test_sample[0])}")
-print(f"Number of readings in each sample(column): {len(test_sample[0][0])}")
-print(f"Number of samples in each reading(ECG): {len(test_sample[0][0][2])}")
+dataset = pd.concat([dataset2])
+print(f'dataset Data type: {type(dataset)}')
+print(f'dataset shape/dimensions: {dataset.shape}')
 
-temp_mat = test_sample[0, 999]
-temp_length = temp_mat.shape[1]
-sample_size = 125
+features_to_exclude = []
+features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
+# features_to_exclude.extend(['st10_p_dt10'])
+# features_to_exclude.extend(['st25_p_dt25'])
+# features_to_exclude.extend(['st33_p_dt33'])
+# features_to_exclude.extend(['st50_p_dt50'])
+# features_to_exclude.extend(['st66_p_dt66'])
+# features_to_exclude.extend(['st75_p_dt75'])
+dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
-print(temp_length)
-print(int(temp_length / sample_size))
+X = dataset.iloc[0:, 4:].to_numpy()
+y = dataset.iloc[0:, 1:4].to_numpy()
 
-sample_size = 125
-ppg = []
-for i in range(1000):
-    temp_mat = test_sample[0, i]
-    temp_length = temp_mat.shape[1]
-    for j in range(int(temp_length / sample_size)):
-        temp_ppg = temp_mat[0, j * sample_size:(j + 1) * sample_size]
-        ppg.append(temp_ppg)
-
-ecg = []
-bp = []
-sbp = []  # Systolic Blood Pressure
-dbp = []  # Diastolic Blood Pressue
-size = 125  # sample size
-
-for i in range(1000):
-    temp_mat = test_sample[0, i]
-    temp_length = temp_mat.shape[1]
-    for j in range(int(temp_length / sample_size)):
-        temp_ecg = temp_mat[2, j * size:(j + 1) * size]
-        temp_bp = temp_mat[1, j * size:(j + 1) * size]
-
-        max_value = max(temp_bp)
-        min_value = min(temp_bp)
-
-        sbp.append(max_value)
-        dbp.append(min_value)
-        ecg.append(temp_ecg)
-        bp.append(temp_bp)
-
-# Reshaping the ecg, ppg and bp signal data into column vectors
-ppg, ecg, bp = np.array(ppg).reshape(-1, 1), np.array(ecg).reshape(-1, 1), np.array(bp).reshape(-1, 1)
-sbp, dbp = np.array(sbp).reshape(-1, 1), np.array(dbp).reshape(-1, 1)
-print(f'PPG_shape: {ppg.shape}\n ECG_shape: {ecg.shape}\n BP_shape: {bp.shape}')
-print(f'Systolic-BP_shape: {sbp.shape},\n Diastolic-BP_shape: {dbp.shape}')
-
-# plotting sample ppg, ecg and bp signals
-# using a sample size of 125
-fig, ax = plt.subplots(3, 1, figsize=(9, 12), sharex=True)
-
-ax[0].set_title('PPG graph', fontsize=16)
-ax[0].set_ylabel('Signal Value')
-ax[0].plot(ppg[:125])
-
-ax[1].set_title('ECG graph', fontsize=16)
-ax[1].set_ylabel('Signal Value')
-ax[1].plot(ecg[:125])
-
-ax[2].set_title('Blood Pressure (BP) graph', fontsize=16)
-ax[2].set_ylabel('Signal Value')
-ax[2].set_xlabel('Sample size')
-ax[2].plot(bp[:125])
-
-plt.show()
 
 # loss function definition
 def negative_loglikelihood(targets, estimated_distribution):
     return -estimated_distribution.log_prob(targets)
 
+
 # creating train and test sets
-X_train, X_test, y_train, y_test = train_test_split(ppg, bp, test_size=0.30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
 
 input_dim = X_train.shape[1]
+print('Input size', input_dim)
 
 activation = 'relu'
-num_classes = 1
+num_classes = y_train.shape[1]
 bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_train.shape[0], num_class=num_classes)
-bp_bnn.compile(loss='Huber',
-               optimizer=optimizers.RMSprop(learning_rate=0.001),
-               metrics=[metrics.MeanAbsoluteError()])
+
+
+# Metrics to evaluate
+def MAE_SBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
+
+
+def STD_SBP(y_true, y_pred):
+    return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
+
+
+def MAE_DBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 2] - y_true[:, 2]))
+
+
+def STD_DBP(y_true, y_pred):
+    return K.std(K.abs(y_pred[:, 2] - y_true[:, 2]))
+
+
+def MAE_MBP(y_true, y_pred):
+    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
+
+
+bp_bnn.compile(loss=negative_loglikelihood,
+               optimizer=optimizers.Adam(lr=0.001),
+               metrics=['MeanAbsolutePercentageError',
+                        MAE_SBP, MAE_DBP, MAE_MBP])
 bp_bnn.summary()
 
-history = bp_bnn.fit(X_train,
-                    y_train.squeeze(),
-                    epochs=5,
-                    batch_size=256,
-                    verbose=1)
+# Training the model
+if device_name == '/device:GPU:0':
+    with tf.device('/device:GPU:0'):
+        print('Training using GPU')
+        history = bp_bnn.fit(X_train,
+                             y_train,
+                             epochs=10,
+                             batch_size=16,
+                             verbose=2)
+else:
+    print('Training using CPU')
+    history = bp_bnn.fit(X_train,
+                         y_train,
+                         epochs=10,
+                         batch_size=16,
+                         verbose=2)
 
 print("Training done!")
 prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train',X_train)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train',y_train)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test',X_test)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test',y_test)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train', X_train)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train', y_train)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test', X_test)
+np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test', y_test)
+
+print("Evaluate on validation data")
+results = bp_bnn.evaluate(X_val, y_val, batch_size=32)
+print(results)

@@ -20,7 +20,7 @@ data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
-dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}.csv')
+dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}_rest.csv')
 dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
 dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
@@ -38,8 +38,8 @@ features_to_exclude = ['st10','st25','st33','st50','st66','st75']
 #features_to_exclude.extend(['st75_p_dt75'])
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
-X = dataset.iloc[5000:30000, 4:].to_numpy()
-y = dataset.iloc[5000:30000, 1:4].to_numpy()
+X = dataset.iloc[0:, 4:].to_numpy()
+y = dataset.iloc[0:, 1:4].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
@@ -97,7 +97,7 @@ else:
                         y_train,
                         epochs=60,
                         shuffle=True,
-                        batch_size=64,
+                        batch_size=16,
                         verbose=2)
 print("Training done!")
 

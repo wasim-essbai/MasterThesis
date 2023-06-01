@@ -82,14 +82,15 @@ def MAE_MBP(y_true, y_pred):
     return K.mean(K.abs(mbp_true - mbp_pred))
 
 
-bp_bnn.compile(loss='MeanAbsoluteError',
-               optimizer=optimizers.Adam(lr=0.004),
-               metrics=['MeanAbsolutePercentageError',
-                        MAE_SBP, MAE_DBP, MAE_MBP])
-#bp_bnn.compile(loss=negative_loglikelihood,
-#               optimizer=optimizers.RMSprop(learning_rate=0.001),
+#bp_bnn.compile(loss='MeanAbsoluteError',
+#               optimizer=optimizers.Adam(lr=0.004),
 #               metrics=['MeanAbsolutePercentageError',
 #                        MAE_SBP, MAE_DBP, MAE_MBP])
+bp_bnn.compile(loss=negative_loglikelihood,
+               #optimizer=optimizers.Adam(lr=0.0001),
+               optimizer=optimizers.RMSprop(learning_rate=0.0002),
+               metrics=['MeanAbsolutePercentageError',
+                        MAE_SBP, MAE_DBP, MAE_MBP])
                         
 bp_bnn.summary()
 
@@ -99,14 +100,14 @@ if device_name == '/device:GPU:0':
         print('Training using GPU')
         history = bp_bnn.fit(X_train,
                              y_train,
-                             epochs=150,
+                             epochs=600,
                              batch_size=32,
                              verbose=2)
 else:
     print('Training using CPU')
     history = bp_bnn.fit(X_train,
                          y_train,
-                         epochs=150,
+                         epochs=600,
                          batch_size=32,
                          verbose=2)
 

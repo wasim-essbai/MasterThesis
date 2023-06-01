@@ -15,8 +15,8 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
-# data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
+# data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
+data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
@@ -82,10 +82,15 @@ def MAE_MBP(y_true, y_pred):
     return K.mean(K.abs(mbp_true - mbp_pred))
 
 
+#bp_bnn.compile(loss='MeanAbsoluteError',
+#               optimizer=optimizers.Adam(lr=0.005),
+#               metrics=['MeanAbsolutePercentageError',
+#                        MAE_SBP, MAE_DBP, MAE_MBP])
 bp_bnn.compile(loss=negative_loglikelihood,
-               optimizer=optimizers.Adam(lr=0.001),
+               optimizer=optimizers.RMSprop(learning_rate=0.0001),
                metrics=['MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
+                        
 bp_bnn.summary()
 
 # Training the model
@@ -94,14 +99,14 @@ if device_name == '/device:GPU:0':
         print('Training using GPU')
         history = bp_bnn.fit(X_train,
                              y_train,
-                             epochs=10,
+                             epochs=150,
                              batch_size=32,
                              verbose=2)
 else:
     print('Training using CPU')
     history = bp_bnn.fit(X_train,
                          y_train,
-                         epochs=10,
+                         epochs=150,
                          batch_size=32,
                          verbose=2)
 

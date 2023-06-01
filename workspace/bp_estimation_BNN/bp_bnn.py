@@ -85,7 +85,7 @@ def create_bp_bnn(input_dim, activation, train_size, num_class):
         kl_weight=1 / train_size,
         activation=activation,
     ))
-    #model.add(Dropout(0.5))
+    # model.add(Dropout(0.5))
 
     model.add(tfp.layers.DenseVariational(
         units=6,
@@ -94,7 +94,7 @@ def create_bp_bnn(input_dim, activation, train_size, num_class):
         kl_weight=1 / train_size,
         activation=activation,
     ))
-    #model.add(Dropout(0.5))
+    # model.add(Dropout(0.5))
 
     model.add(Dense(num_class))
     model.add(tfp.layers.IndependentNormal(num_class))

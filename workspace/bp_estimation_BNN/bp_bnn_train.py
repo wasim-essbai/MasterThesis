@@ -16,7 +16,7 @@ print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
 data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
-#data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
+# data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
@@ -77,9 +77,10 @@ def STD_DBP(y_true, y_pred):
 
 
 def MAE_MBP(y_true, y_pred):
-    mbp_pred = y_pred[:, 0]/3 + y_pred[:, 0]*2/3
-    mbp_true = y_true[:, 0]/3 + y_true[:, 0]*2/3
+    mbp_pred = y_pred[:, 0] / 3 + y_pred[:, 0] * 2 / 3
+    mbp_true = y_true[:, 0] / 3 + y_true[:, 0] * 2 / 3
     return K.mean(K.abs(mbp_true - mbp_pred))
+
 
 bp_bnn.compile(loss=negative_loglikelihood,
                optimizer=optimizers.Adam(lr=0.001),

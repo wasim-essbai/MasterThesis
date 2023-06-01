@@ -39,7 +39,7 @@ features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
 X = dataset.iloc[0:, 4:].to_numpy()
-y = dataset.iloc[0:, 1:4].to_numpy()
+y = dataset.iloc[0:, 2:4].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
@@ -55,23 +55,25 @@ bp_ann = create_bp_ann(input_dim=input_dim, activation=activation, num_class=num
 
 # Metrics to evaluate
 def MAE_SBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
+    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
 
 
 def STD_SBP(y_true, y_pred):
-    return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
+    return K.std(K.abs(y_pred[:, 0] - y_true[:, 0]))
 
 
 def MAE_DBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 2] - y_true[:, 2]))
+    return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
 
 def STD_DBP(y_true, y_pred):
-    return K.std(K.abs(y_pred[:, 2] - y_true[:, 2]))
+    return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
 
 def MAE_MBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
+    mbp_pred = y_pred[:, 0]/3 + y_pred[:, 0]*2/3
+    mbp_true = y_true[:, 0]/3 + y_true[:, 0]*2/3
+    return K.mean(K.abs(mbp_true - mbp_pred))
 
 
 bp_ann.compile(loss='MeanAbsoluteError',
@@ -89,7 +91,7 @@ if device_name == '/device:GPU:0':
                              y_train,
                              epochs=60,
                              shuffle=True,
-                             batch_size=16,
+                             batch_size=32,
                              verbose=2)
 else:
     print('Training using CPU')
@@ -97,7 +99,7 @@ else:
                          y_train,
                          epochs=60,
                          shuffle=True,
-                         batch_size=16,
+                         batch_size=32,
                          verbose=2)
 print("Training done!")
 

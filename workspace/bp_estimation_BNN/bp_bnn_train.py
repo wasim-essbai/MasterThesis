@@ -39,7 +39,7 @@ features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
 X = dataset.iloc[0:, 4:].to_numpy()
-y = dataset.iloc[0:, 1:4].to_numpy()
+y = dataset.iloc[0:, 2:4].to_numpy()
 
 
 # loss function definition
@@ -61,24 +61,25 @@ bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_
 
 # Metrics to evaluate
 def MAE_SBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
+    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
 
 
 def STD_SBP(y_true, y_pred):
-    return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
+    return K.std(K.abs(y_pred[:, 0] - y_true[:, 0]))
 
 
 def MAE_DBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 2] - y_true[:, 2]))
+    return K.mean(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
 
 def STD_DBP(y_true, y_pred):
-    return K.std(K.abs(y_pred[:, 2] - y_true[:, 2]))
+    return K.std(K.abs(y_pred[:, 1] - y_true[:, 1]))
 
 
 def MAE_MBP(y_true, y_pred):
-    return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
-
+    mbp_pred = y_pred[:, 0]/3 + y_pred[:, 0]*2/3
+    mbp_true = y_true[:, 0]/3 + y_true[:, 0]*2/3
+    return K.mean(K.abs(mbp_true - mbp_pred))
 
 bp_bnn.compile(loss=negative_loglikelihood,
                optimizer=optimizers.Adam(lr=0.001),
@@ -93,14 +94,14 @@ if device_name == '/device:GPU:0':
         history = bp_bnn.fit(X_train,
                              y_train,
                              epochs=10,
-                             batch_size=16,
+                             batch_size=32,
                              verbose=2)
 else:
     print('Training using CPU')
     history = bp_bnn.fit(X_train,
                          y_train,
                          epochs=10,
-                         batch_size=16,
+                         batch_size=32,
                          verbose=2)
 
 print("Training done!")

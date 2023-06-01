@@ -76,7 +76,7 @@ def posterior(kernel_size, bias_size, dtype=None):
 def create_bp_bnn(input_dim, activation, train_size, num_class):
     model = Sequential()
 
-    model.add(Input(input_dim, name='featureinput'))
+    model.add(Input(input_dim))
 
     model.add(tfp.layers.DenseVariational(
         units=15,
@@ -96,7 +96,7 @@ def create_bp_bnn(input_dim, activation, train_size, num_class):
     ))
     # model.add(Dropout(0.5))
 
-    model.add(Dense(num_class))
+    model.add(Dense(num_class*2))
     model.add(tfp.layers.IndependentNormal(num_class))
 
     return model

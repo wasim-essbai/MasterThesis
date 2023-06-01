@@ -1,8 +1,9 @@
 clc;
 clear all;
 close all; 
-prt_number = 4;
+prt_number = 3;
 bad_peaks=0;
+too_short = 0;
 samples_deleted=0;
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
@@ -14,11 +15,12 @@ first_step_clean_record_indexes = [];
 tic
 f = waitbar(0,'Cleaning at first stage...');
 for d=1:3000
-    Y=Part_4{1,d};
+    Y=Part_3{1,d};
     PPG_original=Y(1,:);
     BP_original=Y(2,:);
     
-    if(size(PPG_original,2) < 25500)
+    if(size(PPG_original,2) < 15000)
+        too_short = too_short + 1;
         continue
     end
     
@@ -30,8 +32,8 @@ for d=1:3000
     min_ppg = min(PPG);
     PPG = (PPG - min_ppg)/(max_ppg - min_ppg);
     
-    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence',max(PPG)/6,'MinPeakDistance',22);
-    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence',max(PPG)/6,'MinPeakDistance',25);
+    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence',max(PPG)/5,'MinPeakDistance',22);
+    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence',max(PPG)/5,'MinPeakDistance',25);
     dias_pk = -dias_pk;
     
     [b,a]=butter(4,8*2*Ts);
@@ -127,3 +129,5 @@ disp('samples_deleted')
 disp(samples_deleted)
 disp('bad_peaks')
 disp(bad_peaks)
+disp('too_short')
+too_short

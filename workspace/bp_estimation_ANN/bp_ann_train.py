@@ -44,10 +44,6 @@ y = dataset.iloc[0:, 0:4].to_numpy()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
 
-y_train_ids = y_train[0:, 0];
-y_val_ids = y_val[0:, 0];
-y_test_ids = y_test[0:, 0];
-
 y_train_ids = y_train[0:, 0]
 y_val_ids = y_val[0:, 0]
 y_test_ids = y_test[0:, 0]

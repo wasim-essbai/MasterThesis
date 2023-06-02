@@ -1,8 +1,8 @@
 clc;
 clear all;
 close all; 
-dataset = readmatrix('dataset_part2');
-dataset_rest = dataset((dataset(:,3) < 120 & dataset(:,3) > 80 & dataset(:,4) < 80 & dataset(:,4) > 60),:);
+dataset = readmatrix('./dataset_extracted/dataset_part2');
+dataset_rest = dataset((dataset(:,7) < 120 & dataset(:,7) > 80 & dataset(:,8) < 80 & dataset(:,8) > 60),:);
 writematrix(dataset_rest,strcat('dataset_part',int2str(2),'_rest.csv'));
 test_rm = rmoutliers(dataset);
 writematrix(test_rm,strcat('dataset_part',int2str(2),'_no_out.csv'));

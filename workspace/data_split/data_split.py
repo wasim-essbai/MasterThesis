@@ -6,27 +6,24 @@ data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_f
 # data_path = './workspace/ppg_feature_extraction/dataset_extracted'
 
 # Loading the dataset
-dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
 dataset2 = pd.read_csv(f'{data_path}/dataset_part{2}_rest.csv')
-dataset3 = pd.read_csv(f'{data_path}/dataset_part{3}.csv')
-dataset4 = pd.read_csv(f'{data_path}/dataset_part{4}.csv')
 
 dataset = pd.concat([dataset2])
 print(f'dataset Data type: {type(dataset)}')
 print(f'dataset shape/dimensions: {dataset.shape}')
 
 features_to_exclude = []
-features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
-# features_to_exclude.extend(['st10_p_dt10'])
-# features_to_exclude.extend(['st25_p_dt25'])
-# features_to_exclude.extend(['st33_p_dt33'])
-# features_to_exclude.extend(['st50_p_dt50'])
-# features_to_exclude.extend(['st66_p_dt66'])
-# features_to_exclude.extend(['st75_p_dt75'])
+# features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
+features_to_exclude.extend(['st10_p_dt10', 'st10_d_dt10', ])
+features_to_exclude.extend(['st25_p_dt25', 'st25_d_dt25', ])
+features_to_exclude.extend(['st33_p_dt33', 'st33_d_dt33', ])
+features_to_exclude.extend(['st50_p_dt50', 'st50_d_dt50', ])
+features_to_exclude.extend(['st66_p_dt66', 'st66_d_dt66', ])
+features_to_exclude.extend(['st75_p_dt75', 'st75_d_dt75' ])
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
-X = dataset.iloc[0:, 4:].to_numpy()
-y = dataset.iloc[0:, 0:4].to_numpy()
+X = dataset.iloc[0:, 8:].to_numpy()
+y = dataset.iloc[0:, 0:8].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
@@ -36,13 +33,13 @@ print(f'Train dataset : {y_train.shape[0]}')
 print(f'Validation dataset : {y_val.shape[0]}')
 print(f'Test dataset : {y_test.shape[0]}')
 
-y_train_ids = y_train[0:, 0]
-y_val_ids = y_val[0:, 0]
-y_test_ids = y_test[0:, 0]
+y_train_ids = y_train[0:, 0:5]
+y_val_ids = y_val[0:, 0:5]
+y_test_ids = y_test[0:, 0:5]
 
-y_train = y_train[0:, 2:]
-y_val = y_val[0:, 2:]
-y_test = y_test[0:, 2:]
+y_train = y_train[0:, 6:]
+y_val = y_val[0:, 6:]
+y_test = y_test[0:, 6:]
 
 np.savetxt('./y_train_ids.csv', y_train_ids, delimiter=',')
 np.savetxt('./y_val_ids.csv', y_val_ids, delimiter=',')

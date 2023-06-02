@@ -12,7 +12,8 @@ skipped = 0;
 index_skipped=[];
 no_bp=0;
 
-filerow_header = ["ID" "mbp" "sbp" "dbp"];
+filerow_header = ["ID" "min1" "max1" "min2" "max2"];
+filerow_header = [filerow_header "mbp" "sbp" "dbp"];
 filerow_header = [filerow_header "cp" "sut" "dt"];
 filerow_header = [filerow_header "dt10" "st10" "st10_p_dt10" "st10_d_dt10"];
 filerow_header = [filerow_header "dt25" "st25" "st25_p_dt25" "st25_d_dt25"];
@@ -214,13 +215,14 @@ for d=1:length(full_clean_record_indexes)
 %             continue
 %         end
         
+        filerow_identifier = [(d+prt_number*10000) dias_loc(1,dias_index) sys_loc(1,k) dias_loc(1,dias_index+1) sys_loc(1,k+1)];
         filerow_target = [mbp sbp abp];
         
-        if(do_average >= 1 && do_average <= 4)
-            output_record(end,:) = (output_record(end,:) + [(d*prt_number*10000) filerow_target filerow_features])/2;
+        if(do_average >= 1 && do_average <= 3)
+            %output_record(end,:) = (output_record(end,:) + [filerow_identifier filerow_target filerow_features])/2;
             do_average = do_average + 1;
         else
-            output_record = [output_record; (d*prt_number*10000) filerow_target filerow_features];
+            output_record = [output_record; filerow_identifier filerow_target filerow_features];
             do_average = 1;
         end
     end

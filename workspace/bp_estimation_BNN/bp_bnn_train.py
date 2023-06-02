@@ -6,6 +6,7 @@ import warnings
 from keras import backend as K
 from bp_bnn import create_bp_bnn
 from keras import optimizers
+import pickle
 
 warnings.filterwarnings('ignore')
 
@@ -13,10 +14,10 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-loss_name = 'NLL'
+loss_name = 'MAE'
 
-data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
-# data_path = './workspace/data_split'
+# data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
+data_path = './workspace/data_split'
 
 # Loading the dataset
 X_train = pd.read_csv(f'{data_path}/X_train.csv', header=None)
@@ -111,7 +112,12 @@ prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model_' + loss_name)
+with open('/trainHistoryDict', 'wb') as file_pi:
+    pickle.dump(history.history, file_pi)
 
 print("Evaluate on validation data")
 results = bp_bnn.evaluate(X_val, y_val, batch_size=32)
 print(results)
+print("Evaluate on test data")
+test_results = bp_bnn.evaluate(X_test, y_test, batch_size=32)
+print(test_results)

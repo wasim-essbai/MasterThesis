@@ -7,6 +7,7 @@ from keras import backend as K
 from bp_ann import create_bp_ann
 from keras import optimizers
 import warnings
+import pickle
 
 warnings.filterwarnings('ignore')
 
@@ -16,8 +17,8 @@ device_name = tf.test.gpu_device_name()
 
 loss_name = 'MAE'
 
-data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
-# data_path = './workspace/data_split'
+# data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
+data_path = './workspace/data_split'
 
 # Loading the dataset
 X_train = pd.read_csv(f'{data_path}/X_train.csv', header=None)
@@ -100,7 +101,12 @@ else:
 print("Training done!")
 
 bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model_' + loss_name)
+with open('/trainHistoryDict', 'wb') as file_pi:
+    pickle.dump(history.history, file_pi)
 
 print("Evaluate on validation data")
 results = bp_ann.evaluate(X_val, y_val, batch_size=32)
 print(results)
+print("Evaluate on test data")
+test_results = bp_ann.evaluate(X_test, y_test, batch_size=32)
+print(test_results)

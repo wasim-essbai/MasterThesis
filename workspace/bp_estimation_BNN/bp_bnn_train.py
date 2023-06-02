@@ -15,7 +15,7 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-loss_name = 'MAPE'
+loss_name = 'NLL'
 
 # data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
 data_path = './workspace/ppg_feature_extraction/dataset_extracted'
@@ -104,7 +104,8 @@ elif loss_name == 'MAPE':
                         MAE_SBP, MAE_DBP, MAE_MBP])
 else:
   bp_bnn.compile(loss=negative_loglikelihood,
-                ooptimizer=optimizers.RMSprop(learning_rate=0.007),
+                optimizer=optimizers.RMSprop(learning_rate=0.0005, 
+                    clipnorm=1.0, momentum=0.1),
                 metrics=['MeanAbsoluteError', 
                           'MeanAbsolutePercentageError',
                           MAE_SBP, MAE_DBP, MAE_MBP])
@@ -133,9 +134,9 @@ prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model_' + loss_name)
-np.savetxt('./workspace/bp_estimation_BNN/data_split/y_train_ids.csv', y_train_ids, delimiter=',')
-np.savetxt('./workspace/bp_estimation_BNN/data_split/y_val_ids.csv', y_val_ids, delimiter=',')
-np.savetxt('./workspace/bp_estimation_BNN/data_split/y_test_ids.csv', y_test_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_BNN/data_split/' + loss_name + '/y_train_ids.csv', y_train_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_BNN/data_split/' + loss_name + '/y_val_ids.csv', y_val_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_BNN/data_split/' + loss_name + '/y_test_ids.csv', y_test_ids, delimiter=',')
 
 print("Evaluate on validation data")
 results = bp_bnn.evaluate(X_val, y_val, batch_size=32)

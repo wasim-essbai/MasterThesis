@@ -112,7 +112,7 @@ prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model_' + loss_name)
-with open('/trainHistoryDict', 'wb') as file_pi:
+with open('/trainHistoryDict/' + loss_name, 'wb') as file_pi:
     pickle.dump(history.history, file_pi)
 
 print("Evaluate on validation data")

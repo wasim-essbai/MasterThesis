@@ -101,7 +101,7 @@ else:
 print("Training done!")
 
 bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model_' + loss_name)
-with open('/trainHistoryDict', 'wb') as file_pi:
+with open('/trainHistoryDict/' + loss_name, 'wb') as file_pi:
     pickle.dump(history.history, file_pi)
 
 print("Evaluate on validation data")

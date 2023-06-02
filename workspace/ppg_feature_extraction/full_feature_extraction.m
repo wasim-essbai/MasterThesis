@@ -2,7 +2,7 @@ clc;
 clear all;
 close all; 
 prt_number = 2;
-load(strcat('full_clean_record_indexes',int2str(prt_number)));
+load(strcat('./record_indexes/full_clean_record_indexes',int2str(prt_number)));
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 output_file=[];
@@ -35,8 +35,8 @@ for d=1:length(full_clean_record_indexes)
   
     [b,a]=butter(4,[0.5*2*Ts,8*2*Ts]);
     PPG = filtfilt(b, a, PPG_original);
-    [sys_pk,sys_loc]= findpeaks(PPG,'MinPeakProminence',max(PPG)/6);
-    [dias_pk,dias_loc]=findpeaks(-PPG,'MinPeakProminence',max(PPG)/8);
+    [~,sys_loc]= findpeaks(PPG,'MinPeakProminence',max(PPG)/6);
+    [~,dias_loc]=findpeaks(-PPG,'MinPeakProminence',max(PPG)/8);
     mean_sys_dist = 0;
     for j=2:length(sys_loc)
         mean_sys_dist = mean_sys_dist + sys_loc(1,j) - sys_loc(1,j-1);
@@ -102,7 +102,6 @@ for d=1:length(full_clean_record_indexes)
     last_index = min([length(sys_loc)-1, length(dias_loc)-1]);
     do_average = 0;
     last_dias_index=0;
-    close all
     for k=(2+shift_index):last_index
         v = [0.1,0.25,0.33,0.5,0.66,0.75];
         
@@ -201,7 +200,7 @@ for d=1:length(full_clean_record_indexes)
             end
         end
         
-        if((dias_bp_presence+dias_bp_presence) < 2)
+        if((sys_bp_presence+dias_bp_presence) < 2)
             no_bp = no_bp+1;
             no_bp=no_bp+1;
             continue;
@@ -231,7 +230,7 @@ for d=1:length(full_clean_record_indexes)
     waitbar((d-1)/length(full_clean_record_indexes),f,'Extracting features...');
 end 
 
-writematrix(output_file,strcat('dataset_part',int2str(prt_number),'.csv'));
+writematrix(output_file,strcat('./dataset_extracted/dataset_part',int2str(prt_number),'.csv'));
 close(f);
 toc
 disp('output_file')

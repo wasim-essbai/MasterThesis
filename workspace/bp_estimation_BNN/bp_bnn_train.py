@@ -16,7 +16,7 @@ print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
 # data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
-data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
+data_path = './workspace/ppg_feature_extraction/dataset_extracted'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')

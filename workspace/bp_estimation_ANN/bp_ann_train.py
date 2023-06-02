@@ -14,8 +14,8 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-# data_path = 'F:/Università/Magistrale/Tesi/workspace/dataset'
-data_path = '/content/drive/MyDrive/MasterThesis/workspace/dataset'
+# data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
+data_path = './workspace/ppg_feature_extraction/dataset_extracted'
 
 # Loading the dataset
 dataset1 = pd.read_csv(f'{data_path}/dataset_part{1}.csv')
@@ -84,7 +84,7 @@ def MAE_MBP(y_true, y_pred):
 
 
 bp_ann.compile(loss='MeanAbsoluteError',
-               optimizer=optimizers.RMSprop(learning_rate=0.01),
+               optimizer=optimizers.RMSprop(learning_rate=0.007),
                metrics=['MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
 

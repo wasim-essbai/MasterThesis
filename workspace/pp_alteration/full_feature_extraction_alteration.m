@@ -1,11 +1,32 @@
-function full_feature_extraction_alteration(alteration_type, alt_level)
-load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(2)));
+function full_feature_extraction_alteration(Part, alteration_type, alt_level, prt_number)
 y_test_ids = readmatrix('../bp_estimation_ANN/data_split/y_test_ids.csv');
 y_test_ids = unique(y_test_ids);
 
+output_file=[];
+samples_deleted = 0;
+bad_peaks = 0;
+skipped = 0;
+index_skipped=[];
+no_bp=0;
+
+filerow_header = ["ID" "mbp" "sbp" "dbp"];
+filerow_header = [filerow_header "cp" "sut" "dt"];
+filerow_header = [filerow_header "dt10" "st10" "st10_p_dt10" "st10_d_dt10"];
+filerow_header = [filerow_header "dt25" "st25" "st25_p_dt25" "st25_d_dt25"];
+filerow_header = [filerow_header "dt33" "st33" "st33_p_dt33" "st33_d_dt33"];
+filerow_header = [filerow_header "dt50" "st50" "st50_p_dt50" "st50_d_dt50"];
+filerow_header = [filerow_header "dt66" "st66" "st66_p_dt66" "st66_d_dt66"];
+filerow_header = [filerow_header "dt75" "st75" "st75_p_dt75" "st75_d_dt75"];
+output_file = [output_file;filerow_header];
+
+Ts=1/125;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tic
+f = waitbar(0,strcat(int2str(alt_level),': Extracting features...'));
 for d=1:length(y_test_ids)
     curr_index = floor(y_test_ids(d)/10000);
-    Y=Part_2{1,curr_index};
+    Y=Part{1,curr_index};
     signal_limit = min(size(Y(1,:),2),52500);
     PPG_original=Y(1,1:signal_limit);
     BP_original=Y(2,1:signal_limit);
@@ -163,24 +184,24 @@ for d=1:length(y_test_ids)
         sbp = max(BP(1,sys_loc(1,k):sys_loc(1,k+1)));
         abp = min(BP(1,sys_loc(1,k):sys_loc(1,k+1)));
         mbp = sbp/3 + abp*2/3;
-%         if(sbp >= 180 || abp >= 130 || sbp <= 80 || abp <= 60)
-%             no_bp=no_bp+1;
-%             continue
-%         end
         
         filerow_target = [mbp sbp abp];
         
         if(do_average >= 1 && do_average <= 4)
-            output_record(end,:) = (output_record(end,:) + [(d*prt_number*10000) filerow_target filerow_features])/2;
+            output_record(end,:) = (output_record(end,:) + [(curr_index*prt_number*10000) filerow_target filerow_features])/2;
             do_average = do_average + 1;
         else
-            output_record = [output_record; (d*prt_number*10000) filerow_target filerow_features];
+            output_record = [output_record; (curr_index*prt_number*10000) filerow_target filerow_features];
             do_average = 1;
         end
     end
 
     output_record = unique(output_record,'rows');
     output_file = [output_file; output_record];
-    waitbar((d-1)/length(full_clean_record_indexes),f,'Extracting features...');
+    waitbar((d-1)/length(y_test_ids),f,'Extracting features...');
 end
+
+writematrix(output_file,strcat('./altered_dataset/',alteration_type,'/dataset_part',int2str(prt_number),'_',alteration_type,int2str(alt_level),'.csv'));
+close(f);
+toc
 end

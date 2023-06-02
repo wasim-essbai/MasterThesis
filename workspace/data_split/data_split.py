@@ -44,13 +44,13 @@ y_train = y_train[0:, 2:]
 y_val = y_val[0:, 2:]
 y_test = y_test[0:, 2:]
 
-np.savetxt('./data_split/y_train_ids.csv', y_train_ids, delimiter=',')
-np.savetxt('./data_split/y_val_ids.csv', y_val_ids, delimiter=',')
-np.savetxt('./data_split/y_test_ids.csv', y_test_ids, delimiter=',')
+np.savetxt('./y_train_ids.csv', y_train_ids, delimiter=',')
+np.savetxt('./y_val_ids.csv', y_val_ids, delimiter=',')
+np.savetxt('./y_test_ids.csv', y_test_ids, delimiter=',')
 
-np.savetxt('./data_split/y_train.csv', y_train, delimiter=',')
-np.savetxt('./data_split/X_train.csv', y_train, delimiter=',')
-np.savetxt('./data_split/y_val.csv', y_val, delimiter=',')
-np.savetxt('./data_split/X_val.csv', y_val, delimiter=',')
-np.savetxt('./data_split/y_test.csv', y_test, delimiter=',')
-np.savetxt('./data_split/X_test.csv', y_test, delimiter=',')
+np.savetxt('./y_train.csv', y_train, delimiter=',')
+np.savetxt('./X_train.csv', X_train, delimiter=',')
+np.savetxt('./y_val.csv', y_val, delimiter=',')
+np.savetxt('./X_val.csv', X_val, delimiter=',')
+np.savetxt('./y_test.csv', y_test, delimiter=',')
+np.savetxt('./X_test.csv', X_test, delimiter=',')

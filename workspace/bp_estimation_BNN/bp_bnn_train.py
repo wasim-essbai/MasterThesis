@@ -88,7 +88,7 @@ def MAE_MBP(y_true, y_pred):
 #                        MAE_SBP, MAE_DBP, MAE_MBP])
 bp_bnn.compile(loss=negative_loglikelihood,
                #optimizer=optimizers.Adam(lr=0.0001),
-               optimizer=optimizers.RMSprop(learning_rate=0.0002),
+               optimizer=optimizers.RMSprop(learning_rate=0.00005, clipnorm=1.0, momentum=0.0),
                metrics=['MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
                         

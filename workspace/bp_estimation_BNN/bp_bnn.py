@@ -52,7 +52,8 @@ def prior(kernel_size, bias_size, dtype=None):
         [
             tfp.layers.DistributionLambda(
                 lambda t: tfp.distributions.MultivariateNormalDiag(
-                    loc=tf.random.normal([n], 70, 80, tf.float32), scale_diag=tf.ones(n)
+                    loc=tf.random.normal([n], 50, 80, tf.float32), 
+                    scale_diag=tf.ones(n)*10
                 )
             )
         ]

@@ -43,7 +43,7 @@ y = dataset.iloc[0:, 0:4].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=True)
 
 y_train_ids = y_train[0:, 0]
 y_val_ids = y_val[0:, 0]
@@ -94,8 +94,8 @@ def MAE_MBP(y_true, y_pred):
 #               metrics=['MeanAbsolutePercentageError',
 #                        MAE_SBP, MAE_DBP, MAE_MBP])
 bp_bnn.compile(loss=negative_loglikelihood,
-               # optimizer=optimizers.Adam(lr=0.0001),
-               optimizer=optimizers.RMSprop(learning_rate=0.0005, clipnorm=1.0, momentum=0.0),
+               optimizer=optimizers.RMSprop(learning_rate=0.0005, 
+               clipnorm=1.0, momentum=0.0),
                metrics=['MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
 

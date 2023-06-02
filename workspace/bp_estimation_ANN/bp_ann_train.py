@@ -42,7 +42,7 @@ y = dataset.iloc[0:, 0:4].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=True)
 
 y_train_ids = y_train[0:, 0]
 y_val_ids = y_val[0:, 0]
@@ -84,7 +84,7 @@ def MAE_MBP(y_true, y_pred):
 
 
 bp_ann.compile(loss='MeanAbsoluteError',
-               optimizer=optimizers.Adam(lr=0.001),
+               optimizer=optimizers.RMSprop(learning_rate=0.01),
                metrics=['MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
 
@@ -96,7 +96,7 @@ if device_name == '/device:GPU:0':
         print('Training using GPU')
         history = bp_ann.fit(X_train,
                              y_train,
-                             epochs=60,
+                             epochs=40,
                              shuffle=True,
                              batch_size=32,
                              verbose=2)
@@ -104,7 +104,7 @@ else:
     print('Training using CPU')
     history = bp_ann.fit(X_train,
                          y_train,
-                         epochs=60,
+                         epochs=40,
                          shuffle=True,
                          batch_size=32,
                          verbose=2)

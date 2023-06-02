@@ -95,8 +95,9 @@ def MAE_MBP(y_true, y_pred):
 #                        MAE_SBP, MAE_DBP, MAE_MBP])
 bp_bnn.compile(loss=negative_loglikelihood,
                optimizer=optimizers.RMSprop(learning_rate=0.0005, 
-               clipnorm=1.0, momentum=0.0),
-               metrics=['MeanAbsolutePercentageError',
+               clipnorm=1.0, momentum=0.1),
+               metrics=['MeanAbsoluteError', 
+                        'MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
 
 bp_bnn.summary()
@@ -107,14 +108,14 @@ if device_name == '/device:GPU:0':
         print('Training using GPU')
         history = bp_bnn.fit(X_train,
                              y_train,
-                             epochs=600,
+                             epochs=400,
                              batch_size=32,
                              verbose=2)
 else:
     print('Training using CPU')
     history = bp_bnn.fit(X_train,
                          y_train,
-                         epochs=600,
+                         epochs=400,
                          batch_size=32,
                          verbose=2)
 

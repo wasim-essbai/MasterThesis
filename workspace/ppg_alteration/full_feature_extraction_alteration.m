@@ -201,7 +201,7 @@ for d=1:length(y_test_ids)
     waitbar((d-1)/length(y_test_ids),f,'Extracting features...');
 end
 
-writematrix(output_file,strcat('./altered_dataset/',alteration_type,'/dataset_part',int2str(prt_number),'_',alteration_type,int2str(alt_level),'.csv'));
+writematrix(output_file,strcat('./altered_dataset/',alteration_type,'/dataset_part',int2str(prt_number),'_',alteration_type,'_',int2str(alt_level),'.csv'));
 close(f);
 toc
 end

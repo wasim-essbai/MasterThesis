@@ -14,18 +14,18 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-loss_name = 'MAE'
+loss_name = 'NLL'
 
 # data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
 data_path = './workspace/data_split'
 
 # Loading the dataset
-X_train = pd.read_csv(f'{data_path}/X_train.csv', header=None)
-y_train = pd.read_csv(f'{data_path}/y_train.csv', header=None)
-X_val = pd.read_csv(f'{data_path}/X_val.csv', header=None)
-y_val = pd.read_csv(f'{data_path}/y_val.csv', header=None)
-X_test = pd.read_csv(f'{data_path}/X_test.csv', header=None)
-y_test = pd.read_csv(f'{data_path}/y_test.csv', header=None)
+X_train = pd.read_csv(f'{data_path}/X_train.csv', header=None).to_numpy()
+y_train = pd.read_csv(f'{data_path}/y_train.csv', header=None).to_numpy()
+X_val = pd.read_csv(f'{data_path}/X_val.csv', header=None).to_numpy()
+y_val = pd.read_csv(f'{data_path}/y_val.csv', header=None).to_numpy()
+X_test = pd.read_csv(f'{data_path}/X_test.csv', header=None).to_numpy()
+y_test = pd.read_csv(f'{data_path}/y_test.csv', header=None).to_numpy()
 
 print(f'Train dataset : {y_train.shape[0]}')
 print(f'Validation dataset : {y_val.shape[0]}')
@@ -112,7 +112,7 @@ prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model_' + loss_name)
-with open('/trainHistoryDict/' + loss_name, 'wb') as file_pi:
+with open('./workspace/bp_estimation_BNN/trainHistoryDict_' + loss_name, 'wb') as file_pi:
     pickle.dump(history.history, file_pi)
 
 print("Evaluate on validation data")

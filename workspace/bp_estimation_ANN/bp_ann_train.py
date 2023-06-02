@@ -39,11 +39,20 @@ features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
 X = dataset.iloc[0:, 4:].to_numpy()
-y = dataset.iloc[0:, 2:4].to_numpy()
+y = dataset.iloc[0:, 0:4].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
+
+y_train_ids = y_train[0:, 0];
+y_val_ids = y_val[0:, 0];
+y_test_ids = y_test[0:, 0];
+
+y_train = y_train[0:,2:]
+y_val = y_val[0:,2:]
+y_test = y_test[0:,2:]
+
 
 input_dim = X_train.shape[1]
 print('Input size', input_dim)

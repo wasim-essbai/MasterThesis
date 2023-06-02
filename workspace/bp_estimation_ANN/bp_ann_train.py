@@ -85,7 +85,9 @@ def MAE_MBP(y_true, y_pred):
 
 bp_ann.compile(loss='MeanAbsoluteError',
                optimizer=optimizers.RMSprop(learning_rate=0.007),
-               metrics=['MeanAbsolutePercentageError',
+               metrics=[
+                        'MeanAbsoluteError',
+                        'MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
 
 bp_ann.summary()

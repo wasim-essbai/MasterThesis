@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from keras import backend as K
 from bp_ann import create_bp_ann
 from keras import optimizers
@@ -49,10 +48,13 @@ y_train_ids = y_train[0:, 0];
 y_val_ids = y_val[0:, 0];
 y_test_ids = y_test[0:, 0];
 
-y_train = y_train[0:,2:]
-y_val = y_val[0:,2:]
-y_test = y_test[0:,2:]
+y_train_ids = y_train[0:, 0]
+y_val_ids = y_val[0:, 0]
+y_test_ids = y_test[0:, 0]
 
+y_train = y_train[0:, 2:]
+y_val = y_val[0:, 2:]
+y_test = y_test[0:, 2:]
 
 input_dim = X_train.shape[1]
 print('Input size', input_dim)
@@ -80,8 +82,8 @@ def STD_DBP(y_true, y_pred):
 
 
 def MAE_MBP(y_true, y_pred):
-    mbp_pred = y_pred[:, 0]/3 + y_pred[:, 0]*2/3
-    mbp_true = y_true[:, 0]/3 + y_true[:, 0]*2/3
+    mbp_pred = y_pred[:, 0] / 3 + y_pred[:, 0] * 2 / 3
+    mbp_true = y_true[:, 0] / 3 + y_true[:, 0] * 2 / 3
     return K.mean(K.abs(mbp_true - mbp_pred))
 
 
@@ -113,10 +115,9 @@ else:
 print("Training done!")
 
 bp_ann.save('./workspace/bp_estimation_ANN/model/bp_ann_model')
-np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_train', X_train)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_train', y_train)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/x_test', X_test)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/ann_dataset/y_test', y_test)
+np.savetxt('./workspace/bp_estimation_ANN/data_split/y_train_ids.csv', y_train_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_ANN/data_split/y_val_ids.csv', y_val_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_ANN/data_split/y_test_ids.csv', y_test_ids, delimiter=',')
 
 print("Evaluate on validation data")
 results = bp_ann.evaluate(X_val, y_val, batch_size=32)

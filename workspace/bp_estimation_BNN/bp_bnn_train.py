@@ -39,17 +39,19 @@ features_to_exclude = ['st10', 'st25', 'st33', 'st50', 'st66', 'st75']
 dataset = dataset.loc[:, ~dataset.columns.isin(features_to_exclude)]
 
 X = dataset.iloc[0:, 4:].to_numpy()
-y = dataset.iloc[0:, 2:4].to_numpy()
-
-
-# loss function definition
-def negative_loglikelihood(targets, estimated_distribution):
-    return -estimated_distribution.log_prob(targets)
-
+y = dataset.iloc[0:, 0:4].to_numpy()
 
 # creating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=False)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, shuffle=False)
+
+y_train_ids = y_train[0:, 0]
+y_val_ids = y_val[0:, 0]
+y_test_ids = y_test[0:, 0]
+
+y_train = y_train[0:, 2:]
+y_val = y_val[0:, 2:]
+y_test = y_test[0:, 2:]
 
 input_dim = X_train.shape[1]
 print('Input size', input_dim)
@@ -57,6 +59,11 @@ print('Input size', input_dim)
 activation = 'relu'
 num_classes = y_train.shape[1]
 bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_train.shape[0], num_class=num_classes)
+
+
+# loss function definition
+def negative_loglikelihood(targets, estimated_distribution):
+    return -estimated_distribution.log_prob(targets)
 
 
 # Metrics to evaluate
@@ -82,16 +89,16 @@ def MAE_MBP(y_true, y_pred):
     return K.mean(K.abs(mbp_true - mbp_pred))
 
 
-#bp_bnn.compile(loss='MeanAbsoluteError',
+# bp_bnn.compile(loss='MeanAbsoluteError',
 #               optimizer=optimizers.Adam(lr=0.004),
 #               metrics=['MeanAbsolutePercentageError',
 #                        MAE_SBP, MAE_DBP, MAE_MBP])
 bp_bnn.compile(loss=negative_loglikelihood,
-               #optimizer=optimizers.Adam(lr=0.0001),
+               # optimizer=optimizers.Adam(lr=0.0001),
                optimizer=optimizers.RMSprop(learning_rate=0.0005, clipnorm=1.0, momentum=0.0),
                metrics=['MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
-                        
+
 bp_bnn.summary()
 
 # Training the model
@@ -116,10 +123,9 @@ prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
 bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_train', X_train)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_train', y_train)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/x_test', X_test)
-np.save('/content/drive/MyDrive/MasterThesis/workspace/bnn_dataset/y_test', y_test)
+np.savetxt('./workspace/bp_estimation_BNN/data_split/y_train_ids.csv', y_train_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_BNN/data_split/y_val_ids.csv', y_val_ids, delimiter=',')
+np.savetxt('./workspace/bp_estimation_BNN/data_split/y_test_ids.csv', y_test_ids, delimiter=',')
 
 print("Evaluate on validation data")
 results = bp_bnn.evaluate(X_val, y_val, batch_size=32)

@@ -13,7 +13,7 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-loss_name = 'MAPE'
+loss_name = 'NLL'
 
 data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
 # data_path = './workspace/data_split'
@@ -80,11 +80,12 @@ elif loss_name == 'MAPE':
                             'MeanAbsolutePercentageError',
                             MAE_SBP, MAE_DBP, MAE_MBP])
 else:
-    bp_bnn.compile(loss=negative_loglikelihood,
-                   ooptimizer=optimizers.RMSprop(learning_rate=0.007),
-                   metrics=['MeanAbsoluteError',
-                            'MeanAbsolutePercentageError',
-                            MAE_SBP, MAE_DBP, MAE_MBP])
+  bp_bnn.compile(loss=negative_loglikelihood,
+                optimizer=optimizers.RMSprop(learning_rate=0.0005, 
+                    clipnorm=1.0, momentum=0.1),
+                metrics=['MeanAbsoluteError', 
+                          'MeanAbsolutePercentageError',
+                          MAE_SBP, MAE_DBP, MAE_MBP])
 
 bp_bnn.summary()
 

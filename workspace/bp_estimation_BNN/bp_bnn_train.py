@@ -15,6 +15,8 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
+loss_name = 'MAPE'
+
 # data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/ppg_feature_extraction'
 data_path = './workspace/ppg_feature_extraction/dataset_extracted'
 
@@ -65,7 +67,6 @@ bp_bnn = create_bp_bnn(input_dim=input_dim, activation=activation, train_size=X_
 def negative_loglikelihood(targets, estimated_distribution):
     return -estimated_distribution.log_prob(targets)
 
-
 # Metrics to evaluate
 def MAE_SBP(y_true, y_pred):
     return K.mean(K.abs(y_pred[:, 0] - y_true[:, 0]))
@@ -88,17 +89,25 @@ def MAE_MBP(y_true, y_pred):
     mbp_true = y_true[:, 0] / 3 + y_true[:, 0] * 2 / 3
     return K.mean(K.abs(mbp_true - mbp_pred))
 
-
-# bp_bnn.compile(loss='MeanAbsoluteError',
-#               optimizer=optimizers.Adam(lr=0.004),
-#               metrics=['MeanAbsolutePercentageError',
-#                        MAE_SBP, MAE_DBP, MAE_MBP])
-bp_bnn.compile(loss=negative_loglikelihood,
-               optimizer=optimizers.RMSprop(learning_rate=0.0005, 
-               clipnorm=1.0, momentum=0.1),
-               metrics=['MeanAbsoluteError', 
+print('Loss function employed: ', loss_name)
+if loss_name == 'MAE':
+  bp_bnn.compile(loss='MeanAbsoluteError',
+               optimizer=optimizers.Adam(lr=0.007),
+               metrics=['MeanAbsolutePercentageError',
+                        'MeanAbsoluteError',
+                        MAE_SBP, MAE_DBP, MAE_MBP])
+elif loss_name == 'MAPE':
+  bp_bnn.compile(loss='MeanAbsolutePercentageError',
+               optimizer=optimizers.Adam(lr=0.007),
+               metrics=['MeanAbsoluteError',
                         'MeanAbsolutePercentageError',
                         MAE_SBP, MAE_DBP, MAE_MBP])
+else:
+  bp_bnn.compile(loss=negative_loglikelihood,
+                ooptimizer=optimizers.RMSprop(learning_rate=0.007),
+                metrics=['MeanAbsoluteError', 
+                          'MeanAbsolutePercentageError',
+                          MAE_SBP, MAE_DBP, MAE_MBP])
 
 bp_bnn.summary()
 
@@ -108,14 +117,14 @@ if device_name == '/device:GPU:0':
         print('Training using GPU')
         history = bp_bnn.fit(X_train,
                              y_train,
-                             epochs=400,
+                             epochs=250,
                              batch_size=32,
                              verbose=2)
 else:
     print('Training using CPU')
     history = bp_bnn.fit(X_train,
                          y_train,
-                         epochs=400,
+                         epochs=250,
                          batch_size=32,
                          verbose=2)
 
@@ -123,7 +132,7 @@ print("Training done!")
 prediction_distribution = bp_bnn(X_test)
 print(prediction_distribution)
 
-bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model')
+bp_bnn.save('./workspace/bp_estimation_BNN/model/bp_bnn_model_' + loss_name)
 np.savetxt('./workspace/bp_estimation_BNN/data_split/y_train_ids.csv', y_train_ids, delimiter=',')
 np.savetxt('./workspace/bp_estimation_BNN/data_split/y_val_ids.csv', y_val_ids, delimiter=',')
 np.savetxt('./workspace/bp_estimation_BNN/data_split/y_test_ids.csv', y_test_ids, delimiter=',')

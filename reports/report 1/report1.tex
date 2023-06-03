@@ -163,6 +163,8 @@
 		ineff2 = \frac{\sigma + 1}{error + 1} + \frac{error + 1}{\sigma + 1}
 	\end{equation}
 	
+	Nell'analisi riporto solo il MAE come misura di errore. In generale con la stima di pressione viene usato principlamente il MAE come funzione di costo.
+	
 	\subsection{Analisi BNN con MAE}
 	In figura ~\ref{fig:mae_bnn} ci sono i grafici con i risultati, la linea rossa in ciascuno di essi indica le condizioni nominali.
 	
@@ -193,14 +195,15 @@
 			\caption{}
 			\label{fig:mae_bnn_eff2}
 		\end{subfigure}
-		\caption{Risultati predizioni sul test set alterato per la BNN con MAPE.}
+		\caption{Risultati predizioni sul test set alterato per la BNN con MAE.}
 		\label{fig:mae_bnn}
 	\end{figure}
 
-	Guardando questi grafici sembrerebbe che la rete sia molto robusta, cioè tolti alcuni picchi (cosa strana) poi il resto si comporta bene, è molto vicina alle condizioni nominali. Per c'è anche da dire che le BNN sono note per la robustezza al rumore gaussiano grazie alla loro natura stocastica.
+	Guardando questi grafici sembrerebbe che la rete sia abbastanza robusta come MAE che si allontana di poco dalle condizioni nominali. Poi c'è anche da dire che le BNN sono note per la robustezza al rumore gaussiano grazie alla loro natura stocastica.
+	Però la guardando i due score si nota che la rete performa male, nel senso che non stima correttamente l'incertezza.
 	
 	\subsection{Analisi BNN con MAPE}
-	In figura ~\ref{fig:mape_bnn} ci sono i grafici come prima. Di nuovo sembrerebbe che si comporti abbastanza bene. Però l'incertenza sembra essere sempre e bassa, tranne in un paio di casi, e questo potrebbe essere un comportamento poco desiderato.
+	In figura ~\ref{fig:mape_bnn} ci sono i grafici come prima. Di nuovo sembrerebbe che si comporti abbastanza bene come MAE. Però l'incertenza sembra essere sempre e bassa, e questo potrebbe essere un comportamento poco desiderato.
 	
 	\begin{figure}[h]
 		\centering
@@ -233,7 +236,7 @@
 	\end{figure}
 	
 	\subsection{Analisi BNN con NLL}
-	In questo caso ci sono risultati più interessanti. La rete si comporta molto male a livello di MAE, cosa che era attendibile visto che già in fase di traning aveva un MAE basso. In figura ~\ref{fig:nll_bnn} ci sono 4 grafici che mostrano questo comportamento. La cosa sorprendente è che fa molto meglio in termini di eff1 ed eff2 rispetto alle condizioni nominali e questo mi sembra più curioso.
+	In questo caso ci sono risultati più interessanti. La rete si comporta molto male a livello di MAE, cosa che ci si aspettava visto che già in fase di traning aveva un MAE basso. In figura ~\ref{fig:nll_bnn} ci sono i 4 grafici che mostrano questo comportamento. La cosa sorprendente è che fa molto meglio in termini di $ineff1$ ed $ineff2$ rispetto alle condizioni nominali e questo mi sembra più curioso.
 	
 	\begin{figure}[h]
 		\centering
@@ -271,6 +274,7 @@
 	\subsection{Considerazioni teoriche}
 	Le due formule \Eq~\ref{eff1} ed \Eq~\ref{eff2} misurano una sorta di inefficienza della rete. Le due formule sembrerebbe che si comportino in modo molto simile, tranne per il fatto che \Eq~\ref{eff2} può essere invertita senza problema, quindi essere usata come misura di bontà. Però forse non è tanto utile come cosa, nel senso che tutte le metriche su reti neurali tendono a valutare quanto la rete performa male e non il viceversa. Tra due \Eq~\ref{eff1} secondo me ha più senso, anche se non invertibile. Ha senso perché è come se fosse un'estensione dell'errore classico, ovvero mettendosi nel caso deterministico con $\sigma=0$ di ritorna ad avere solo la misura di errore, cosa che ne giustifica l'utilizzo. Poi anche il suo andamento è più 'deciso' nei primi tratti partendo da (0,0) per poi essere più smooth dopo, cosa che ha senso perché premia di più l'intorno (0,0), che è il punto ideale.
 	
+	Infine, pensando al discorso di argomentazione delle reti bayesiane, credo che il punto principale di robustezza è proprio nella stima di incertezza fornita. Questo è utile sia quando si parla di regressione che classificazione. Ad esempio, se c'è un valore da stimare sotto qualche vincolo (pressione deve stare sotto i 120), si può prendere la stima e costruire l'intervallo di confidenza, se l'upper bound è sotto i 120 allora tutto ok, altrimenti la rete si accorge che qualcosa non va e può avvertire qualcuno.
 	
 	\clearpage
 	

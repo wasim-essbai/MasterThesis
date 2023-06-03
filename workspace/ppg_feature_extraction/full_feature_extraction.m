@@ -215,7 +215,7 @@ for d=1:length(full_clean_record_indexes)
 %             continue
 %         end
         
-        filerow_identifier = [(d+prt_number*10000) dias_loc(1,dias_index) sys_loc(1,k) dias_loc(1,dias_index+1) sys_loc(1,k+1)];
+        filerow_identifier = [(full_clean_record_indexes(d)+prt_number*10000) dias_loc(1,dias_index) sys_loc(1,k) dias_loc(1,dias_index+1) sys_loc(1,k+1)];
         filerow_target = [mbp sbp abp];
         
         if(do_average >= 1 && do_average <= 3)

@@ -14,7 +14,7 @@ print(tf.__version__)
 print(tf.config.list_physical_devices('GPU'))
 device_name = tf.test.gpu_device_name()
 
-loss_name = 'NLL'
+loss_name = 'MAE'
 
 # data_path = 'C:/Users/Wasim/Documents/Universita/Magistrale/Tesi/workspace/data_split'
 data_path = './workspace/data_split'

@@ -1,17 +1,17 @@
 clc;
 clear all;
 close all; 
-prt_number = 1;
+prt_number = 2;
 initial_indexes = [1 1 1 1];
-load(strcat('first_step_clean_record_indexes_',int2str(prt_number),'.mat'));
-load(strcat('clean_record_indexes_',int2str(prt_number),'.mat'));
+load(strcat('record_indexes/first_step_clean_record_indexes_',int2str(prt_number),'.mat'));
+load(strcat('record_indexes/clean_record_indexes_',int2str(prt_number),'.mat'));
 load(strcat('F:/Università/Magistrale/Tesi/workspace/dataset/part_',int2str(prt_number)));
 
 Ts = 1/125;
 
 initial_index = find(first_step_clean_record_indexes==initial_indexes(prt_number));
 for d=initial_index:length(first_step_clean_record_indexes)
-    Y=Part_1{1,first_step_clean_record_indexes(d)};
+    Y=Part_2{1,first_step_clean_record_indexes(d)};
     PPG_original=Y(1,length(Y)/2-499:length(Y)/2+500);
     BP_original=Y(2, length(Y)/2-499:length(Y)/2+500);
     

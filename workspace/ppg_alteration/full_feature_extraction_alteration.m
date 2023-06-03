@@ -32,6 +32,9 @@ for d=1:length(y_test_ids)
     [b,a]=butter(4,[0.5*2*Ts,8*2*Ts]);
     PPG = filtfilt(b, a, PPG_original);
     
+    % Alter signal
+    PPG = apply_alteration(PPG, alteration_type, alt_level);
+    
     % Signal normalization
     max_ppg = max(PPG);
     min_ppg = min(PPG);
@@ -45,9 +48,6 @@ for d=1:length(y_test_ids)
     max1 = y_test_ids(d,3);
     min2 = y_test_ids(d,4);
     max2 = y_test_ids(d,5);
-    
-    % Alter signal
-    PPG = apply_alteration(PPG, alteration_type, alt_level);
   
     %% Feature extraction
     v = [0.1,0.25,0.33,0.5,0.66,0.75];

@@ -1,0 +1,4 @@
+https://github.com/akrlowicz/ppg-blood-pressure-estimation/blob/dev/rPPG%20to%20Blood%20Pressure.ipynb
+https://github.com/gslapnicar/bp-estimation-mimic3
+https://github.com/jeya-maria-jose/Cuff_less_BP_Prediction
+https://github.com/gslapnicar/bp-estimation-mimic3/blob/master/models/models.py

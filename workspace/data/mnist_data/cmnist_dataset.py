@@ -28,7 +28,7 @@ class CMNISTDataset(Dataset):
         return data, targets
 
     def __len__(self):
-        return len(self.targets_file)
+        return len(self.targets)
 
     def __getitem__(self, idx):
         if torch.is_tensor(idx):

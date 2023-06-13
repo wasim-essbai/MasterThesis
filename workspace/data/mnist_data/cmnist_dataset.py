@@ -19,7 +19,7 @@ class CMNISTDataset(Dataset):
     def load_data(self):
         data_file = 'train_images' if self.train else 'test_images'
         targets_file = 'train_labels' if self.train else 'test_labels'
-        print(os.path.join(self.root_dir + data_file + '.npy'))
+        
         data = np.load(os.path.join(self.root_dir + data_file + '.npy'))
         data = data.reshape(data.shape[0], 28, 28)
 
@@ -28,7 +28,7 @@ class CMNISTDataset(Dataset):
         return data, targets
 
     def __len__(self):
-        return len(self.function_labels)
+        return len(self.targets_file)
 
     def __getitem__(self, idx):
         if torch.is_tensor(idx):

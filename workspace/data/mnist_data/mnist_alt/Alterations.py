@@ -123,7 +123,7 @@ class VerticalTranslation(Alteration):
         """
         Method that applies the vertical translation with a given value to the
         inptu data
-        The image is transformed in a (28x28) image to use a standard format
+        The image is transformed in a (200x200) image to use a standard format
         when the alteration is applied
 
         Parameters
@@ -144,7 +144,7 @@ class VerticalTranslation(Alteration):
         # Zoom the input data to be cropped, and then crop it
         if not(-0.000001 <= float(alteration_level) <= 0.000001):
             old_rows, old_cols = data.shape[:-1]
-            data = cv2.resize(data, (28, 28))
+            data = cv2.resize(data, (200, 200))
             data = data[:, 20:-20]
             data = data[20 + int(alteration_level * 20):179 +
                         int(alteration_level * 20), :]
@@ -177,7 +177,7 @@ class HorizontalTranslation(Alteration):
         """
         Method that applies the horizontal translation with a given value to
         the input data.
-        The image is transformed in a (28x28) image to use a standard
+        The image is transformed in a (200x200) image to use a standard
         format when the alteration is applied
 
         Parameters
@@ -198,7 +198,7 @@ class HorizontalTranslation(Alteration):
         if not(-0.000001 <= float(alteration_level) <= 0.000001):
             old_rows, old_cols = data.shape[:-1]
             # Zoom the image to be cropped, and then crop it
-            data = cv2.resize(data, (28, 28))
+            data = cv2.resize(data, (200, 200))
             data = data[20:-20, ]
             data = data[:, 20 + int(alteration_level * 20):179 +
                         int(alteration_level * 20)]

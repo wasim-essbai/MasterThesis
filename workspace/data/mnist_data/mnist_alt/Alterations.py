@@ -83,7 +83,7 @@ class Alteration(ABC):
 
         result_list = []
         for i in range(data.shape[0]):
-            result_list.append(self.apply_alteration(data, alteration_level))
+            result_list.append(self.apply_alteration(data[i], alteration_level))
 
         return np.stack(result_list, axis=0)
 

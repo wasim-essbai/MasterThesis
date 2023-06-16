@@ -14,12 +14,12 @@ your own alteration.
 @author: Andrea Bombarda
 """
 
-import cv2   # type: ignore
-from PIL import Image, ImageEnhance, ImageFilter   # type: ignore
-import numpy as np   # type: ignore
+import cv2  # type: ignore
+from PIL import Image, ImageEnhance, ImageFilter  # type: ignore
+import numpy as np  # type: ignore
 # For abstract classes
 from abc import ABC, abstractmethod
-from scipy.ndimage.interpolation import zoom   # type: ignore
+from scipy.ndimage.interpolation import zoom  # type: ignore
 import sys
 import warnings
 from typing import List
@@ -77,6 +77,15 @@ class Alteration(ABC):
         step = (self.value_to - self.value_from) / n_values
         values = np.arange(self.value_from, self.value_to, step)
         return np.append(values, self.value_to)
+
+    def apply_batch_alteration(self, data: np.ndarray,
+                               alteration_level: float) -> np.ndarray:
+
+        result_list = []
+        for i in range(data.shape[0]):
+            result_list.append(self.apply_alteration(data, alteration_level))
+
+        return np.stack(result_list, axis=0)
 
     @abstractmethod
     def apply_alteration(self, data: np.ndarray,
@@ -140,17 +149,17 @@ class VerticalTranslation(Alteration):
                 the altered data on which the vertical translation has been
                 applied
         """
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         # Zoom the input data to be cropped, and then crop it
-        if not(-0.000001 <= float(alteration_level) <= 0.000001):
+        if not (-0.000001 <= float(alteration_level) <= 0.000001):
             old_rows, old_cols = data.shape[:-1]
             data = cv2.resize(data, (200, 200))
             data = data[:, 20:-20]
             data = data[20 + int(alteration_level * 20):179 +
-                        int(alteration_level * 20), :]
+                                                        int(alteration_level * 20), :]
             data = cv2.resize(data, (old_rows, old_cols))
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -194,17 +203,17 @@ class HorizontalTranslation(Alteration):
                 the altered data on which the horizontal translation has been
                 applied
         """
-        assert(isinstance(data, np.ndarray))
-        if not(-0.000001 <= float(alteration_level) <= 0.000001):
+        assert (isinstance(data, np.ndarray))
+        if not (-0.000001 <= float(alteration_level) <= 0.000001):
             old_rows, old_cols = data.shape[:-1]
             # Zoom the image to be cropped, and then crop it
             data = cv2.resize(data, (200, 200))
             data = data[20:-20, ]
             data = data[:, 20 + int(alteration_level * 20):179 +
-                        int(alteration_level * 20)]
+                                                           int(alteration_level * 20)]
             data = cv2.resize(data, (old_rows, old_cols))
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -247,14 +256,14 @@ class Compression(Alteration):
                 the altered data on which the jpeg compression has been
                 applied
         """
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         if alteration_level != 0:
             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 100 -
                             (alteration_level * 100)]
             data = cv2.imencode('.jpg', data, encode_param)[1]
             data = cv2.imdecode(data, 1)
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -313,17 +322,17 @@ class GaussianNoise(Alteration):
             data : np.ndarray
                 the altered data on which the Gaussian Noise has been applied
         """
-        assert(isinstance(data, np.ndarray))
-        if not(-0.000001 <= float(alteration_level) <= 0.000001):
+        assert (isinstance(data, np.ndarray))
+        if not (-0.000001 <= float(alteration_level) <= 0.000001):
             row, col, ch = data.shape
             mean = 0
             var = self.variance * alteration_level
-            sigma = var**0.5
+            sigma = var ** 0.5
             gauss = np.random.normal(mean, sigma, (row, col, ch))
             gauss = gauss.reshape(row, col, ch)
             data = data + gauss
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -335,8 +344,8 @@ class Blur(Alteration):
     In our experiments we have used (0, 1, 0.025) as usual range
     """
 
-    def __init__(self, value_from: float, value_to: float, radius: float=2,
-                 picture_mode: str='RGB'):
+    def __init__(self, value_from: float, value_to: float, radius: float = 2,
+                 picture_mode: str = 'RGB'):
         """
         Constructs all the necessary attributes for the Gaussian Noise object.
 
@@ -389,23 +398,23 @@ class Blur(Alteration):
             data : np.ndarray
                 the altered data on which the Blur has been applied
         """
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         if alteration_level != 0.0:
             if isinstance(data, np.ndarray):
                 if self.picture_mode == 'RGB':
                     data = Image.fromarray(data, 'RGB')
                 elif self.picture_mode == 'L':
-                    data = Image.fromarray((data[:, :, 0]*255).astype('uint8'),
+                    data = Image.fromarray((data[:, :, 0] * 255).astype('uint8'),
                                            'L')
                 else:
                     raise RuntimeError("pictureMode not supported for blur " +
                                        "alteration")
 
             data = data.filter(ImageFilter.GaussianBlur(radius=self.radius *
-                                                        alteration_level))
+                                                               alteration_level))
             data = np.array(data)
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -418,7 +427,7 @@ class Brightness(Alteration):
     """
 
     def __init__(self, value_from: float, value_to: float,
-                 picture_mode: str='RGB'):
+                 picture_mode: str = 'RGB'):
         """
         Constructs all the necessary attributes for the Gaussian Noise object.
 
@@ -470,13 +479,13 @@ class Brightness(Alteration):
                 the altered data on which the Brightness Variation has been
                 applied
         """
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         if not (-0.0001 <= float(alteration_level) <= 0.0001):
             if isinstance(data, np.ndarray):
                 if self.picture_mode == 'RGB':
                     data = Image.fromarray(data, 'RGB')
                 elif self.picture_mode == 'L':
-                    data = Image.fromarray((data[:, :, 0]*255).astype('uint8'),
+                    data = Image.fromarray((data[:, :, 0] * 255).astype('uint8'),
                                            'L')
                 else:
                     raise RuntimeError("picture_mode not supported for " +
@@ -485,7 +494,7 @@ class Brightness(Alteration):
             data = enhancer.enhance(1 + (alteration_level * 0.5))
             data = np.array(data)
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -527,7 +536,7 @@ class Zoom(Alteration):
             data : np.ndarray
                 the altered data on which the Zoom has been applied
         """
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         if -0.000001 <= float(alteration_level) <= 0.000001:
             return data
 
@@ -544,17 +553,17 @@ class Zoom(Alteration):
         top = (h - zh) // 2
         left = (w - zw) // 2
 
-        out = zoom(data[top:top+zh, left:left+zw], zoom_tuple)
+        out = zoom(data[top:top + zh, left:left + zw], zoom_tuple)
 
         # `out` might still be slightly larger than `data` due to rounding, so
         # trim off any extra pixels at the edges
         trim_top = ((out.shape[0] - h) // 2)
         trim_left = ((out.shape[1] - w) // 2)
-        out = out[trim_top:trim_top+h, trim_left:trim_left+w]
+        out = out[trim_top:trim_top + h, trim_left:trim_left + w]
 
         data = out
 
-        assert(isinstance(data, np.ndarray))
+        assert (isinstance(data, np.ndarray))
         return data
 
 
@@ -588,7 +597,7 @@ class AlterationSequence(Alteration):
         alteration_name = "Seq("
         for a in self.alterations:
             alteration_name = alteration_name + a.name() + "-"
-        alteration_name = alteration_name[:len(alteration_name)-1] + ")"
+        alteration_name = alteration_name[:len(alteration_name) - 1] + ")"
         return alteration_name
 
     def apply_alteration(self, data: np.ndarray,
@@ -612,8 +621,8 @@ class AlterationSequence(Alteration):
         for a in self.alterations:
             # map the interval
             alteration = ((alteration_level - self.value_from) / (
-                self.value_to - self.value_from)) * (
-                    a.value_to - a.value_from)
+                    self.value_to - self.value_from)) * (
+                                 a.value_to - a.value_from)
             alteration = alteration + a.value_from
             data = a.apply_alteration(data, alteration)
         return data

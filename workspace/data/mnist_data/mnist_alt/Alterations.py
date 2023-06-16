@@ -259,7 +259,7 @@ class Compression(Alteration):
         assert (isinstance(data, np.ndarray))
         if alteration_level != 0:
             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 100 -
-                            (alteration_level * 100)]
+                            int(alteration_level * 100)]
             data = cv2.imencode('.jpg', data, encode_param)[1]
             data = cv2.imdecode(data, 1)
 

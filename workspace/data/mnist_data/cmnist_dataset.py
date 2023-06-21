@@ -10,20 +10,24 @@ from PIL import Image
 
 class CMNISTDataset(Dataset):
 
-    def __init__(self, root_dir, train = True, transform = None):
+    def __init__(self, root_dir, train=True, transform=None, labels_root=None):
         self.root_dir = root_dir
         self.train = train
         self.data, self.targets = self.load_data()
+        self.labels_root = labels_root
         self.transform = transform
 
     def load_data(self):
         data_file = 'train_images' if self.train else 'test_images'
         targets_file = 'train_labels' if self.train else 'test_labels'
-        
+
         data = np.load(os.path.join(self.root_dir + data_file + '.npy'))
         data = data.reshape(data.shape[0], 28, 28)
 
-        targets = np.load(os.path.join(self.root_dir + targets_file + '.npy'))
+        if self.labels_root:
+            targets = np.load(os.path.join(self.labels_root + targets_file + '.npy'))
+        else:
+            targets = np.load(os.path.join(self.root_dir + targets_file + '.npy'))
 
         return data, targets
 

@@ -32,8 +32,9 @@ def evaluate_alterations(model, alteration_name):
         test_loader = torch.utils.data.DataLoader(
             CMNISTDataset(root_dir=base_path + '/' + step_dir + '/',
                           train=False,
+                          labels_root=base_path + '/',
                           transform=transforms.ToTensor()),
-            batch_size=128, shuffle=True)
+            batch_size=128, shuffle=False)
         accuracy_list.append(evaluate(model, test_loader))
         step_list.append(float(step_dir))
 

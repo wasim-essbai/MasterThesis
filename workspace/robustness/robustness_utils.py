@@ -15,9 +15,12 @@ def evaluate_bnn(model, test_loader):
         level = 0
 
         for data, target in test_loader:
-            dist_pred = model(data.view(data.shape[0], -1))
-
-            pred_values = torch.max(dist_pred.mean, 1).indices
+            mean_list = torch.zero_(data.shape[0], 10)
+            for i in range(10):
+                dist_pred = model(data.view(data.shape[0], -1))
+                mean_list += torch.max(dist_pred.mean, 1).indices
+            mean_list = mean_list/10
+            pred_values = torch.max(mean_list, 1).indices
             testCorrect += torch.sum(pred_values == target)
 
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
@@ -38,7 +41,7 @@ def evaluate_ann(model, test_loader):
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
 
 
-def evaluate_alteration(model, alteration_name, is_bnn = True):
+def evaluate_alteration(model, alteration_name, is_bnn=True):
     base_path = f'/content/drive/MyDrive/MasterThesis/workspace/mnist_alt/{alteration_name}'
 
     dir_list = next(os.walk(base_path))[1]

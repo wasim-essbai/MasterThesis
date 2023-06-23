@@ -80,7 +80,6 @@ class Alteration(ABC):
 
     def apply_batch_alteration(self, data: np.ndarray,
                                alteration_level: float) -> np.ndarray:
-
         result_list = []
         for i in range(data.shape[0]):
             result_list.append(self.apply_alteration(data[i], alteration_level))
@@ -261,7 +260,7 @@ class Compression(Alteration):
             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 100 -
                             int(alteration_level * 100)]
             data = cv2.imencode('.jpg', data, encode_param)[1]
-            data = cv2.imdecode(data, 1)
+            data = cv2.imdecode(data, 0)
 
         assert (isinstance(data, np.ndarray))
         return data

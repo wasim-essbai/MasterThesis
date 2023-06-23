@@ -26,9 +26,11 @@ def evaluate(model, test_loader):
 def evaluate_alteration(model, alteration_name):
     base_path = f'/content/drive/MyDrive/MasterThesis/workspace/mnist_alt/{alteration_name}'
 
+    dir_list = next(os.walk(base_path))[1]
     accuracy_list = []
     step_list = []
-    for step_dir in os.listdir(base_path):
+    level = 0
+    for step_dir in dir_list:
         test_loader = torch.utils.data.DataLoader(
             CMNISTDataset(root_dir=base_path + '/' + step_dir + '/',
                           train=False,
@@ -37,5 +39,6 @@ def evaluate_alteration(model, alteration_name):
             batch_size=128, shuffle=False)
         accuracy_list.append(evaluate(model, test_loader))
         step_list.append(float(step_dir))
-
+        level += 1
+        print('\r' + ' Evaluation: ' + str(round(100 * level / len(dir_list), 2)) + '% complete..', end="")
     return accuracy_list, step_list

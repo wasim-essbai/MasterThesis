@@ -261,7 +261,7 @@ class Compression(Alteration):
                             int(alteration_level * 100)]
             data = cv2.imencode('.jpg', data, encode_param)[1]
             data = cv2.imdecode(data, 0)
-
+            data = data.reshape(28, 28, 1)
         assert (isinstance(data, np.ndarray))
         return data
 

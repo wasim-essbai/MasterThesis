@@ -1,7 +1,4 @@
 from torch.utils.data import Dataset
-from skimage import io
-import cv2
-import pandas as pd
 import torch
 import os
 import numpy as np
@@ -13,8 +10,8 @@ class CMNISTDataset(Dataset):
     def __init__(self, root_dir, train=True, transform=None, labels_root=None):
         self.root_dir = root_dir
         self.train = train
-        self.data, self.targets = self.load_data()
         self.labels_root = labels_root
+        self.data, self.targets = self.load_data()
         self.transform = transform
 
     def load_data(self):

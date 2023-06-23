@@ -23,7 +23,7 @@ def evaluate(model, test_loader):
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
 
 
-def evaluate_alterations(model, alteration_name):
+def evaluate_alteration(model, alteration_name):
     base_path = f'/content/drive/MyDrive/MasterThesis/workspace/mnist_alt/{alteration_name}'
 
     accuracy_list = []

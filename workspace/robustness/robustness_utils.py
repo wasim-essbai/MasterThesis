@@ -18,7 +18,7 @@ def evaluate_bnn(model, test_loader):
             mean_list = torch.zeros(data.shape[0], 10)
             for i in range(10):
                 dist_pred = model(data.view(data.shape[0], -1))
-                mean_list += torch.max(dist_pred.mean, 1).indices
+                mean_list += dist_pred.mean
             mean_list = mean_list/10
             pred_values = torch.max(mean_list, 1).indices
             testCorrect += torch.sum(pred_values == target)

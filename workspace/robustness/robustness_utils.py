@@ -24,7 +24,7 @@ def evaluate_bnn(model, test_loader, classification_function):
             mean_dist = OneHotCategorical(probs=mean_list)
             mean_list = mean_dist.mean / (mean_dist.stddev + 10**-8)
             pred_values = classification_function(mean_list)
-            testCorrect += torch.sum(pred_values == target + pred_values is None)
+            testCorrect += torch.sum(pred_values == target + pred_values == -1)
 
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
 

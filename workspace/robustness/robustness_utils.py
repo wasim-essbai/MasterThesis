@@ -22,14 +22,12 @@ def evaluate_bnn(model, test_loader, classification_function):
                 dist_pred = model(data.view(data.shape[0], -1))
                 mean_list += dist_pred.mean
             mean_list = mean_list/10
-            mean_dist = OneHotCategorical(probs=mean_list)
-            mean_list = mean_dist.mean / (mean_dist.stddev + 10**-8)
             pred_values = classification_function(mean_list)
             testCorrect += torch.sum(pred_values == target)
             testUnknown += torch.sum(pred_values == -1)
         accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
         unknown_ration = np.round(testUnknown * 100 / (len(test_loader.dataset)), 2)
-        return accuracy, testUnknown
+        return accuracy, unknown_ration
 
 
 def evaluate_ann(model, test_loader):

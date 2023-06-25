@@ -9,7 +9,7 @@ sys.path.append('./workspace/data/mnist_data')
 from cmnist_dataset import CMNISTDataset
 
 
-def evaluate_bnn(model, test_loader):
+def evaluate_bnn(model, test_loader, classification_function):
     with torch.no_grad():
         datasetLength = len(test_loader)
         testCorrect = 0
@@ -23,8 +23,8 @@ def evaluate_bnn(model, test_loader):
             mean_list = mean_list/10
             mean_dist = OneHotCategorical(probs=mean_list)
             mean_list = mean_dist.mean / (mean_dist.stddev + 10**-8)
-            pred_values = torch.max(mean_list, 1).indices
-            testCorrect += torch.sum(pred_values == target)
+            pred_values = classification_function(mean_list)
+            testCorrect += torch.sum(pred_values == target + pred_values is None)
 
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
 
@@ -44,7 +44,7 @@ def evaluate_ann(model, test_loader):
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
 
 
-def evaluate_alteration(model, alteration_name, is_bnn=True):
+def evaluate_alteration(model, alteration_name, is_bnn=True, classification_function=None):
     base_path = f'/content/drive/MyDrive/MasterThesis/workspace/mnist_alt/{alteration_name}'
 
     dir_list = next(os.walk(base_path))[1]
@@ -59,7 +59,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True):
                           transform=transforms.ToTensor()),
             batch_size=128, shuffle=False)
         if is_bnn:
-            accuracy_list.append(evaluate_bnn(model, test_loader))
+            accuracy_list.append(evaluate_bnn(model, test_loader, classification_function))
         else:
             accuracy_list.append(evaluate_ann(model, test_loader))
         step_list.append(float(step_dir))

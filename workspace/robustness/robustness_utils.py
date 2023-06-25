@@ -13,6 +13,7 @@ def evaluate_bnn(model, test_loader, classification_function):
     with torch.no_grad():
         datasetLength = len(test_loader)
         testCorrect = 0
+        testUnknown = 0
         level = 0
 
         for data, target in test_loader:
@@ -25,8 +26,10 @@ def evaluate_bnn(model, test_loader, classification_function):
             mean_list = mean_dist.mean / (mean_dist.stddev + 10**-8)
             pred_values = classification_function(mean_list)
             testCorrect += torch.sum(pred_values == target)
-            testCorrect += torch.sum(pred_values == -1)
-        return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
+            testUnknown += torch.sum(pred_values == -1)
+        accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
+        unknown_ration = np.round(testUnknown * 100 / (len(test_loader.dataset)), 2)
+        return accuracy, testUnknown
 
 
 def evaluate_ann(model, test_loader):
@@ -49,6 +52,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
 
     dir_list = next(os.walk(base_path))[1]
     accuracy_list = []
+    unknown_ratio_list = []
     step_list = []
     level = 0
     for step_dir in dir_list:
@@ -59,10 +63,12 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
                           transform=transforms.ToTensor()),
             batch_size=128, shuffle=False)
         if is_bnn:
-            accuracy_list.append(evaluate_bnn(model, test_loader, classification_function))
+            accuracy, unknown_ratio = evaluate_bnn(model, test_loader, classification_function)
+            accuracy_list.append(accuracy)
+            unknown_ratio_list.append(unknown_ratio)
         else:
             accuracy_list.append(evaluate_ann(model, test_loader))
         step_list.append(float(step_dir))
         level += 1
         print('\r' + ' Evaluation: ' + str(round(100 * level / len(dir_list), 2)) + '% complete..', end="")
-    return accuracy_list, step_list
+    return accuracy_list, step_list, unknown_ratio_list

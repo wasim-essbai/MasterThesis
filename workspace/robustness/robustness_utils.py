@@ -22,7 +22,7 @@ def evaluate_bnn(model, test_loader):
                 mean_list += dist_pred.mean
             mean_list = mean_list/10
             mean_dist = OneHotCategorical(probs=mean_list)
-            mean_list = mean_dist.mean / (mean_dist.stddev + 10**-5)
+            mean_list = mean_dist.mean / (mean_dist.stddev + 10**-8)
             pred_values = torch.max(mean_list, 1).indices
             testCorrect += torch.sum(pred_values == target)
 

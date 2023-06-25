@@ -39,5 +39,7 @@ class CMNISTDataset(Dataset):
 
         if self.transform is not None:
             img = self.transform(img)
+		
+		img = img.to(torch.float32)	
 
         return img, target

@@ -82,7 +82,8 @@ class Alteration(ABC):
                                alteration_level: float) -> np.ndarray:
         result_list = []
         for i in range(data.shape[0]):
-            result_list.append(self.apply_alteration(data[i], alteration_level))
+			altered_data = self.apply_alteration(data[i], alteration_level)
+            result_list.append(altered_data * (255/ np.max(altered_data)))
 
         return np.stack(result_list, axis=0)
 

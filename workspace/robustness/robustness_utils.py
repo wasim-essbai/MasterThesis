@@ -3,6 +3,7 @@ import torch
 import os
 from torchvision import transforms
 import sys
+from torch.distributions.one_hot_categorical import OneHotCategorical
 
 sys.path.append('./workspace/data/mnist_data')
 from cmnist_dataset import CMNISTDataset
@@ -20,6 +21,8 @@ def evaluate_bnn(model, test_loader):
                 dist_pred = model(data.view(data.shape[0], -1))
                 mean_list += dist_pred.mean
             mean_list = mean_list/10
+            mean_dist = OneHotCategorical(probs=mean_list)
+            mean_list = mean_dist.mean / (mean_dist.stddev + 10**-5)
             pred_values = torch.max(mean_list, 1).indices
             testCorrect += torch.sum(pred_values == target)
 

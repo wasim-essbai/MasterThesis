@@ -26,7 +26,7 @@ def evaluate_bnn(model, test_loader, classification_function):
             testCorrect += torch.sum(pred_values == target)
             testUnknown += torch.sum(pred_values == -1)
         accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
-        unknown_ration = np.round(testUnknown * 100 / (len(test_loader.dataset)), 2)
+        unknown_ration = np.round(testUnknown * 100 / len(test_loader.dataset), 2)
         return accuracy, unknown_ration
 
 

@@ -5,3 +5,4 @@ https://github.com/gslapnicar/bp-estimation-mimic3/blob/master/models/models.py
 
 https://github.com/Harry24k/bayesian-neural-network-pytorch/blob/master/demos/Bayesian%20Neural%20Network%20Classification.ipynb
 https://github.com/TyXe-BDL/TyXe
+https://github.com/ykwon0407/UQ_BNN

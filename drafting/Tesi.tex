@@ -1,0 +1,73 @@
+\documentclass[
+	a4paper,
+	cleardoublepage=empty,
+	headings=twolinechapter,
+	numbers=autoenddot,
+]{scrbook}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{import}
+\usepackage{float}
+\usepackage{cite}
+\usepackage[signatures,swapnames,sans]{frontespizio}
+
+\usepackage{todonotes}
+\usepackage{verbatim}
+
+\usepackage{color}
+\usepackage{url} 
+
+\newcommand{\Fig}[0]{Fig.}
+\newcommand{\Eq}[0]{Eq.}
+
+\pagestyle{plain}
+\input{preamble}
+\newcolumntype{C}{>{\centering\arraybackslash}p{3cm}}
+
+\begin{document}
+	\frontmatter
+	
+	\pdfbookmark{Title page}{titlepage}
+	\begin{frontespizio}
+		\Margini{3cm}{3cm}{3cm}{3cm}
+		\Universita{Bergamo}
+		\Logo[43.332mm]{ImageFiles/unibg-mark}
+		\Divisione{Scuola di Ingegneria}
+		\Corso[Laurea Triennale]{Ingegneria Informatica\\Classe n. L-8 Ingegneria dell’informazione (D.M. 270/04)}
+		\Titolo{Progetto di un sistema optoelettronico indossabile per misure fotopletismografiche}
+		\Punteggiatura{}
+		\NCandidato{Tesi di Laurea Triennale}
+		\Candidato[1060652]{Wasim Essbai}
+		\Candidato[1057926]{Matteo Verzeroli}
+		\Relatore{Prof.\ Gianluca Traversi}
+		\Correlatore{Dott.\ Andrea Pedrana}
+		\Annoaccademico{2020--2021}
+		\begin{Preambolo*}
+			\usepackage[italian]{babel}
+			\usepackage[T1]{fontenc}
+			\usepackage[utf8]{inputenc}
+			\usepackage{microtype}
+			\usepackage{lmodern}
+			\graphicspath{{img/}}
+			
+			\renewcommand{\frontinstitutionfont}{\fontsize{14}{17}\bfseries\scshape}
+			\renewcommand{\fronttitlefont}{\fontsize{17}{21}\bfseries\scshape}
+			\renewcommand{\frontfootfont}{\fontsize{12}{14}\bfseries\scshape}
+		\end{Preambolo*}
+	\end{frontespizio}
+	
+	\tableofcontents
+	\listoffigures
+	\mainmatter
+	
+	\chapter*{Introduzione}
+
+	
+	
+	\bibliographystyle{unsrt}
+	
+	\addcontentsline{toc}{chapter}{Bibliografia}
+	
+\end{document}

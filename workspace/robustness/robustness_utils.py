@@ -15,10 +15,10 @@ def evaluate_bnn(model, test_loader, classification_function):
         testCorrect = 0
         testUnknown = 0
         level = 0
+        aleatoric_sum = 0
 
         for data, target in test_loader:
             mean_list = torch.zeros(data.shape[0], 10)
-            aleatoric_sum = 0
             for i in range(10):
                 dist_pred = model(data.view(data.shape[0], -1))
                 mean_list += dist_pred.mean

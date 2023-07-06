@@ -29,7 +29,7 @@ def evaluate_bnn(model, test_loader, classification_function):
             aleatoric_sum += torch.mean(mean_list*(1-mean_list))
         accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
         unknown_ration = np.round(testUnknown * 100 / len(test_loader.dataset), 2)
-        aleatoric = np.round(aleatoric_sum / (len(test_loader.dataset)), 2)
+        aleatoric = aleatoric_sum / len(test_loader.dataset)
         return accuracy, unknown_ration, aleatoric
 
 

@@ -18,7 +18,7 @@ def evaluate_bnn(model, test_loader, classification_function):
 
         for data, target in test_loader:
             mean_list = torch.zeros(data.shape[0], 10)
-			aleatoric_sum = 0
+			      aleatoric_sum = 0
             for i in range(10):
                 dist_pred = model(data.view(data.shape[0], -1))
                 mean_list += dist_pred.mean
@@ -26,10 +26,10 @@ def evaluate_bnn(model, test_loader, classification_function):
             pred_values = classification_function(mean_list)
             testCorrect += torch.sum(pred_values == target)
             testUnknown += torch.sum(pred_values == -1)
-			aleatoric_sum += torch.mean(mean_list*(1-mean_list))
+			      aleatoric_sum += torch.mean(mean_list*(1-mean_list))
         accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
         unknown_ration = np.round(testUnknown * 100 / len(test_loader.dataset), 2)
-		aleatoric = np.round(aleatoric_sum / len(test_loader.dataset), 2)
+		    aleatoric = np.round(aleatoric_sum / len(test_loader.dataset), 2)
         return accuracy, unknown_ration, aleatoric
 
 
@@ -54,7 +54,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
     dir_list = next(os.walk(base_path))[1]
     accuracy_list = []
     unknown_ratio_list = []
-	aleatoric_list = []
+	  aleatoric_list = []
     step_list = []
     level = 0
     for step_dir in dir_list:
@@ -68,7 +68,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
             accuracy, unknown_ratio, aleatoric = evaluate_bnn(model, test_loader, classification_function)
             accuracy_list.append(accuracy)
             unknown_ratio_list.append(unknown_ratio)
-			aleatoric_list.append(aleatoric)
+			      aleatoric_list.append(aleatoric)
         else:
             accuracy_list.append(evaluate_ann(model, test_loader))
         step_list.append(float(step_dir))

@@ -18,34 +18,37 @@
 
 \usepackage{color}
 \usepackage{url} 
+\usepackage{caption}
+\usepackage{subcaption}
 
 \newcommand{\Fig}[0]{Fig.}
+\newcommand{\Tab}[0]{Tab.}
 \newcommand{\Eq}[0]{Eq.}
 
 \pagestyle{plain}
-\input{preamble}
-\newcolumntype{C}{>{\centering\arraybackslash}p{3cm}}
+%\input{preamble}
+%\newcolumntype{C}{>{\centering\arraybackslash}p{3cm}}
 
 \begin{document}
 	\frontmatter
 	
-	\pdfbookmark{Title page}{titlepage}
+	%\pdfbookmark{Title page}{titlepage}
 	\begin{frontespizio}
 		\Margini{3cm}{3cm}{3cm}{3cm}
 		\Universita{Bergamo}
 		\Logo[43.332mm]{ImageFiles/unibg-mark}
 		\Divisione{Scuola di Ingegneria}
-		\Corso[Laurea Triennale]{Ingegneria Informatica\\Classe n. L-8 Ingegneria dell’informazione (D.M. 270/04)}
-		\Titolo{Progetto di un sistema optoelettronico indossabile per misure fotopletismografiche}
+		\Corso[Laurea Triennale]{Corso di Laurea Magistrale in Ingegneria Informatica\\Classe N. LM-32 – Classe delle lauree magistrali in Ingegneria Informatica}
+		\Titolo{Evaluating the Robustness of Bayesian Neural Networks for Improved Classification through Uncertainty Estimation}
 		\Punteggiatura{}
-		\NCandidato{Tesi di Laurea Triennale}
+		\NCandidato{Tesi di Laurea Magistrale}
 		\Candidato[1060652]{Wasim Essbai}
-		\Candidato[1057926]{Matteo Verzeroli}
-		\Relatore{Prof.\ Gianluca Traversi}
-		\Correlatore{Dott.\ Andrea Pedrana}
-		\Annoaccademico{2020--2021}
+		\Relatore{Chiar.mo \ Prof.\ Angelo Gargantini}
+		\Correlatore{Chiar.mo \ Dott.\ Andrea Bombarda}
+		\Correlatore{Chiar.ma \ Dott.\ Silvia Bonfanti}
+		\Annoaccademico{2022--2023}
 		\begin{Preambolo*}
-			\usepackage[italian]{babel}
+			\usepackage[english]{babel}
 			\usepackage[T1]{fontenc}
 			\usepackage[utf8]{inputenc}
 			\usepackage{microtype}
@@ -62,12 +65,15 @@
 	\listoffigures
 	\mainmatter
 	
-	\chapter*{Introduzione}
-
+	\chapter*{Introduction}
+	\chapter{Theoretical background}
+	\import{./TextFiles/Theoretical background/}{NN.tex}
+	\import{./TextFiles/Theoretical background/}{BNN.tex}
+		
+	\bibliographystyle{ieeetr}
 	
+	\bibliography{./OtherFiles/Bibliography}
 	
-	\bibliographystyle{unsrt}
-	
-	\addcontentsline{toc}{chapter}{Bibliografia}
+	\addcontentsline{toc}{chapter}{Bibliography}
 	
 \end{document}

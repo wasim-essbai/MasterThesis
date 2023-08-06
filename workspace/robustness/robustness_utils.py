@@ -15,21 +15,22 @@ def evaluate_bnn(model, test_loader, classification_function):
         testCorrect = 0
         testUnknown = 0
         level = 0
-        aleatoric_sum = 0
-
+        aleatoric_sum = -1
         for data, target in test_loader:
             mean_list = torch.zeros(data.shape[0], 10)
-            for i in range(10):
-                dist_pred = model(data.view(data.shape[0], -1))
-                mean_list += dist_pred.mean
-            mean_list = mean_list/10
-            pred_values = classification_function(mean_list)
-            testCorrect += torch.sum(pred_values == target)
-            testUnknown += torch.sum(pred_values == -1)
-            aleatoric_sum += torch.mean(mean_list*(1-mean_list))
+            for j in range(0, data.shape[0]):
+                img = data[j]
+                y = target[j]
+                p_hat = []
+                for i in range(10):
+                    dist_pred = model(data.view(img))
+                    p_hat.append(dist_pred.mean)
+                p_hat = torch.tensor(p_hat)
+                pred_values = classification_function(p_hat)
+                testCorrect += torch.sum(pred_values == y)
+                testUnknown += torch.sum(pred_values == -1)
         accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
         unknown_ration = np.round(testUnknown * 100 / len(test_loader.dataset), 2)
-        aleatoric = aleatoric_sum / len(test_loader.dataset)
         return accuracy, unknown_ration, aleatoric
 
 

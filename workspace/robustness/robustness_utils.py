@@ -11,6 +11,7 @@ from cmnist_dataset import CMNISTDataset
 
 def evaluate_bnn(model, test_loader, classification_function, conf_level=0.5):
     with torch.no_grad():
+        datasetLength = len(test_loader.dataset)
         testCorrect = 0
         testUnknown = 0
         aleatoric_sum = -1
@@ -19,16 +20,16 @@ def evaluate_bnn(model, test_loader, classification_function, conf_level=0.5):
                 img = data[j]
                 y = target[j]
                 p_hat_list = []
-                for i in range(15):
+                for i in range(10):
                     dist_pred = model(img.view(1, -1))
                     p_hat_list.append(dist_pred.mean.squeeze())
                 p_hat = torch.stack(p_hat_list)
                 pred_values = classification_function(p_hat, conf_level)
                 testCorrect += torch.sum(pred_values == y)
                 testUnknown += torch.sum(pred_values == -1)
-        accuracy = np.round(testCorrect * 100 / (len(test_loader.dataset) - testUnknown), 2)
-        unknown_ration = np.round(testUnknown * 100 / len(test_loader.dataset), 2)
-        aleatoric = aleatoric_sum / len(test_loader.dataset)
+        accuracy = np.round(testCorrect * 100 / (datasetLength - testUnknown), 2)
+        unknown_ration = np.round(testUnknown * 100 / datasetLength, 2)
+        aleatoric = aleatoric_sum / datasetLength
         return accuracy, unknown_ration, aleatoric
 
 

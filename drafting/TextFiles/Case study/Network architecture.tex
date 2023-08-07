@@ -1,0 +1,13 @@
+\section{Network architecture}
+
+Although for image processing tasks CNNs are typically considered a more advantageous choice, for this case study, a MLP has been chosen as network type. The reason behind this decision is the more understandable and intuitive MLP structure, which is well-suited to the main objective of this work. The primary focus here is not on image classification, but rather on the investigation of the Bayesian approach to neural networks. Therefore, the simplicity and transparency of the MLP make it a suitable choice.
+
+In this study two neural networks were developed: one standard and one Bayesian. To ensure fair comparison, both networks have the same architecture. Each model consists of three \textit{Linear} layers, representing fully connected layers:
+
+\begin{enumerate}
+	\item Input layer: Composed by 784 neurons, corresponding to the input data size;
+	\item Hidden layer: This layer contains 100 neurons;
+	\item Output layer: Consisting of 10 neurons, representing the number of classes to predict.
+\end{enumerate}
+
+The activation function used for the input and hidden layers is ReLU, while the output layer is activated using the softmax function. This enforces obtaining values between 0 and 1, which can be interpreted as probabilities.

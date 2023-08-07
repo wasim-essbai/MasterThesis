@@ -1,0 +1,86 @@
+\section{Training}
+
+The training was conducted for both networks using the same hyperparameters to ensure as much comparability as possible. However, it's important to note that they differ in the loss function due to their distinct natures. The optimization algorithm employed for training is the \textit{RMSProp}, proposed by Geoffrey Hinton \cite{OMBGD}. The specific values of the hyperparameters used are summarized in \Tab~\ref{table:HyperParam}.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|| l | l ||} 
+		\hline
+		\textbf{Parameter} & \textbf{Value} \\
+		\hline
+		\hline
+		Learning rate & 0.01 \\
+		Batch size & 128 \\
+		Epochs number & 15 \\	
+		\hline
+	\end{tabular}	
+	\caption{Hyperparameters employed in the training}
+	\label{table:HyperParam}
+\end{table}
+
+
+\subsection{ANN}
+
+The ANN is trained using the \textit{CrossEntropyLoss} \cite{CELoss}, which is widely employed in classification tasks \cite{mao2023crossentropy}. The obtained model performances are presented in \Tab~\ref{table:annper}. Notably, the performances on both the train and test sets are similar, suggesting that the model is not experiencing overfitting. To ensure comparability between the test and train sets, the loss is normalized by the dataset length.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|| l | l | l ||} 
+		\hline
+		\textbf{Metric} & \textbf{Train set} & \textbf{Test set}\\
+		\hline
+		\hline
+		Accuracy & $96.98\%$ & $96.44\%$\\	
+		Loss & $0.012$ & $0.012$\\
+		\hline
+	\end{tabular}	
+	\caption{Performance results of the ANN}
+	\label{table:annper}
+\end{table}
+
+\subsection{BNN}
+
+In the context of Bayesian Neural Networks (BNN), the loss function commonly employed is the \textit{negative log-likelihood} (NLL) loss. BNNs predict a distribution, aiming to maximize the likelihood of the true value. For this study, the model inference utilizes variational inference technique, which is implemented in torchbnn. Consequently, it becomes essential to compute and minimize the KL-divergence.
+
+The output is modeled as a categorical distribution consisting of 10 elements. The point estimate is obtained as the mean of this distribution, forming a vector that contains the probabilities of the classes.
+
+\Tab~\ref{table:bnnper} summarizes the metrics computed for the resulting model. The CE loss was not utilized during the training but was computed for comparison with the values obtained from the ANN. Interestingly, despite the use of NLL loss, the final CE value matches the one obtained from ANN.
+
+The KL divergence value represents the mean over all network weights. Additionally, the epistemic uncertainty was computed, which is quality metric for the model. The uncertainty decomposition follows the approach proposed in \cite{KWON2020106816}. For each input sample, $T$ predictions are computed, resulting in different outputs since at each prediction, the weights $w_t$ are randomly sampled from their variational distribution. Let $\hat{p}_t$ be the $t^{th}$ prediction; the two uncertainties are estimated as follows:
+
+\begin{equation}
+	epistemic = diag\{\frac{1}{T} \sum_{t=1}^{T} [\hat{p}_t - \bar{p}]^{\otimes 2}\}
+\end{equation}
+\begin{equation}
+	aleatoric = diag\{\frac{1}{T} \sum_{t=1}^{T} [diag(\hat{p}_t) - \hat{p}_t^{\otimes 2}]\}
+\end{equation}
+
+where $\otimes 2$ denotes the outer product of a vector with itself and $\bar{p} = \frac{1}{T} \sum_{t=1}^{T} \hat{p}_t$.
+
+In this study, the parameter $T$ is set to 10. Increasing this value could provide a more accurate estimation of the epistemic uncertainty. However, doing so comes with a significantly higher computational cost.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|| l | l | l ||} 
+		\hline
+		\textbf{Metric} & \textbf{Train set} & \textbf{Test set}\\
+		\hline
+		\hline
+		Accuracy & $98.00\%$ & $96.80\%$\\	
+		CE loss & $0.012$ & $0.012$\\
+		KL divergence & $0.028$ & $0.028$\\
+		NLL loss & $0.6 \cdot 10^{-3}$ & $1.2 10^{-3}$\\
+		Epistemic uncertainty & $4 \cdot 10^{-4}$ & $5 \cdot 10^{-4}$\\
+		\hline
+	\end{tabular}	
+	\caption{Performance results of the BNN}
+	\label{table:bnnper}
+\end{table}
+
+\subsection{Comparison between ANN and BNN}
+
+A first comparison between the two networks can be made by looking their respective loss and accuracy metrics. Surprisingly, despite not being optimized on the CE loss, the two models exhibit identical loss values. This suggests that the BNN is somehow "extending" the capabilities of the ANN, incorporating its features while performing in the same way in terms of loss.
+
+Moving on to the accuracy comparison, the BNN demonstrates a slight improvement over the ANN. It outperforms the ANN by a small margin, indicating its potential to yield more accurate predictions.
+
+Overall, these initial metrics suggest that the ability of BNNs to build upon the strengths of the ANN and potentially offer enhanced accuracy. Further investigation and analysis will be done taking into account the uncertainty estimation of the BNN as well.

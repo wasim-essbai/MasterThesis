@@ -25,7 +25,7 @@ Each neuron receives stimuli from multiple neurons simultaneously, and these inp
 		\caption{Neuron spike after reaching the threshold}
 		\label{fig:spking}
 	\end{subfigure}
-	\caption{}
+	\caption{Mechanisms in the human neuron}
 \end{figure}
 
 Furthermore, the strengths of synaptic connections frequently undergo changes in response to external stimuli \cite{aggarwal2018neural}. While the precise mechanisms of information processing in the brain are still unknown, the propagation of action potentials across vast networks of fired neurons is believed to lead to the brain \textbf{learning} and \textbf{thinking} process.
@@ -163,7 +163,7 @@ There are also variations and combinations of these learning processes, such as 
 
 In this case study, specifically with the utilization of an MLP, the applied learning technique is known as \textit{back-propagation}. It is a supervised learning method that consists of two distinct phases during training:
 \begin{enumerate}
-	\item \textit{Forward} Propagation: In this phase, the input data is fed into the MLP, and the network processes this data through its layers, producing an output. The prediction is then compared with the desired target, and the difference, known as the \textit{loss} or \textit{error}, is calculated with a proper \textit{loss function}.
+	\item \textit{Forward} Propagation: In this phase, the input data is fed into the MLP, and the network processes this data through its layers, producing an output. The prediction is then compared with the desired target, and the difference, known as the \textit{loss} or \textit{error}, is calculated with a proper \textit{loss function};
 	\item \textit{Backward} Propagation: The error calculated in the forward propagation phase is propagated backward through the network. The gradients of the error with respect to the network's parameters (weights and biases) are computed. These gradients are then used to adjust the parameters, updating them in a way that minimizes the error.
 \end{enumerate}
 
@@ -192,7 +192,7 @@ The choice of an appropriate batch size involves a trade-off between computation
 
 The loss function quantifies the difference between the network's prediction and the target output. Multiple loss functions are available, and their selection can significantly impact the results obtained. Consequently, choosing an appropriate loss function is a key aspect in designing an ANN since the optimization of network parameters relies on it. In this regard, it is possible to categorize loss functions into two distinct categories \cite{CLFML}:
 \begin{enumerate}
-	\item \textit{Regression} losses: They are employed when the output is a continuous variable. The most commonly used regression loss functions include the \textit{Mean Squared Error} (MSE) and the \textit{Mean Absolute Error} (MAE). 
+	\item \textit{Regression} losses: They are employed when the output is a continuous variable. The most commonly used regression loss functions include the \textit{Mean Squared Error} (MSE) and the \textit{Mean Absolute Error} (MAE);
 	\item \textit{Classification} losses: Used when the output is a categorical variable. These loss functions focus on measuring the confidence or certainty of the network's predictions. Two commonly used classification loss functions are the Hinge loss and the Cross Entropy loss (CE).
 \end{enumerate}
 
@@ -218,3 +218,13 @@ In \Fig~\ref{fig:graddesc}, a graphical representation is provided to illustrate
 \end{figure}
 
 Gradient descent forms the basis for various variations and extensions in optimization algorithms. These include Stochastic Gradient Descent (SGD), Mini-batch Gradient Descent, Momentum, AdaGrad, RMSprop, and Adam. These algorithms build upon the core principles of gradient descent while introducing additional mechanisms to improve convergence speed, handle non-convex loss functions, and adaptively adjust learning rates.
+
+\subsection{Limits and problems}
+
+ANNs have revolutionized the field of ML and have proven instrumental in tackling various challenging problems, such as image processing and recognition.
+
+However, as with any complex model, ANNs can face the problem of overfitting. This occurs when a model becomes excessively tailored to the training data, capturing noise and irrelevant patterns. This can result in poor performance when the model is applied to new, unseen data \cite{James2013}.
+Overfitting is a manifestation of the bias-variance tradeoff. In this tradeoff, models with higher complexity have the ability to fit the training data more closely (low bias), but they are also more susceptible to overfitting (high variance). Conversely, simpler models may have higher bias, potentially leading to underfitting (i.e., the model is too simplistic to capture the underlying patterns in the data).
+
+Furthermore, alongside the overfitting issue, ANNs can also exhibit overconfidence in their predictions when providing confidence intervals \cite{9756596}. This becomes particularly concerning when these models are deployed in critical domains such as autonomous driving or the medical field.
+Overconfidence means that the model is overly certain about its predictions, even when they might be incorrect. In safety-critical applications, such as autonomous driving, even a single wrong prediction by the model can have severe consequences. Similarly, in the medical field, inaccurate predictions can lead to misdiagnoses and potentially harmful treatments.

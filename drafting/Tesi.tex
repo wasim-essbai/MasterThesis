@@ -67,9 +67,29 @@
 	
 	\chapter*{Introduction}
 	\chapter{Theoretical background}
+	This chapter will cover the fundamental theoretical concepts used in this study. Specifically, we will start by introducing neural networks, starting from their basic building blocks and progressing to the training phase. Following that, it will be explored a way to improve neural networks using a Bayesian approach.
+	
 	\import{./TextFiles/Theoretical background/}{NN.tex}
 	\import{./TextFiles/Theoretical background/}{BNN.tex}
 		
+	\chapter{Case study}
+	This work aims to examine the robustness of a BNN when applied to a classification task on images. Specifically, there will be developed an ANN and a BNN to compare their performances and determine if utilizing the BNN enhances robustness.
+	
+	The networks will be implemented in \textit{Python 3.9} as the programming language, utilizing the framework \textit{Pytorch} \footnote{It is a Python-based framework that allows the development of ML models at a high level. It provides support for GPU programming, allowing users to easily leverage the computational power of GPUs to reduce the computational time.}\cite{NEURIPS2019_9015}. 
+	For the training and all the evaluations, \textit{Google Colaboratory} will be utilized as the platform. For the implementation of the BNN the library \textit{torchbnn}\footnote{It is a library for the development of BNNs using Pytorch.}\cite{Torchbnn} will be used.
+	
+	\import{./TextFiles/Case study/}{Dataset.tex}
+	\import{./TextFiles/Case study/}{Network architecture.tex}
+	\import{./TextFiles/Case study/}{Training.tex}
+	
+	\chapter{Classification with uncertainty}
+	
+	This chapter introduces a novel classification approach that leverages the uncertainty estimated by a BNN. The primary objective is to assess the practical utility of this estimated uncertainty. The idea behind this approach is to enable the network to identify situations where it lacks confidence in its predictions, thus allowing it to avoid from making decisions. To achieve this, a threshold for uncertainty will be defined, and whenever the uncertainty surpasses this threshold, the network will simply output "I don't know". 
+	The proposed method explores three distinct types of uncertainty. The first two types, epistemic and aleatoric uncertainties, have been previously discussed and remain consistent in their significance across different tasks. The third type corresponds to the variance of the predicted distribution, which might have a distinct interpretation and could potentially lead to different threshold as well. The threshold value must be proportional to the desired predictions confidence
+	However, some applications may need to make decisions at all times. Therefore, an alternative approach will be explored where classification is performed by penalizing the most uncertain output classes. This allows for decision-making even when uncertainty is present.
+	
+	\import{./TextFiles/Classification uncertainty/}{Aleatoric.tex}
+	
 	\bibliographystyle{ieeetr}
 	
 	\bibliography{./OtherFiles/Bibliography}

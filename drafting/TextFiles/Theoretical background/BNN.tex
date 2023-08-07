@@ -1,12 +1,6 @@
 \section{Bayesian Neural Networks}
 
-In the previous section, we explored into one of the most popular classes of ML algorithms, Artificial Neural Networks (ANNs). They have revolutionized the field of ML and have proven instrumental in tackling various challenging problems, such as image processing and recognition.
-
-However, as with any complex model, ANNs can face the problem of overfitting. This occurs when a model becomes excessively tailored to the training data, capturing noise and irrelevant patterns. This can result in poor performance when the model is applied to new, unseen data \cite{James2013}.
-Overfitting is a manifestation of the bias-variance tradeoff. In this tradeoff, models with higher complexity have the ability to fit the training data more closely (low bias), but they are also more susceptible to overfitting (high variance). Conversely, simpler models may have higher bias, potentially leading to underfitting (i.e., the model is too simplistic to capture the underlying patterns in the data).
-
-Furthermore, alongside the overfitting issue, ANNs can also exhibit overconfidence in their predictions when providing confidence intervals \cite{9756596}. This becomes particularly concerning when these models are deployed in critical domains such as autonomous driving or the medical field.
-Overconfidence means that the model is overly certain about its predictions, even when they might be incorrect. In safety-critical applications, such as autonomous driving, even a single wrong prediction by the model can have severe consequences. Similarly, in the medical field, inaccurate predictions can lead to misdiagnoses and potentially harmful treatments.
+In the previous section, we explored into one of the most popular classes of ML algorithms, ANNs, and discussed some of the challenges and limitations they face. In this section, it will be introduced an alternative approach that can mitigate these issues.
 
 \subsection{Bayesian approach}
 
@@ -38,7 +32,7 @@ The differences and main aspects of the two approaches mentioned above are outli
 		Uncertainty Estimation & Inherently incorporated. & Often not explicitly addressed. \\	
 		\hline
 	\end{tabular}	
-	\caption{Comparison of Bayesian and frequentist Approaches.}
+	\caption{Comparison of Bayesian and frequentist Approaches}
 	\label{table:BayesVsFreq}
 \end{table}
 
@@ -147,12 +141,15 @@ As presented at the beginning of this section, one of the key advantages of BNNs
 
 \vspace{0.2cm}
 \textbf{Aleatoric uncertainty}
+
 Aleatoric uncertainty, also known as data uncertainty, refers to the inherent stochasticity present in the process being modeled with a BNN (Bayesian Neural Network). This kind of uncertainty emerges from noisy and ambiguous data points. It represents an error that cannot be eliminated even with the addition of more data \cite{article01}. This type of uncertainty can be interpreted as the network's knowledge about a specific input. When a data point is very different from the ones used during training, the network would provide a prediction with a higher uncertainty.
 
 \vspace{0.2cm}
 \textbf{Epistemic uncertainty}
+
 Epistemic uncertainty, also referred to as model uncertainty, represents the uncertainty on the model parameters. Within the context of BNNs, epistemic uncertainty captures the uncertainty in the model structure and architecture. This type of uncertainty can be reduced by acquiring more data or by employing a different model architecture. It can also be used as a metric for assessing the model quality.
 
 \vspace{0.2cm}
 \textbf{Combining Epistemic and Aleatoric Uncertainty}
+
 BNNs offer the capability to simultaneously incorporate both aleatoric and epistemic uncertainties. Through this combination, a more comprehensive and precise estimation of the overall uncertainty in predictions can be achieved. To achieve this, one can simply sum the two quantities. However, in this work, the focus will be placed on the aleatoric uncertainty rather than the epistemic uncertainty.

@@ -82,13 +82,15 @@
 	\import{./TextFiles/Case study/}{Network architecture.tex}
 	\import{./TextFiles/Case study/}{Training.tex}
 	
-	\chapter{Classification with uncertainty}
+	\chapter{Classification using uncertainty}
 	
-	This chapter introduces a novel classification approach that leverages the uncertainty estimated by a BNN. The primary objective is to assess the practical utility of this estimated uncertainty. The idea behind this approach is to enable the network to identify situations where it lacks confidence in its predictions, thus allowing it to avoid from making decisions. To achieve this, a threshold for uncertainty will be defined, and whenever the uncertainty surpasses this threshold, the network will simply output "I don't know". 
+	This chapter introduces a novel classification approach that leverages the uncertainty estimated by a BNN. The primary objective is to assess the practical utility of this estimated uncertainty. The idea behind this approach is to enable the network to identify situations where it lacks confidence in its predictions, thus allowing it to avoid from making decisions. To achieve this, a threshold for uncertainty will be defined, and whenever the uncertainty is below this threshold, the network will simply output "I don't know". 
 	The proposed method explores three distinct types of uncertainty. The first two types, epistemic and aleatoric uncertainties, have been previously discussed and remain consistent in their significance across different tasks. The third type corresponds to the variance of the predicted distribution, which might have a distinct interpretation and could potentially lead to different threshold as well. The threshold value must be proportional to the desired predictions confidence
 	However, some applications may need to make decisions at all times. Therefore, an alternative approach will be explored where classification is performed by penalizing the most uncertain output classes. This allows for decision-making even when uncertainty is present.
 	
 	\import{./TextFiles/Classification uncertainty/}{Aleatoric.tex}
+	
+	\import{./TextFiles/Classification uncertainty/}{Epistemic.tex}
 	
 	\bibliographystyle{ieeetr}
 	

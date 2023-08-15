@@ -1,9 +1,9 @@
 \section{Aleatoric uncertainty}
 
 The first uncertainty type analyzed is the aleatoric. As said before, this uncertainty refers to the stochasticity in process modeled by the BNN. Therefore, it is a good candidate as quantity to use to determine if the network is sure or not about a prediction since it depends from the input data. The aleatoric uncertainty is computed as:
-\begin{equation}
+\[
 	aleatoric = diag\{\frac{1}{T} \sum_{t=1}^{T} [diag(\hat{p}_t) - \hat{p}_t^{\otimes 2}]\}
-\end{equation}
+\]
 
 A key point is the determination of the threshold value. In order to do this, the upper and lower values of this uncertainty  were determined:
 
@@ -36,7 +36,7 @@ To evaluate this approach, a series of experimental simulations were conducted t
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		\includegraphics[width=0.8\linewidth]{ImageFiles/ClassifUncer/aleatoric_unk}
-		\caption{Unknown ration trend when the confidence level is increased}
+		\caption{Unknown ratio trend when the confidence level is increased}
 		\label{fig:aleatoric_unk}
 	\end{subfigure}
 	\caption{Performances of the BNN using the aleatoric uncertainty during classification}

@@ -9,7 +9,7 @@ A key point is the determination of the threshold value. In order to do this, th
 
 \begin{itemize}
 	\item Case minimum uncertainty: This happens when $\hat{p}$ has all terms equal to 0 except one with is 1, and its position identifies the predicted class. Applying the formula it results in $aleatoric = 0$, that aligns the hypothesis made. 
-	\item Case maximum uncertainty: The prediction is uncertain when $\hat{p}$ has all values the same one. In particular the value is $\frac{1}{m}$, where m is the number of classes to predict. In this case the uncertainty is $aleatoric = \frac{m-1}{m^2}$, for this specific case study $m = 10$, therefore $aleatoric = 0.09$.
+	\item Case maximum uncertainty: The prediction is uncertain at the maximum level when $\hat{p}$ has all values the same one. In particular the value is $\frac{1}{m}$, where m is the number of classes to predict. In this case the uncertainty is $aleatoric = \frac{m-1}{m^2}$, for this specific case study $m = 10$, therefore $aleatoric = 0.09$.
 \end{itemize}
 
 Given the upper and lower bounds, a linear interpolation is employed to calculate the threshold value based on the desired confidence level. This method allows for the estimation of an appropriate threshold that aligns with the desired confidence level. 

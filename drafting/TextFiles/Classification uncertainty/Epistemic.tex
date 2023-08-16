@@ -1,6 +1,6 @@
 \section{Epistemic uncertainty}
 
-We now focus into the analysis of epistemic uncertainty. While this form of uncertainty pertains to the model itself rather than the input data, we want to investigate this aspect. Epistemic uncertainty is computed as:
+The second analysis is about the epistemic uncertainty. While this form of uncertainty pertains to the model itself rather than the input data, we want to investigate this aspect. Epistemic uncertainty is computed as:
 
 \[
 	epistemic = diag\{\frac{1}{T} \sum_{t=1}^{T} [\hat{p}_t - \bar{p}]^{\otimes 2}\}
@@ -12,7 +12,9 @@ In this context, establishing an explicit upper limit for the uncertainty is not
 	threshold = 0.02 * (1 - conf \_ level), \ with \ con \_ level \in [0,1]
 \]
 
-The outcomes of the conducted experiments are visually shown in \Fig~\ref{fig:epistemic_class}, offering different insights into this scenario. In \Fig~\ref{fig:epistemic_acc}, the shift in accuracy corresponding to decreasing thresholds is showcased. As anticipated, an absence of confidence ($conf_level = 0$) yields an accuracy approximately aligning with the nominal value. Conversely, a complete confidence level ($1$) results in an accuracy raises to $100\%$, attributed to the fact that all predictions are discarded as unknown. This phenomenon is highlighted further in \Fig~\ref{fig:epistemic_unk}, which delineates the trajectory of unknown values. Indeed, with a confidence level set to $1$, the proportion of unknown values escalates to $100\%$, effectively indicating the inefficacy of the predictions.
+The outcomes of the conducted experiments are visually shown in \Fig~\ref{fig:epistemic_class}, offering different insights into this scenario.
+
+In \Fig~\ref{fig:epistemic_acc}, the shift in accuracy corresponding to decreasing thresholds is showcased. As anticipated, an absence of confidence ($conf_level = 0$) yields an accuracy approximately aligning with the nominal value. Conversely, a complete confidence level ($1$) results in an accuracy raises to $100\%$, attributed to the fact that all predictions are discarded as unknown. This phenomenon is highlighted further in \Fig~\ref{fig:epistemic_unk}, which delineates the trajectory of unknown values. Indeed, with a confidence level set to $1$, the proportion of unknown values escalates to $100\%$, effectively indicating the inefficacy of the predictions.
 
 \begin{figure}[h]
 	\centering
@@ -31,6 +33,5 @@ The outcomes of the conducted experiments are visually shown in \Fig~\ref{fig:ep
 	\caption{Performances of the BNN using the epistemic uncertainty during classification}
 	\label{fig:epistemic_class}
 \end{figure}
-
 
 An interesting fact worth to highlight here is the smoother incremental pattern observed in the accuracy progression. Specifically, as shown in \Fig~\ref{fig:epistemic_acc}, the accuracy gradually ascends to approximately $98.5\%$ at a confidence level of $0.9$, before making a jump to the trivial case of perfect accuracy ($100\%$) at full confidence ($1$). It is noteworthy that in the previous instance, the highest achievable accuracy was around $99.0\%$. While the difference may not be substantial, it implies an underlying distinction that might be hidden due to the already elevated accuracy values. A more comprehensive exploration of the efficacy of these approaches will be conducted later in this study.

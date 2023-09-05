@@ -8,13 +8,30 @@ from torch.distributions.one_hot_categorical import OneHotCategorical
 sys.path.append('./workspace/data/mnist_data')
 from cmnist_dataset import CMNISTDataset
 
+def get_aleatoric(p_hat):
+  mean_pred = torch.mean(p_hat, axis = 0)
+  pred_value = None
+
+  aleat_mat = torch.zeros(10,10)
+  for i in range(p_hat.shape[0]):
+    aleat_mat += torch.diag(p_hat[i]) - torch.outer(p_hat[i],p_hat[i])
+  return torch.mean(torch.diag(aleat_mat/p_hat.shape[0]))
+
+def get_epistemic_unc(p_hat):
+  mean_pred = torch.mean(p_hat, axis = 0)
+
+  epis_mat = torch.zeros(10,10)
+  for i in range(p_hat.shape[0]):
+    epis_mat += torch.outer((p_hat[i] - mean_pred), (p_hat[i] - mean_pred))
+  return torch.mean(torch.diag(epis_mat/p_hat.shape[0]))
 
 def evaluate_bnn(model, test_loader, classification_function, conf_level=0.5):
     with torch.no_grad():
         datasetLength = len(test_loader.dataset)
         testCorrect = 0
         testUnknown = 0
-        aleatoric_sum = -1
+        aleatoric_sum = 0
+        epistemic_sum = 0
         for data, target in test_loader:
             for j in range(0, data.shape[0]):
                 img = data[j]
@@ -27,10 +44,12 @@ def evaluate_bnn(model, test_loader, classification_function, conf_level=0.5):
                 pred_values = classification_function(p_hat, conf_level)
                 testCorrect += torch.sum(pred_values == y)
                 testUnknown += torch.sum(pred_values == -1)
+                aleatoric_sum += get_aleatoric(p_hat)
+                epistemic_sum += get_epistemic_unc(p_hat)
         accuracy = np.round(testCorrect * 100 / (datasetLength - testUnknown), 2)
         unknown_ration = np.round(testUnknown * 100 / datasetLength, 2)
         aleatoric = aleatoric_sum / datasetLength
-        return accuracy, unknown_ration, aleatoric
+        return accuracy, unknown_ration, aleatoric, epistemic_sum
 
 
 def evaluate_ann(model, test_loader):
@@ -55,6 +74,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
     accuracy_list = []
     unknown_ratio_list = []
     aleatoric_list = []
+    epistemic_list = []
     step_list = []
     level = 0
     for step_dir in dir_list:
@@ -65,13 +85,14 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
                           transform=transforms.ToTensor()),
             batch_size=128, shuffle=False)
         if is_bnn:
-            accuracy, unknown_ratio, aleatoric = evaluate_bnn(model, test_loader, classification_function)
+            accuracy, unknown_ratio, aleatoric, epistemic = evaluate_bnn(model, test_loader, classification_function)
             accuracy_list.append(accuracy)
             unknown_ratio_list.append(unknown_ratio)
             aleatoric_list.append(aleatoric)
+            epistemic_list.append(epistemic)
         else:
             accuracy_list.append(evaluate_ann(model, test_loader))
         step_list.append(float(step_dir))
         level += 1
         print('\r' + ' Evaluation: ' + str(round(100 * level / len(dir_list), 2)) + '% complete..', end="")
-    return accuracy_list, step_list, unknown_ratio_list, aleatoric_list
+    return accuracy_list, step_list, unknown_ratio_list, aleatoric_list, epistemic_list

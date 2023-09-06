@@ -109,6 +109,15 @@
 	
 	\import{./TextFiles/Robustness/}{RobNN.tex}
 	\import{./TextFiles/Robustness/}{RobBNN.tex}
+	
+	\chapter{Robustness evaluation}
+	
+	This chapter illustrates the practical application of the methods derived in the previous chapters, presenting experimental outcomes. To do this, a testing framework will be introduced, designed to be adaptable to any other MLM. These methodologies are founded on a black-box testing approach, wherein the framework assesses the model performance when exposed to perturbed operating conditions. In this study, the primary source of perturbations under consideration is the data itself. Hence, a set of potential alterations that could occur in a real-world application will be applied to the test data to simulate a perturbed environment.
+	
+	\import{./TextFiles/RobustnessEval/}{TestFramework.tex}
+	\import{./TextFiles/RobustnessEval/}{Alterations.tex}
+	\import{./TextFiles/RobustnessEval/}{ExperimentalResults.tex}
+	
 	\bibliographystyle{ieeetr}
 	
 	\bibliography{./OtherFiles/Bibliography}

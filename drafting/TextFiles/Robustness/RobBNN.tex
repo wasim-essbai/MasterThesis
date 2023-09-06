@@ -10,7 +10,7 @@ However, BNNs introduce a new dimension, which is the presence of unknown values
 
 One way to address this issue is to calculate a robustness metric using the same approach, but instead of using accuracy, the unknown ratio will be employed. This metric can be referred to as robustness against \textit{indecision}. This approach allows for the evaluation of the model robustness when it is uncertain or indecisive in its predictions, providing a more comprehensive assessment of its performance.
 
-\begin{definition} (Indecision robustness).
+\begin{definition}\label{def:robind} (Indecision robustness).
 	Let $C$ be a classifier, $tol(x)$ a tolerance function and $dep(x)$ a penalization function.
 	The robustness against indecision $robInd_A(C,D) \in [0,1]$ of a classifier $C$ w.r.t. alteration of type A in the range $[L_A, U_A]$ on a dataset $D$ is defined formally as:
 	\[

@@ -20,10 +20,17 @@
 \usepackage{url} 
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage[hidelinks]{hyperref}
 
 \newcommand{\Fig}[0]{Fig.}
 \newcommand{\Tab}[0]{Tab.}
 \newcommand{\Eq}[0]{Eq.}
+\newcommand{\Def}[0]{Def.}
+\newcommand{\Chap}[0]{Chap.}
+
+\newtheorem{definition}{Definition}[section]
+\newcounter{thm}
+\newtheorem{dfn}[thm]{Definition}
 
 \pagestyle{plain}
 %\input{preamble}
@@ -39,7 +46,7 @@
 		\Logo[43.332mm]{ImageFiles/unibg-mark}
 		\Divisione{Scuola di Ingegneria}
 		\Corso[Laurea Triennale]{Corso di Laurea Magistrale in Ingegneria Informatica\\Classe N. LM-32 – Classe delle lauree magistrali in Ingegneria Informatica}
-		\Titolo{Evaluating the Robustness of Bayesian Neural Networks for Improved Classification through Uncertainty Estimation}
+		\Titolo{Evaluating the Robustness of Bayesian Neural Networks by Exploiting Uncertainty Estimation}
 		\Punteggiatura{}
 		\NCandidato{Tesi di Laurea Magistrale}
 		\Candidato[1060652]{Wasim Essbai}
@@ -82,7 +89,7 @@
 	\import{./TextFiles/Case study/}{Network architecture.tex}
 	\import{./TextFiles/Case study/}{Training.tex}
 	
-	\chapter{Classification using uncertainty}
+	\chapter{Classification using uncertainty}\label{chap:c3}
 	
 	This chapter introduces a novel classification approach that leverages the uncertainty estimated by a BNN. The primary objective is to assess the practical utility of this estimated uncertainty. The idea behind this approach is to enable the network to identify situations where it lacks confidence in its predictions, thus allowing it to avoid from making decisions. To achieve this, a threshold for uncertainty will be defined, and whenever the uncertainty is below this threshold, the network will simply output "I don't know". 
 	The proposed method explores three distinct types of uncertainty. The first two types, epistemic and aleatoric uncertainties, have been previously discussed and remain consistent in their significance across different tasks. The third type corresponds to the variance of the predicted distribution, which might have a distinct interpretation and could potentially lead to different threshold as well. The threshold value must be proportional to the desired predictions confidence
@@ -94,6 +101,14 @@
 	\import{./TextFiles/Classification uncertainty/}{Penalization.tex}
 	\import{./TextFiles/Classification uncertainty/}{Comparison.tex}
 	
+	\chapter{Robustness}
+	
+	This chapter provides an overview of the current state of the art in testing machine learning models (MLMs). These approaches are applicable to a wide range of MLMs, including BNNs, which are the central focus of this thesis. Moreover, a novel approach for testing and evaluating BNNs will be introduced. The primary emphasis will be on assessing the robustness of BNNs, which is a crucial property in safety-critical applications.
+	
+	\import{./TextFiles/Robustness/}{StateOfArt.tex}
+	
+	\import{./TextFiles/Robustness/}{RobNN.tex}
+	\import{./TextFiles/Robustness/}{RobBNN.tex}
 	\bibliographystyle{ieeetr}
 	
 	\bibliography{./OtherFiles/Bibliography}

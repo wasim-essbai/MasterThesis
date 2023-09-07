@@ -541,12 +541,15 @@ class Zoom(Alteration):
         assert (isinstance(data, np.ndarray))
         if -0.000001 <= float(alteration_level) <= 0.000001:
             return data
+			
+		old_rows, old_cols = data.shape[:-1]
+		data = cv2.resize(data, (200, 200))
 
         # For multi-channel images we don't want to apply the zoom factor to
         # the RGB dimension, so instead we create a tuple of zoom factors,
         # one per array dimension, with 1's for any trailing dimensions after
         # the width and height.
-        h, w = data.shape[:-1]
+        h, w = data.shape[:2]
         zoom_tuple = (float(1 + alteration_level),) * 2 + (1,) * \
                      (data.ndim - 2)
         # Bounding box of the zoomed-in region within the input array
@@ -564,7 +567,9 @@ class Zoom(Alteration):
         out = out[trim_top:trim_top + h, trim_left:trim_left + w]
 
         data = out
-
+		
+		data = cv2.resize(data, (old_rows, old_cols))
+		
         assert (isinstance(data, np.ndarray))
         return data
 

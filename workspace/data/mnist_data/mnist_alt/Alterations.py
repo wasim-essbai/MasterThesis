@@ -561,7 +561,7 @@ class Zoom(Alteration):
         # trim off any extra pixels at the edges
         trim_top = ((out.shape[0] - h) // 2)
         trim_left = ((out.shape[1] - w) // 2)
-        out = out[trim_top:trim_top + h, trim_left:trim_left + w]
+        out = out[,trim_top:trim_top + h, trim_left:trim_left + w,]
 
         data = out
 

@@ -4,26 +4,49 @@ import os
 from torchvision import transforms
 import sys
 from torch.distributions.one_hot_categorical import OneHotCategorical
+from scipy import integrate
 
 sys.path.append('./workspace/data/mnist_data')
 from cmnist_dataset import CMNISTDataset
+from functions import linear_tolerance, linear_dist
+
 
 def get_aleatoric(p_hat):
-  mean_pred = torch.mean(p_hat, axis = 0)
-  pred_value = None
+    mean_pred = torch.mean(p_hat, axis=0)
+    pred_value = None
 
-  aleat_mat = torch.zeros(10,10)
-  for i in range(p_hat.shape[0]):
-    aleat_mat += torch.diag(p_hat[i]) - torch.outer(p_hat[i],p_hat[i])
-  return torch.mean(torch.diag(aleat_mat/p_hat.shape[0]))
+    aleat_mat = torch.zeros(10, 10)
+    for i in range(p_hat.shape[0]):
+        aleat_mat += torch.diag(p_hat[i]) - torch.outer(p_hat[i], p_hat[i])
+    return torch.mean(torch.diag(aleat_mat / p_hat.shape[0]))
+
 
 def get_epistemic_unc(p_hat):
-  mean_pred = torch.mean(p_hat, axis = 0)
+    mean_pred = torch.mean(p_hat, axis=0)
 
-  epis_mat = torch.zeros(10,10)
-  for i in range(p_hat.shape[0]):
-    epis_mat += torch.outer((p_hat[i] - mean_pred), (p_hat[i] - mean_pred))
-  return torch.mean(torch.diag(epis_mat/p_hat.shape[0]))
+    epis_mat = torch.zeros(10, 10)
+    for i in range(p_hat.shape[0]):
+        epis_mat += torch.outer((p_hat[i] - mean_pred), (p_hat[i] - mean_pred))
+    return torch.mean(torch.diag(epis_mat / p_hat.shape[0]))
+
+
+def get_robustness(y, x, maxAcc, th):
+    ua = np.max(x)
+    la = np.min(x)
+
+    y_tol = linear_tolerance(y, maxAcc, th, True)
+    y_int = y_tol * linear_dist(x, ua, la)
+    return integrate.trapezoid(y_int, x) / 2 + 0.5
+
+
+def get_robustness_ind(y, x, maxAcc, th):
+    ua = np.max(x)
+    la = np.min(x)
+
+    y_tol = linear_tolerance(y, maxAcc, th, False)
+    y_int = y_tol * linear_dist(x, ua, la)
+    return integrate.trapezoid(y_int, x) / 2 + 0.5
+
 
 def evaluate_bnn(model, test_loader, classification_function, conf_level=0.5):
     with torch.no_grad():

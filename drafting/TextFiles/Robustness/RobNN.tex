@@ -281,31 +281,30 @@ Alternatively, another way to compute robustness is by performing the inverse ca
 	Let $C$ be a classifier, $tol(x)$ a tolerance function and $dep(x)$ a penalization function.
 	The fragility $fr_A(C,D) \in [0,1]$ of a classifier $C$ w.r.t. alteration of type A in the range $[L_A, U_A]$ on a dataset $D$ is defined formally as:
 	\[
-		fr_A(C,D) = \int_{L_A}^{U_A} [tol(acc(C,D^{A_i}) - \Theta) + dep(acc(C,D^{A_i}) - \Theta)] \cdot p_A(i)\ di
+		fr_A(C,D) = \frac{\int_{L_A}^{U_A} [dep(acc(C,D^{A_i}) - \Theta) - tol(acc(C,D^{A_i}) - \Theta)] \cdot p_A(i)\ di}{2} + \frac{1}{2}
 	\]
 	
 	where $\Theta$ is a threshold referring to minimum accuracy accepted and $p_A$ is probability distribution of the alteration levels.
 \end{definition}
 
-In this definition, the functions $tol$ and $dep$ play a different roles. $tol$ quantifies the desired level of fragility to assign when the accuracy is above the minimum accepted threshold. Conversely, $dep$ refers to the desired penalization when the accuracy falls below $\Theta$. In this context, both $tol$ and $dep$ are positive quantities within the integral because they represent measures of the network scarcity.
-
-In the earlier definition, $tol$ represented a measure of goodness, while $dep$ represented a measure of badness. Consequently, $dep$ had a negative sign in front because the metric was robustness, which is a measure of goodness.
+In this definition, the functions $tol$ and $dep$ play the same roles as in \Def~\ref{def:rob3}.$tol$ quantifies the desired level of reward to assign when the accuracy is above the minimum accepted threshold. Conversely, $dep$ refers to the desired penalization when the accuracy falls below $\Theta$. This formula mirrors totally the one used to compute the robustness.
 
 To better understand this metric, an application example will be presented. In particular, both $tol$ and $dep$ will be linear, with $\Theta= 85\%$ and $maxAcc = 100 \%$. The formal expressions for these two functions are as follows:
 \[
 	tol(acc(C,D^{A_i}) - \Theta) = \begin{cases}
-		\frac{maxAcc - acc(C,D^{A_i})}{maxAcc - \Theta}  \ for  \ acc(C,D^{A_i}) \ge \Theta\\
+		\frac{min(acc(C,D^{A_i}), maxAcc) - \Theta}{maxAcc - \Theta}  \ for  \ acc(C,D^{A_i}) \ge \Theta\\
 		0  \ \ \ \ \ for  \ acc(C,D^{A_i}) < \Theta
 	\end{cases}
 \]
 \[
 	dep(acc(C,D^{A_i}) - \Theta) = \begin{cases}
 		0 \ \ \ \ \ for \ acc(C,D^{A_i}) \ge \Theta\\
-		\frac{maxAcc - acc(C,D^{A_i})}{maxAcc} \ for  \ acc(C,D^{A_i}) < \Theta
+		\frac{\Theta - min(acc(C,D^{A_i}), maxAcc)}{\Theta - maxAcc} \ for  \ acc(C,D^{A_i}) < \Theta
 	\end{cases}
 \]
 
-\Fig~\ref{fig:frag_example} provides a graphical illustration of the operations involved in the metric. This formula is more intuitive because both terms in the integral contribute with the same sign to fragility, simplifying the metric interpretation.
+\Fig~\ref{fig:frag_example} provides a graphical illustration of the operations involved in the metric. This formula underlines a different aspect, the idea here is to measure a "badness" property of the network.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{ImageFiles/ANNRob/frag_example}

@@ -14,7 +14,7 @@ One way to address this issue is to calculate a robustness metric using the same
 	Let $C$ be a classifier, $tol(x)$ a tolerance function and $dep(x)$ a penalization function.
 	The robustness against indecision $robInd_A(C,D) \in [0,1]$ of a classifier $C$ w.r.t. alteration of type A in the range $[L_A, U_A]$ on a dataset $D$ is defined formally as:
 	\[
-		robInd_A(C,D) = \int_{L_A}^{U_A} [tol(\gamma - ind(C,D^{A_i})) + dep(\gamma - ind(C,D^{A_i}))] \cdot p_A(i)\ di
+		robInd_A(C,D) = \frac{\int_{L_A}^{U_A} [tol(\gamma - ind(C,D^{A_i})) - dep(\gamma - ind(C,D^{A_i}))] \cdot p_A(i)\ di}{2} + \frac{1}{2}
 	\]
 	
 	where $\gamma$ is a threshold referring to maximum unknown ratio accepted, $p_A$ is probability distribution of the alteration levels and $ind(C,D^{A_i})$ is the unknown ratio of $C$ evaluated on $D^{A_i}$.

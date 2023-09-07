@@ -82,11 +82,11 @@ class Alteration(ABC):
                                alteration_level: float) -> np.ndarray:
         result_list = []
         for i in range(data.shape[0]):
-          altered_data = self.apply_alteration(data[i], alteration_level)
-          if np.max(altered_data) != 0:
-            result_list.append(altered_data * (255/ np.max(altered_data)))
-          else:
-            result_list.append(altered_data)
+            altered_data = self.apply_alteration(data[i], alteration_level)
+            if np.max(altered_data) != 0:
+                result_list.append(altered_data * (255 / np.max(altered_data)))
+            else:
+                result_list.append(altered_data)
         return np.stack(result_list, axis=0)
 
     @abstractmethod
@@ -541,9 +541,9 @@ class Zoom(Alteration):
         assert (isinstance(data, np.ndarray))
         if -0.000001 <= float(alteration_level) <= 0.000001:
             return data
-			
-		    old_rows, old_cols = data.shape[:-1]
-		    data = cv2.resize(data, (200, 200))
+
+        old_rows, old_cols = data.shape[:-1]
+        data = cv2.resize(data, (200, 200))
 
         # For multi-channel images we don't want to apply the zoom factor to
         # the RGB dimension, so instead we create a tuple of zoom factors,
@@ -567,9 +567,8 @@ class Zoom(Alteration):
         out = out[trim_top:trim_top + h, trim_left:trim_left + w]
 
         data = out
-		
-		    data = cv2.resize(data, (old_rows, old_cols))
-		
+        data = cv2.resize(data, (old_rows, old_cols))
+
         assert (isinstance(data, np.ndarray))
         return data
 

@@ -16,4 +16,13 @@ def linear_dist(x, ua, la):
         else:
             result.append(0)
     return np.array(result)
+	
+def uniform_dist(x, ua, la):
+    result = []
+    for i in x:
+        if la <= i <= ua:
+            result.append(1 / (ua - la))
+        else:
+            result.append(0)
+    return np.array(result)
 

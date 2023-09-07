@@ -34,8 +34,8 @@ def get_robustness(y, x, maxAcc, th):
     ua = np.max(x)
     la = np.min(x)
 
-    y_tol = uniform_dist(y, maxAcc, th, True)
-    y_int = y_tol * linear_dist(x, ua, la)
+    y_tol = linear_tolerance(y, maxAcc, th, True)
+    y_int = y_tol * uniform_dist(x, ua, la)
     return integrate.trapezoid(y_int, x) / 2 + 0.5
 
 
@@ -43,8 +43,8 @@ def get_robustness_ind(y, x, maxAcc, th):
     ua = np.max(x)
     la = np.min(x)
 
-    y_tol = uniform_dist(y, maxAcc, th, False)
-    y_int = y_tol * linear_dist(x, ua, la)
+    y_tol = linear_tolerance(y, maxAcc, th, False)
+    y_int = y_tol * uniform_dist(x, ua, la)
     return integrate.trapezoid(y_int, x) / 2 + 0.5
 
 

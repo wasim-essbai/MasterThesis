@@ -555,7 +555,7 @@ class Zoom(Alteration):
         top = (h - zh) // 2
         left = (w - zw) // 2
 
-        out = zoom(data[top:top + zh, left:left + zw,], zoom_tuple)
+        out = zoom(data[,top:top + zh, left:left + zw,], zoom_tuple)
 
         # `out` might still be slightly larger than `data` due to rounding, so
         # trim off any extra pixels at the edges

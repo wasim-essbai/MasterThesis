@@ -546,7 +546,7 @@ class Zoom(Alteration):
         # the RGB dimension, so instead we create a tuple of zoom factors,
         # one per array dimension, with 1's for any trailing dimensions after
         # the width and height.
-        h, w = data.shape[:2]
+        h, w = data.shape[:-1]
         zoom_tuple = (float(1 + alteration_level),) * 2 + (1,) * \
                      (data.ndim - 2)
         # Bounding box of the zoomed-in region within the input array
@@ -555,13 +555,13 @@ class Zoom(Alteration):
         top = (h - zh) // 2
         left = (w - zw) // 2
 
-        out = zoom(data[,top:top + zh, left:left + zw,], zoom_tuple)
+        out = zoom(data[top:top + zh, left:left + zw], zoom_tuple)
 
         # `out` might still be slightly larger than `data` due to rounding, so
         # trim off any extra pixels at the edges
         trim_top = ((out.shape[0] - h) // 2)
         trim_left = ((out.shape[1] - w) // 2)
-        out = out[,trim_top:trim_top + h, trim_left:trim_left + w,]
+        out = out[trim_top:trim_top + h, trim_left:trim_left + w]
 
         data = out
 

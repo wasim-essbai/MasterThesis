@@ -48,7 +48,7 @@ def get_robustness_ind(y, x, maxAcc, th):
     return integrate.trapezoid(y_int, x) / 2 + 0.5
 
 
-def evaluate_bnn(model, test_loader, classification_function, conf_level=0.5):
+def evaluate_bnn(model, test_loader, classification_function, conf_level=0.8):
     with torch.no_grad():
         datasetLength = len(test_loader.dataset)
         testCorrect = 0

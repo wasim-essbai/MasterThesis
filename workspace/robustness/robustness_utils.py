@@ -18,7 +18,7 @@ def get_aleatoric(p_hat):
     mean_pred = torch.mean(p_hat, axis=0)
     pred_value = None
 
-    aleat_mat = torch.zeros(10, 10)
+    aleat_mat = torch.zeros(10, 10).to(device)
     for i in range(p_hat.shape[0]):
         aleat_mat += torch.diag(p_hat[i]) - torch.outer(p_hat[i], p_hat[i])
     return torch.mean(torch.diag(aleat_mat / p_hat.shape[0]))
@@ -27,7 +27,7 @@ def get_aleatoric(p_hat):
 def get_epistemic_unc(p_hat):
     mean_pred = torch.mean(p_hat, axis=0)
 
-    epis_mat = torch.zeros(10, 10)
+    epis_mat = torch.zeros(10, 10).to(device)
     for i in range(p_hat.shape[0]):
         epis_mat += torch.outer((p_hat[i] - mean_pred), (p_hat[i] - mean_pred))
     return torch.mean(torch.diag(epis_mat / p_hat.shape[0]))

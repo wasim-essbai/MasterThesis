@@ -9,6 +9,7 @@ from scipy import integrate
 sys.path.append('./workspace/data/mnist_data')
 from cmnist_dataset import CMNISTDataset
 from functions import linear_tolerance, linear_dist, uniform_dist
+from result_eval import ResultEval
 
 # set the device we will be using to train the model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -51,11 +52,11 @@ def get_robustness_ind(y, x, maxAcc, th):
     return integrate.trapezoid(y_int, x) / 2 + 0.5
 
 
-def evaluate_bnn(model, test_loader, classification_function, conf_level=0.8):
+def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
     with torch.no_grad():
         datasetLength = len(test_loader.dataset)
-        testCorrect = 0
-        testUnknown = 0
+        testCorrect = torch.zeros(len(classification_functions))
+        testUnknown = torch.zeros(len(classification_functions))
         aleatoric_sum = 0
         epistemic_sum = 0
         for data_hat, target_hat in test_loader:
@@ -68,15 +69,23 @@ def evaluate_bnn(model, test_loader, classification_function, conf_level=0.8):
                     dist_pred = model(img.view(1, -1))
                     p_hat_list.append(dist_pred.mean.squeeze())
                 p_hat = torch.stack(p_hat_list)
-                pred_values = classification_function(p_hat, conf_level)
-                testCorrect += torch.sum(pred_values == y)
-                testUnknown += torch.sum(pred_values == -1)
+
+                pred_values = []
+                for cf in classification_functions:
+                    pred_values.append(cf(p_hat, conf_level))
+                for i in range(len(pred_values)):
+                    testCorrect[i] += torch.sum(pred_values == y)
+                    testUnknown[i] += torch.sum(pred_values == -1)
                 aleatoric_sum += get_aleatoric(p_hat)
                 epistemic_sum += get_epistemic_unc(p_hat)
-        accuracy = torch.round(testCorrect * 100 / (datasetLength - testUnknown), decimals=2)
-        unknown_ration = torch.round(testUnknown * 100 / datasetLength, decimals=2)
+        accuracy = []
+        unknown_ratio = []
+        for i in range(len(classification_functions)):
+            accuracy.append(torch.round(testCorrect[i] * 100 / (datasetLength - testUnknown[i]), decimals=2))
+            unknown_ratio.append(torch.round(testUnknown[i] * 100 / datasetLength, decimals=2))
         aleatoric = aleatoric_sum / datasetLength
-        return accuracy, unknown_ration, aleatoric, epistemic_sum
+        epistemic = epistemic_sum / datasetLength
+        return accuracy, unknown_ratio, aleatoric, epistemic
 
 
 def evaluate_ann(model, test_loader):
@@ -95,10 +104,18 @@ def evaluate_ann(model, test_loader):
         return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
 
 
-def evaluate_alteration(model, alteration_name, is_bnn=True, classification_function=None):
+def evaluate_alteration(model, alteration_name, is_bnn=True, classification_functions=None):
     base_path = f'/content/drive/MyDrive/MasterThesis/workspace/mnist_alt/{alteration_name}'
 
     dir_list = next(os.walk(base_path))[1]
+    result_evaluation = None
+    if classification_functions is not None:
+        result_evaluation = []
+        for cf in classification_functions:
+            result_evaluation = ResultEval(cf.__name__)
+    else:
+        result_evaluation = [ResultEval(None)]
+
     accuracy_list = []
     unknown_ratio_list = []
     aleatoric_list = []
@@ -113,14 +130,21 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
                           transform=transforms.ToTensor()),
             batch_size=128, shuffle=False)
         if is_bnn:
-            accuracy, unknown_ratio, aleatoric, epistemic = evaluate_bnn(model, test_loader, classification_function)
-            accuracy_list.append(accuracy)
-            unknown_ratio_list.append(unknown_ratio)
-            aleatoric_list.append(aleatoric)
-            epistemic_list.append(epistemic)
+            accuracy, unknown_ratio, aleatoric, epistemic = evaluate_bnn(model, test_loader, classification_functions)
+            for i in range(len(accuracy)):
+                result_evaluation[i].accuracy.append(accuracy[i].cpu())
+                result_evaluation[i].unkn.append(unknown_ratio[i].cpu())
+                result_evaluation[i].aleatoric.append(aleatoric.cpu())
+                result_evaluation[i].epistemic.append(epistemic.cpu())
         else:
-            accuracy_list.append(evaluate_ann(model, test_loader))
+            accuracy = evaluate_ann(model, test_loader)
+            result_evaluation.accuracy.append(accuracy.cpu())
+            #accuracy_list.append(evaluate_ann(model, test_loader))
+            #result_evaluation
         step_list.append(float(step_dir))
         level += 1
+
         print('\r' + ' Evaluation: ' + str(round(100 * level / len(dir_list), 2)) + '% complete..', end="")
-    return accuracy_list, step_list, unknown_ratio_list, aleatoric_list, epistemic_list
+    for re in result_evaluation:
+        re.steps = step_list
+    return result_evaluation

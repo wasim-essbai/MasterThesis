@@ -112,7 +112,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
     if classification_functions is not None:
         result_evaluation = []
         for cf in classification_functions:
-            result_evaluation = ResultEval(cf.__name__)
+            result_evaluation.append(ResultEval(cf.__name__))
     else:
         result_evaluation = [ResultEval(None)]
 

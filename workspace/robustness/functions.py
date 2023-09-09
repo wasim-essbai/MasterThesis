@@ -5,7 +5,7 @@ def linear_tolerance(y, maxAcc, th, is_acc):
     if is_acc:
         return np.maximum(np.minimum(y, maxAcc) - th, 0) / (maxAcc - th)
     else:
-        return np.maximum(th - np.minimum(y, maxAcc), 0) / (th - maxAcc)
+        return np.maximum(th - np.maximum(y, maxAcc), 0) / (th - maxAcc)
 
 
 def linear_dist(x, ua, la):

@@ -10,6 +10,9 @@ sys.path.append('./workspace/data/mnist_data')
 from cmnist_dataset import CMNISTDataset
 from functions import linear_tolerance, linear_dist, uniform_dist
 
+# set the device we will be using to train the model
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def get_aleatoric(p_hat):
     mean_pred = torch.mean(p_hat, axis=0)
@@ -55,7 +58,8 @@ def evaluate_bnn(model, test_loader, classification_function, conf_level=0.8):
         testUnknown = 0
         aleatoric_sum = 0
         epistemic_sum = 0
-        for data, target in test_loader:
+        for data_hat, target_hat in test_loader:
+            (data, target) = (data_hat.to(device), target_hat.to(device))
             for j in range(0, data.shape[0]):
                 img = data[j]
                 y = target[j]
@@ -81,7 +85,8 @@ def evaluate_ann(model, test_loader):
         testCorrect = 0
         level = 0
 
-        for data, target in test_loader:
+        for data_hat, target_hat in test_loader:
+            (data, target) = (data_hat.to(device), target_hat.to(device))
             pred = model(data.view(data.shape[0], -1))
 
             pred_values = torch.max(pred, 1).indices

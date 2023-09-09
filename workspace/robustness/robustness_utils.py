@@ -55,8 +55,8 @@ def get_robustness_ind(y, x, maxAcc, th):
 def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
     with torch.no_grad():
         datasetLength = len(test_loader.dataset)
-        testCorrect = torch.zeros(len(classification_functions))
-        testUnknown = torch.zeros(len(classification_functions))
+        testCorrect = torch.zeros(len(classification_functions)).cpu()
+        testUnknown = torch.zeros(len(classification_functions)).cpu()
         aleatoric_sum = 0
         epistemic_sum = 0
         for data_hat, target_hat in test_loader:
@@ -74,8 +74,8 @@ def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
                 for cf in classification_functions:
                     pred_values.append(cf(p_hat, conf_level))
                 for i in range(len(pred_values)):
-                    testCorrect[i] += torch.sum(pred_values[i] == y.cpu())
-                    testUnknown[i] += torch.sum(pred_values[i] == -1)
+                    testCorrect[i] += torch.sum(pred_values[i].cpu() == y.cpu())
+                    testUnknown[i] += torch.sum(pred_values[i].cpu() == -1)
                 aleatoric_sum += get_aleatoric(p_hat)
                 epistemic_sum += get_epistemic_unc(p_hat)
         accuracy = []

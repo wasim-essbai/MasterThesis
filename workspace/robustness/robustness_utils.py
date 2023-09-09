@@ -73,8 +73,8 @@ def evaluate_bnn(model, test_loader, classification_function, conf_level=0.8):
                 testUnknown += torch.sum(pred_values == -1)
                 aleatoric_sum += get_aleatoric(p_hat)
                 epistemic_sum += get_epistemic_unc(p_hat)
-        accuracy = np.round(testCorrect * 100 / (datasetLength - testUnknown), 2)
-        unknown_ration = np.round(testUnknown * 100 / datasetLength, 2)
+        accuracy = torch.round(testCorrect * 100 / (datasetLength - testUnknown), 2)
+        unknown_ration = torch.round(testUnknown * 100 / datasetLength, 2)
         aleatoric = aleatoric_sum / datasetLength
         return accuracy, unknown_ration, aleatoric, epistemic_sum
 

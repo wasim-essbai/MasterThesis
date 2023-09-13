@@ -36,7 +36,8 @@ class CMNISTDataset(Dataset):
             idx = idx.tolist()
 
         img, target = self.data[idx], int(self.targets[idx])
-
+        img = Image.fromarray(img.numpy(), mode="L")
+        
         if self.transform is not None:
             img = self.transform(img)
         

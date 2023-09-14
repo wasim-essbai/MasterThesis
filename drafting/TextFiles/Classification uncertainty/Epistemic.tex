@@ -6,7 +6,8 @@ The second analysis is about the epistemic uncertainty. While this form of uncer
 	epistemic = diag\{\frac{1}{T} \sum_{t=1}^{T} [\hat{p}_t - \bar{p}]^{\otimes 2}\}
 \]
 
-In this context, establishing an explicit upper limit for the uncertainty is not an easy task like in the previous case. Conversely, the lower limit is unequivocally $0$, given the inherent non-negative nature of the quantities. Hence, a series of empirical experiments were conducted to find a reasonable threshold range. The outcome determined an upper limit of $0.02$, since values surpassing this upper limit exhibited the same accuracy, indicating that the behavior is that same. As previously, the threshold is calculated through the formula:
+In this context, establishing an explicit upper limit for the uncertainty is not an easy task, like in the previous case. Conversely, the lower limit is unequivocally $0$, given the inherent non-negative nature of the quantities. Hence, a series of empirical experiments were conducted to find a reasonable threshold range. Specifically, these experiments involved evaluating the network on the test dataset and determining the maximum epistemic uncertainty value.
+The outcome determined an upper limit of $0.02$, since values surpassing this upper limit exhibited the same accuracy, indicating that the behavior is that same. As previously, the threshold is calculated through the formula:
 
 \[
 	threshold = 0.02 * (1 - conf \_ level), \ with \ con \_ level \in [0,1]

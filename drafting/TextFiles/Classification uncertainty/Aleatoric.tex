@@ -5,11 +5,13 @@ The first uncertainty type analyzed is the aleatoric. As said before, this uncer
 	aleatoric = diag\{\frac{1}{T} \sum_{t=1}^{T} [diag(\hat{p}_t) - \hat{p}_t^{\otimes 2}]\}
 \]
 
+where $T$ is the number of predictions made for the same input, and $p_t$ is the $t^{th}$ prediction.
+
 A key point is the determination of the threshold value. In order to do this, the upper and lower values of this uncertainty  were determined:
 
 \begin{itemize}
-	\item Case minimum uncertainty: This happens when $\hat{p}$ has all terms equal to 0 except one with is 1, and its position identifies the predicted class. Applying the formula it results in $aleatoric = 0$, that aligns the hypothesis made. 
-	\item Case maximum uncertainty: The prediction is uncertain at the maximum level when $\hat{p}$ has all values the same one. In particular the value is $\frac{1}{m}$, where m is the number of classes to predict. In this case the uncertainty is $aleatoric = \frac{m-1}{m^2}$, for this specific case study $m = 10$, therefore $aleatoric = 0.09$.
+	\item Case minimum uncertainty: This happens when $\hat{p}$ has all terms equal to 0 except one which is 1, and its position identifies the predicted class. Applying the formula, it results in $aleatoric = 0$, that aligns the hypothesis made. 
+	\item Case maximum uncertainty: The prediction is uncertain at the maximum level when $\hat{p}$ has only equal values. In particular the value is $\frac{1}{m}$, where m is the number of classes to predict. In this case the uncertainty is $aleatoric = \frac{m-1}{m^2}$, for this specific case study $m = 10$, therefore $aleatoric = 0.09$.
 \end{itemize}
 
 Given the upper and lower bounds, a linear interpolation is employed to calculate the threshold value based on the desired confidence level. This method allows for the estimation of an appropriate threshold that aligns with the desired confidence level. 
@@ -43,4 +45,4 @@ To evaluate this approach, a series of experimental simulations were conducted t
 	\label{fig:aleatoric_class}
 \end{figure}
 
-Setting $conf \_ level = 1$ renders the approach ineffective as the network will only produce unknown values, rendering the predictions useless. This arises the necessity to find a balance between the confidence level and the number of unknowns, which is a consideration for the specific task. In non-critical applications, opting for a low confidence level might be preferable. In such cases, obtaining a prediction, even if it turns out to be incorrect, is prioritized due to the potential high economic consequences associated with halting the system. On the other hand, in critical applications, like the medical field, ensuring certainty in decisions becomes paramount. If the network lacks confidence in its predictions, it is essential to pause the decision-making process and request the intervention of a qualified expert, such as a doctor, to ensure accuracy and mitigate potential risks.
+Setting $conf \_ level = 1$ renders the approach ineffective as the network will only produce unknown values, rendering the predictions useless. This arises the need to find a balance between the confidence level and the number of unknowns, which is a consideration for the specific task. In non-critical applications, opting for a low confidence level might be preferable. In such cases, obtaining a prediction, even if it turns out to be incorrect, is prioritized due to the potential high economic consequences associated with halting the system. On the other hand, in critical applications, like the medical field, ensuring certainty in decisions becomes paramount. If the network lacks confidence in its predictions, it is essential to pause the decision-making process and request the intervention of a qualified expert, such as a doctor, to ensure accuracy and mitigate potential risks.

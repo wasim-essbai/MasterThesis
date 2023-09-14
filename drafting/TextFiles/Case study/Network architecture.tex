@@ -24,9 +24,15 @@ During the experimentation detailed in \cite{LeCun:90}, the network was trained 
 
 \subsection{Proposed architecture}
 
-Although for image processing tasks CNNs are typically considered a more advantageous choice, for this case study, a MLP has been chosen as network type. The reason behind this decision is the more understandable and intuitive MLP structure, which is well-suited to the main objective of this work. The primary focus here is not on image classification, but rather on the investigation of the Bayesian approach to neural networks. Therefore, the simplicity and transparency of the MLP make it a suitable choice.
+Although for image processing tasks CNNs are typically considered a more advantageous choice, for this case study, a MLP has been chosen as network type. The reason behind this decision is the more understandable and intuitive MLP structure, which is well-suited to the main objective of this work.
 
-In this study two neural networks were developed: one standard and one Bayesian. To ensure fair comparison, both networks have the same architecture. Each model consists of three \textit{Linear} layers, representing fully connected layers:
+CNNs rely on convolutional layers, which utilize a mathematical operation known as convolution. The learnable parameters in convolutional layer are the values of the kernel functions applied. Nevertheless, during the design phase, CNNs involve more hyperparameters to specify, such as the number of filters, their dimensions, stride, and padding. While this enhances CNNs effectiveness when dealing with grid-scale data, it simultaneously adds complexity to the model interpretation. In contrast, MLPs offer a more straightforward structure, as every neuron connects with all others, and the modifiable parameters consist of the connection weights.
+
+Since the primary focus here is not on image classification, but rather on the investigation of the Bayesian approach to NNs. Therefore, the simplicity and transparency of the MLP make it a suitable choice.
+
+In this thesis, the term standard NN will denote an MLP that does not employ Bayesian inference.
+
+In this study two NNs were developed: one standard and Bayesian. To ensure fair comparison, both networks have the same architecture. Each model consists of three \textit{Linear} layers, representing fully connected layers:
 
 \begin{enumerate}
 	\item Input layer: Composed by 784 neurons, corresponding to the input data size;

@@ -67,12 +67,12 @@ The true power of ANNs emerges from the composition of specific types of AFs, wh
 \vspace{0.2cm}
 \textbf{Sigmoid}
 
-The sigmoid function maps the input to a smooth S-shaped curve, producing outputs between 0 and 1. It is suitable for binary classification problems and can be used in the output layer of a neural network. However, it is important to note that the sigmoid function suffers from the issue of gradient vanishing, making it less suitable for deep neural networks. In \Fig~\ref{fig:sigmoid} is shown a plot of the sigmoid function.
+The sigmoid function maps the input to a smooth S-shaped curve, producing outputs between 0 and 1. It is suitable for binary classification problems and can be used in the output layer of a NN. However, it is important to note that the sigmoid function suffers from the issue of gradient vanishing, making it less suitable for deep NNs. In \Fig~\ref{fig:sigmoid} is shown a plot of the sigmoid function.
 
 \vspace{0.2cm}
 \textbf{Rectified Linear Unit}
 
-The Rectified Linear Unit (ReLU), shown in \Fig~\ref{fig:relu} sets the output to zero for negative inputs and maintains a linear relationship for positive inputs. It is widely used in hidden layers of deep neural networks due to its simplicity and ability to mitigate the vanishing gradient problem. The ReLU function will be widely used in this case study.
+The Rectified Linear Unit (ReLU), shown in \Fig~\ref{fig:relu} sets the output to zero for negative inputs and maintains a linear relationship for positive inputs. It is widely used in hidden layers of deep NNs due to its simplicity and ability to mitigate the vanishing gradient problem. The ReLU function will be widely used in this case study.
 
 \vspace{0.2cm}
 \textbf{Hyperbolic Tangent Function}
@@ -109,7 +109,7 @@ The softmax function is frequently employed in the output layer of an ANN for mu
 
 \subsection{Layers}
 
-As mentioned earlier, ANNs consist of numerous fundamental computational units known as neurons. These neurons are arranged in \textit{layers} which are interconnected with each other. In an artificial neural network (ANN), there can be multiple layers that can be classified into three main categories:
+As mentioned earlier, ANNs consist of numerous fundamental computational units known as neurons. These neurons are arranged in \textit{layers} which are interconnected with each other. In an ANN, there can be multiple layers that can be classified into three main categories:
 
 \begin{itemize}
 	\item \textit{Input} layer: The input layer receives the initial data or features that are fed into the network. Each neuron in this layer represents a specific input feature, and there is usually one neuron per input feature.
@@ -121,9 +121,9 @@ As mentioned earlier, ANNs consist of numerous fundamental computational units k
 
 Some networks may have additional types of layers, such as \textit{recurrent} layers for sequential data or \textit{convolutional} layers for image processing. However, the input, hidden, and output layers are the three fundamental classes that are commonly found in most ANNs.
 
-The input and output layers are fundamental components of any ANN. When at least one hidden layer is introduced, the network becomes a \textit{deep} neural network. By increasing the depth, i.e. number of layers, or width, i.e. number of neurons per layer, the network expressiveness can be enhanced, enabling it to model complex data and processes.
+The input and output layers are fundamental components of any ANN. When at least one hidden layer is introduced, the network becomes a \textit{deep} NN. By increasing the depth, i.e. number of layers, or width, i.e. number of neurons per layer, the network expressiveness can be enhanced, enabling it to model complex data and processes.
 
-Although there are certain guidelines for the selection of network architecture, there is currently no theory able to determine the optimal depth and width of a neural network. The selection process largely relies on experimentation and iterative refinement.
+Although there are certain guidelines for the selection of network architecture, there is currently no theory able to determine the optimal depth and width of a NN. The selection process largely relies on experimentation and iterative refinement.
 
 An ANN with a low number of neurons may not be able to properly capture the complexities of the data, resulting in high training error. On the other side, an excessive number of neurons may lead to overfitting, where the network becomes too specialized on the training data, resulting in limited generalization capability on unseen data.
 
@@ -131,7 +131,7 @@ Achieving the right balance between model complexity and generalization capabili
 
 \subsection{Multilayer perceptron}
 
-One of the most typical \textit{feed-forward} neural networks type is the \textit{multilayer perceptron} (MLP). It is essentially an ANN that includes at least one hidden layer. In the MLP, each neuron in a given layer is fully connected to all the neurons in both the previous and subsequent layers. This connectivity arrangement enables the flow of information in a unidirectional manner, from the input layer through the hidden layers to the output layer.  An example of a MLP with one hidden layer is shown in \Fig~\ref{fig:mlp}.
+One of the most typical \textit{feed-forward} NNs type is the \textit{multilayer perceptron} (MLP). It is essentially an ANN that includes at least one hidden layer. In the MLP, each neuron in a given layer is fully connected to all the neurons in both the previous and subsequent layers. This connectivity arrangement enables the flow of information in a unidirectional manner, from the input layer through the hidden layers to the output layer.  An example of a MLP with one hidden layer is shown in \Fig~\ref{fig:mlp}.
 
 \begin{figure}[h]
 	\centering
@@ -146,7 +146,7 @@ Furthermore, the MLP is not well-suited for tasks involving image processing, pa
 
 To overcome these limitations, other types of ANN, such as \textit{convolutional} neural networks (CNNs), have been developed specifically for image processing tasks. CNNs leverage convolutional layers and pooling operations to capture local patterns and spatial relationships, making them more effective in tasks like image recognition and classification.
 
-In this particular case study, an MLP will be utilized due to its simple and comprehensible architecture. While there may be other neural network architectures better suited for certain tasks, the choice of an MLP is driven by the need for simplicity and interpretability. By using an MLP, the focus can be placed on understanding the underlying mechanisms and interpreting the results.
+In this particular case study, an MLP will be utilized due to its simple and comprehensible architecture. While there may be other NN architectures better suited for certain tasks, the choice of an MLP is driven by the need for simplicity and interpretability. By using an MLP, the focus can be placed on understanding the underlying mechanisms and interpreting the results.
 
 \subsection{Training}
 
@@ -167,7 +167,7 @@ In this case study, specifically with the utilization of an MLP, the applied lea
 	\item \textit{Backward} Propagation: The error calculated in the forward propagation phase is propagated backward through the network. The gradients of the error with respect to the network's parameters (weights and biases) are computed. These gradients are then used to adjust the parameters, updating them in a way that minimizes the error.
 \end{enumerate}
 
-The two phases described can be illustrated in \Fig~\ref{fig:backprop}. During the forward phase, the neural network computes the predicted output $\hat{y}$ based on the input data. In the backward phase, the network updates its weights by utilizing the gradient of the cost function $J$ with respect to the weights. This gradient provides the necessary information for adjusting the weights in a way that minimizes the cost function and improves the overall performance of the network.
+The two phases described can be illustrated in \Fig~\ref{fig:backprop}. During the forward phase, the NN computes the predicted output $\hat{y}$ based on the input data. In the backward phase, the network updates its weights by utilizing the gradient of the cost function $J$ with respect to the weights. This gradient provides the necessary information for adjusting the weights in a way that minimizes the cost function and improves the overall performance of the network.
 
 \Fig~\ref{fig:backprop} visually represents these two phases, showcasing the flow of information from the input through the hidden layers to the output layer during the forward phase, and the subsequent backpropagation of the gradients during the backward phase for weight updates.
 

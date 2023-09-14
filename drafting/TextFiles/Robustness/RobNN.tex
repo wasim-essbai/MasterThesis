@@ -24,11 +24,11 @@ Based on these considerations, it is possible to give a general definition of al
  
 The notion of "level" refers to the intensity of the applied transformation. For instance, consider the addition of white noise to the input. In this context, the variance of the added noise serves as a parameter that determines the level of intensity for the transformation.
 
-This concept underlines the complexity in defining robustness. As highlighted by the introduction of the alteration concept, a network robustness is not a straightforward to define. Rather, it refers to the specific alteration type under consideration. Furthermore, within each alteration type, there can exist multiple levels of intensity. Consequently, a network can be robust in relation to a particular alteration type and corresponding intensity level.
+This concept underlines the complexity in defining robustness. As highlighted by the introduction of the alteration concept, a network robustness is not a straightforward quantity to define. Rather, it refers to the specific alteration type under consideration. Furthermore, within each alteration type, there can exist multiple levels of intensity. Consequently, a network can be robust in relation to a particular alteration type and corresponding intensity level.
 
 Following these considerations we introduce the robustness definition proposed in \cite{9176802}, which takes into account all these aspects. 
 
-\begin{definition} (Robustness)
+\begin{definition}\label{def:rob} (Robustness)
 	The robustness $rob_A(C,D) \in [0,1]$ of a classifier $C$ w.r.t. alteration of type A in the range $[L_A, U_A]$ on a dataset $D$ is defined the percentage of alteration values for which the accuracy is above a threshold $\Theta$. Formally:
 	\[
 		rob_A(C,D) = \frac{\int_{L_A}^{U_A} H(acc(C,D^{A_i}) - \Theta) \ di}{L_A - U_A}
@@ -76,7 +76,7 @@ The idea to extend the formula is to replace the $H$ function with a generic fun
 The tolerance function can be interpreted as the reward given for being above the threshold $\Theta$. It can be defined in several ways, based also on the specific application and the desired performance. Here there will be presented some classical functions the could be applied:
 
 \begin{itemize}
-	\item \textit{Uniform tolerance}: With this function all the accuracy values above $\Theta$ are rewarded equally. This is the case leads back to the given definition. Formally: 
+	\item \textit{Uniform tolerance}: With this function all the accuracy values above $\Theta$ are rewarded equally. This is the case leads back to formula in \Def~\ref{def:rob}. Formally: 
 	\[
 		tol(acc(C,D^{A_i}) - \Theta) = H(acc(C,D^{A_i}) - \Theta)
 	\]
@@ -181,8 +181,12 @@ With this concept in mind it possible to introduce a second extension of the rob
 In this new definition, the addition of $\frac{1}{2}$ serves to prevent negative values.
 
 To provide some intuition, consider the worst-case scenario where accuracy consistently falls below the threshold, assuming maximum penalization.
-The term $\frac{\int_{L_A}^{U_A} tol(acc(C,D^{A_i}) - \Theta) - dep(acc(C,D^{A_i}) - \Theta)\ di}{(U_A - L_A)}$ would give $-1$.
-With the additional terms, this result is adjusted to $-\frac{1}{2} + \frac{1}{2} = 0$, which aligns with the intended measure.
+The term 
+\[
+	\frac{\int_{L_A}^{U_A} tol(acc(C,D^{A_i}) - \Theta) - dep(acc(C,D^{A_i}) - \Theta)\ di}{(U_A - L_A)}
+\] 
+
+would give $-1$. With the additional terms, this result is adjusted to $-\frac{1}{2} + \frac{1}{2} = 0$, which aligns with the intended measure.
 It's worth noting that only adding $1$ would not sufficient, as in the best-case scenario, $\frac{\int_{L_A}^{U_A} tol(acc(C,D^{A_i}) - \Theta) - dep(acc(C,D^{A_i}) - \Theta)\ di}{(U_A - L_A)}$ would yield $1$.
 Without the division by $2$, this would lead to $1 + 1 = 2$, which falls outside the desired range of $[0, 1]$.
 
@@ -238,19 +242,19 @@ These distributions can help reflect the importance given to each alteration lev
 	\begin{subfigure}{.33\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{ImageFiles/ANNRob/unifo_prob}
-		\caption{Uniform probability distribution}
+		\caption{Uniform probability \\ distribution}
 		\label{fig:unifo_prob}
 	\end{subfigure}%
 	\begin{subfigure}{.33\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{ImageFiles/ANNRob/lin_prob}
-		\caption{Uniform probability distribution}
+		\caption{Uniform probability \\ distribution}
 		\label{fig:lin_prob}
 	\end{subfigure}%
 	\begin{subfigure}{.33\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{ImageFiles/ANNRob/exp_prob}
-		\caption{Uniform probability distribution}
+		\caption{Uniform probability \\ distribution}
 		\label{fig:exp_prob}
 	\end{subfigure}
 	\caption{Examples of probability distributions with $L_A=2$ and $U_A=10$}

@@ -50,9 +50,9 @@
 		\Punteggiatura{}
 		\NCandidato{Tesi di Laurea Magistrale}
 		\Candidato[1060652]{Wasim Essbai}
-		\Relatore{Chiar.mo \ Prof.\ Angelo Gargantini}
-		\Correlatore{Chiar.mo \ Dott.\ Andrea Bombarda}
-		\Correlatore{Chiar.ma \ Dott.\ Silvia Bonfanti}
+		\Relatore{Prof.\ Angelo Gargantini}
+		\Correlatore{Dott.\ Andrea Bombarda}
+		\Correlatore{Dott.ssa\ Silvia Bonfanti}
 		\Annoaccademico{2022--2023}
 		\begin{Preambolo*}
 			\usepackage[english]{babel}
@@ -74,7 +74,7 @@
 	
 	\chapter*{Introduction}
 	\chapter{Theoretical background}
-	This chapter will cover the fundamental theoretical concepts used in this study. Specifically, we will start by introducing neural networks, starting from their basic building blocks and progressing to the training phase. Following that, it will be explored a way to improve neural networks using a Bayesian approach.
+	This chapter will cover the fundamental theoretical concepts used in this study. Specifically, we will start by introducing neural networks (NNs), starting from their basic building blocks and progressing to the training phase. Following that, it will be explored a way to improve NNs using a Bayesian approach.
 	
 	\import{./TextFiles/Theoretical background/}{NN.tex}
 	\import{./TextFiles/Theoretical background/}{BNN.tex}
@@ -91,8 +91,13 @@
 	
 	\chapter{Classification using uncertainty}\label{chap:c3}
 	
-	This chapter introduces a novel classification approach that leverages the uncertainty estimated by a BNN. The primary objective is to assess the practical utility of this estimated uncertainty. The idea behind this approach is to enable the network to identify situations where it lacks confidence in its predictions, thus allowing it to avoid from making decisions. To achieve this, a threshold for uncertainty will be defined, and whenever the uncertainty is below this threshold, the network will simply output "I don't know". 
-	The proposed method explores three distinct types of uncertainty. The first two types, epistemic and aleatoric uncertainties, have been previously discussed and remain consistent in their significance across different tasks. The third type corresponds to the variance of the predicted distribution, which might have a distinct interpretation and could potentially lead to different threshold as well. The threshold value must be proportional to the desired predictions confidence
+	This chapter introduces a novel classification approach that leverages the uncertainty estimated by a BNN. The primary objective is to assess the practical utility of this estimated uncertainty. The idea behind this approach is to enable the network to identify situations where it lacks confidence in its predictions, thus allowing the system to avoid from making decisions. To achieve this, a threshold for uncertainty will be defined, and whenever the uncertainty is below this threshold, the network will simply output "I don't know". 
+	The proposed method explores three distinct types of uncertainty. The first two types, epistemic and aleatoric uncertainties, have been previously discussed and remain consistent in their significance across different tasks. The third type corresponds to the variance of the predicted distribution, which might have a distinct interpretation and could potentially lead to different threshold as well. The threshold value must be proportional to the desired predictions confidence. In this study the threshold is defined using a linear interpolation between the maximum and minimum uncertainty levels, formally:
+	\[
+		threshold = maxUnc * (1 - conf \_ level), \ with \ con \_ level \in [0,1]
+	\]
+	where $maxUnc$ is the maximum uncertainty that can occur and $conf_{level}$ is the confidence level, with $1$ representing the maximum.
+	
 	However, some applications may need to make decisions at all times. Therefore, an alternative approach will be explored where classification is performed by penalizing the most uncertain output classes. This allows for decision-making even when uncertainty is present.
 	
 	\import{./TextFiles/Classification uncertainty/}{Aleatoric.tex}
@@ -101,7 +106,7 @@
 	\import{./TextFiles/Classification uncertainty/}{Penalization.tex}
 	\import{./TextFiles/Classification uncertainty/}{Comparison.tex}
 	
-	\chapter{Robustness}
+	\chapter{Robustness}\label{chap:c4}
 	
 	This chapter provides an overview of the current state of the art in testing machine learning models (MLMs). These approaches are applicable to a wide range of MLMs, including BNNs, which are the central focus of this thesis. Moreover, a novel approach for testing and evaluating BNNs will be introduced. The primary emphasis will be on assessing the robustness of BNNs, which is a crucial property in safety-critical applications.
 	
@@ -110,7 +115,7 @@
 	\import{./TextFiles/Robustness/}{RobNN.tex}
 	\import{./TextFiles/Robustness/}{RobBNN.tex}
 	
-	\chapter{Robustness evaluation}
+	\chapter{Robustness evaluation}\label{chap:c5}
 	
 	This chapter illustrates the practical application of the methods derived in the previous chapters, presenting experimental outcomes. To do this, a testing framework will be introduced, designed to be adaptable to any other MLM. These methodologies are founded on a black-box testing approach, wherein the framework assesses the model performance when exposed to perturbed operating conditions. In this study, the primary source of perturbations under consideration is the data itself. Hence, a set of potential alterations that could occur in a real-world application will be applied to the test data to simulate a perturbed environment.
 	

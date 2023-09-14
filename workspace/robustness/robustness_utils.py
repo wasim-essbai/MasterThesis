@@ -65,7 +65,7 @@ def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
                 img = data[j]
                 y = target[j]
                 p_hat_list = []
-                for i in range(15):
+                for i in range(10):
                     dist_pred = model(img.view(1, -1))
                     p_hat_list.append(dist_pred.mean.squeeze())
                 p_hat = torch.stack(p_hat_list)

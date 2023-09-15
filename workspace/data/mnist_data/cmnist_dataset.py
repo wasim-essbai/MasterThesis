@@ -38,5 +38,6 @@ class CMNISTDataset(Dataset):
         img, target = self.data[idx], int(self.targets[idx])
         
         #img = Image.fromarray(img, mode="L")
-
+        img = img.astype('float32')
+        
         return img, target

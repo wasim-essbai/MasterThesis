@@ -415,7 +415,7 @@ class Blur(Alteration):
 
             data = data.filter(ImageFilter.GaussianBlur(radius=self.radius *
                                                                alteration_level))
-            data = np.array(data)
+            data = np.array(data).astype('float32')/255
 
         assert (isinstance(data, np.ndarray))
         return data
@@ -495,7 +495,7 @@ class Brightness(Alteration):
                                        "brightness alteration")
             enhancer = ImageEnhance.Brightness(data)
             data = enhancer.enhance(1 + (alteration_level * 0.5))
-            data = np.array(data)
+            data = np.array(data).astype('float32')/255
 
         assert (isinstance(data, np.ndarray))
         return data

@@ -64,18 +64,19 @@ def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
             for j in range(0, data.shape[0]):
                 img = data[j]
                 y = target[j]
+                img_view = img.view(1, -1)
                 p_hat_list = []
+
                 for i in range(10):
-                    dist_pred = model(img.view(1, -1))
+                    dist_pred = model(img_view)
                     p_hat_list.append(dist_pred.mean.squeeze())
                 p_hat = torch.stack(p_hat_list)
 
-                pred_values = []
-                for cf in classification_functions:
-                    pred_values.append(cf(p_hat, conf_level))
-                for i in range(len(pred_values)):
-                    testCorrect[i] += torch.sum(pred_values[i].cpu() == y.cpu())
-                    testUnknown[i] += torch.sum(pred_values[i].cpu() == -1)
+                for i in range(len(classification_functions)):
+                    cf = classification_functions[i]
+                    pred_value = cf(p_hat, conf_level).cpu()
+                    testCorrect[i] += torch.sum(pred_value == y.cpu())
+                    testUnknown[i] += torch.sum(pred_value == -1)
                 aleatoric_sum += get_aleatoric(p_hat)
                 epistemic_sum += get_epistemic_unc(p_hat)
         accuracy = []
@@ -90,9 +91,8 @@ def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
 
 def evaluate_ann(model, test_loader):
     with torch.no_grad():
-        datasetLength = len(test_loader)
+        datasetLength = len(test_loader.dataset)
         testCorrect = 0
-        level = 0
 
         for data_hat, target_hat in test_loader:
             (data, target) = (data_hat.to(device), target_hat.to(device))
@@ -101,7 +101,7 @@ def evaluate_ann(model, test_loader):
             pred_values = torch.max(pred, 1).indices
             testCorrect += torch.sum(pred_values == target)
 
-        return np.round(testCorrect * 100 / len(test_loader.dataset), 2)
+        return np.round(testCorrect * 100 / datasetLength, 2)
 
 
 def evaluate_alteration(model, alteration_name, is_bnn=True, classification_functions=None):

@@ -37,9 +37,8 @@ class CMNISTDataset(Dataset):
 
         img, target = self.data[idx], int(self.targets[idx])
         
-        img = Image.fromarray(img, mode="L")
+        #img = Image.fromarray(img, mode="L")
 
-        if self.transform is not None:
-            img = self.transform(img)
+        img = img.astype('float') / 255
 
         return img, target

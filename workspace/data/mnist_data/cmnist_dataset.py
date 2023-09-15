@@ -40,5 +40,5 @@ class CMNISTDataset(Dataset):
         #img = Image.fromarray(img, mode="L")
 
         img = img.astype('float') / 255
-
-        return img, target
+        img_ten = torch.from_numpy(img)
+        return img_ten, target

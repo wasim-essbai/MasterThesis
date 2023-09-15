@@ -127,7 +127,7 @@ def evaluate_alteration(model, alteration_name, is_bnn=True, classification_func
             CMNISTDataset(root_dir=base_path + '/' + step_dir + '/',
                           train=False,
                           labels_root=base_path + '/',
-                          transform=None),
+                          transform=transforms.ToTensor()),
             batch_size=128, shuffle=False)
         if is_bnn:
             accuracy, unknown_ratio, aleatoric, epistemic = evaluate_bnn(model, test_loader, classification_functions)

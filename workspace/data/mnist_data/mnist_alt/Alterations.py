@@ -84,7 +84,7 @@ class Alteration(ABC):
         for i in range(data.shape[0]):
             altered_data = self.apply_alteration(data[i], alteration_level)
             if np.max(altered_data) != 0:
-                result_list.append(altered_data * (255 / np.max(altered_data)))
+                result_list.append((altered_data - np.min(altered_data)) * (255 / np.max(altered_data)))
             else:
                 result_list.append(altered_data)
         return np.stack(result_list, axis=0)

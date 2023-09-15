@@ -19,7 +19,7 @@ class CMNISTDataset(Dataset):
         targets_file = 'train_labels' if self.train else 'test_labels'
 
         data = np.load(os.path.join(self.root_dir + data_file + '.npy'))
-        data = data.reshape(data.shape[0], 28, 28)
+        #data = data.reshape(data.shape[0], 28, 28)
 
         if self.labels_root:
             targets = np.load(os.path.join(self.labels_root + targets_file + '.npy'))
@@ -39,6 +39,4 @@ class CMNISTDataset(Dataset):
         
         #img = Image.fromarray(img, mode="L")
 
-        img = img.astype('float') / 255
-        img_ten = torch.from_numpy(img)
-        return img_ten, target
+        return img, target

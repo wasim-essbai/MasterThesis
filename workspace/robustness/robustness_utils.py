@@ -138,7 +138,7 @@ def evaluate_alteration(model, alteration_name, classification_functions=None, i
                 result_evaluation[i].epistemic.append(epistemic.cpu())
         else:
             accuracy = evaluate_ann(model, test_loader)
-            result_evaluation.accuracy.append(accuracy.cpu())
+            result_evaluation[0].accuracy.append(accuracy.cpu())
             #accuracy_list.append(evaluate_ann(model, test_loader))
             #result_evaluation
         step_list.append(float(step_dir))

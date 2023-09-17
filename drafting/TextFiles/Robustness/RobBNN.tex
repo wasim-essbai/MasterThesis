@@ -88,7 +88,7 @@ The proposed measure can serve as a powerful tool for comparing and evaluating B
 
 With the introduction of this new measure, it is now possible to apply the robustness formula presented in \Def~\ref{def:rob3}, using the effectiveness instead of accuracy. The resulting metric would be an \textit{augmented} robustness, which takes into account both accuracy and network indecision, providing a more comprehensive assessment of model performance.
 
-\begin{definition}\label{def:rob3} (Augmented robustness 3).
+\begin{definition}\label{def:robaug} (Augmented robustness 3).
 	Let $C$ be a classifier, $tol(x)$ a tolerance function and $dep(x)$ a penalization function.
 	The augmented robustness $robAug_A(C,D) \in [0,1]$ of a classifier $C$ w.r.t. alteration of type A in the range $[L_A, U_A]$ on a dataset $D$ is defined formally as:
 	\[

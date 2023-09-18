@@ -1,6 +1,6 @@
 \subsection{Horizontal Translation}
 
-Here the effects of horizontal translation on the network performance will be presented. \Fig~\ref{fig:acc_ht_wu} the alteration graphs for both networks.
+Here the effects of horizontal translation on the network performance will be presented. \Fig~\ref{fig:acc_ht_wu} shows he alteration graphs for both networks.
 
 For this alteration, the degradation is symmetric for both networks. In this case, the accuracy of the BNN, as shown in \Fig~\ref{fig:ht_acc_wu_bnn}, degrades less than that of the standard NN, shown in \Fig~\ref{fig:brightness_ann}. However, it is evident that both networks are fragile against horizontal translation. As soon as we deviate from the nominal conditions, the accuracy drops significantly.
 
@@ -50,7 +50,7 @@ This behavior is due to the network architecture. One of the limitations of MLPs
 \textbf{Classification using aleatoric uncertainty}
 \vspace{0.1cm}
 
-The use of aleatoric uncertainty in the classification mitigates the degradation in accuracy, as observed in \Fig~\ref{fig:ht_au_acc}. However, it also leads to a substantial increase in the unknown ratio, as shown in \Fig~\ref{fig:ht_au_unkn}, reaching very high levels. This trade-off is further highlighted in \Fig~\ref{fig:br_au_eff}, which illustrates the degradation in effectiveness.
+The use of aleatoric uncertainty in the classification mitigates the degradation in accuracy, as observed in \Fig~\ref{fig:ht_au_acc}. However, it also leads to a substantial increase in the unknown ratio, as shown in \Fig~\ref{fig:ht_au_unkn}, reaching very high levels. This trade-off is further highlighted in \Fig~\ref{fig:ht_au_eff}, which illustrates the degradation in effectiveness.
 
 \begin{figure}[h]
 	\centering
@@ -146,7 +146,7 @@ The same analysis is conducted for the epistemic uncertainty and the results are
 \textbf{Classification using standard deviation}
 \vspace{0.1cm}
 
-The outcomes when employing standard deviation, as illustrated in \Fig~\ref{fig:ht_vu}, do not significantly enhance performance. While there is a slight improvement in accuracy, as shown in \Fig~\ref{fig:ht_vu_acc}, this is counterbalanced by an elevated unknown ratio, as indicated in \Fig~\ref{fig:ht_vu_unkn}, resulting in a similar trend in effectiveness to the previous cases, as seen in \Fig~\ref{fightr_vu_eff}.
+The outcomes when employing standard deviation, as illustrated in \Fig~\ref{fig:ht_vu}, do not significantly enhance performance. While there is a slight improvement in accuracy, as shown in \Fig~\ref{fig:ht_vu_acc}, this is counterbalanced by an elevated unknown ratio, as indicated in \Fig~\ref{fig:ht_vu_unkn}, resulting in a similar trend in effectiveness to the previous cases, as seen in \Fig~\ref{fig:ht_vu_eff}.
 
 \begin{figure}[h]
 	\centering

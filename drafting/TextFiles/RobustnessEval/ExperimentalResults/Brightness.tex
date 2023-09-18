@@ -15,7 +15,7 @@ It is evident from \Fig~\ref{fig:br_acc_wu_bnn} that the BNN exhibits good robus
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalANN/brightness_ann}
-		\caption{Stanard NN}
+		\caption{Standard NN}
 		\label{fig:brightness_ann}
 	\end{subfigure}
 	\caption{Accuracy trend for blur alteration}
@@ -50,7 +50,7 @@ The aleatoric uncertainty, as shown in \Fig~\ref{fig:br_aleatoric}, follows a tr
 \textbf{Classification using aleatoric uncertainty}
 \vspace{0.1cm}
 
-When utilizing aleatoric uncertainty in the classification, the accuracy, \Fig~\ref{fig:br_au_acc}, increases substantially, reaching even higher values for low brightness percentages. However, there is always the trade-off of the unknown ratio, which is high for negative percentages, as shown in \Fig~\ref{fig:br_au_unkn}. In this particular case, the effectiveness metric, Figure \ref{fig:br_au_eff}, provides meaningful information. It follows the trend of the accuracy without uncertainty, demonstrating that the metric is capable of revealing the network weaknesses. Using this aleatoric uncertainty in this case has the effect of converting incorrect predictions into unknown predictions, but the ratio still follows the original trend.
+When utilizing aleatoric uncertainty in the classification, the accuracy, \Fig~\ref{fig:br_au_acc}, increases substantially, reaching even higher values for low brightness percentages. However, there is always the trade-off of the unknown ratio, which is high for negative percentages, as shown in \Fig~\ref{fig:br_au_unkn}. In this particular case, the effectiveness metric, \Fig~\ref{fig:br_au_eff}, provides meaningful information. It follows the trend of the accuracy without uncertainty, demonstrating that the metric is capable of revealing the network weaknesses. Using this aleatoric uncertainty in this case has the effect of converting incorrect predictions into unknown predictions, but the ratio still follows the original trend.
 
 \begin{figure}[h]
 	\centering

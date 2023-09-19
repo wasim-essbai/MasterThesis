@@ -1,7 +1,7 @@
 \subsection{Compression}
 
 \Fig~\ref{fig:acc_co_wu} illustrates the evaluation results on the dataset altered with compression. It is evident that neither of the networks exhibits robustness to this alteration. In fact, both networks experience an immediate drop in accuracy as the compression level increases, reaching values close to zero. This decline in accuracy is a consequence of the alteration, which significantly alters the image data.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
@@ -22,7 +22,7 @@ us		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalANN/compr_ann}
 The robustness metrics computed with this alteration are $0.6208$ for the BNN and $0.6262$ for the standard NN.
 
 In this scenario, both the uncertainties, as shown in \Fig~\ref{fig:co_uncertainty}, exhibit no specific pattern or trend. This suggests a lack of robustness, indicating that the network struggles to identify uncertain situations.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
@@ -45,7 +45,7 @@ In this scenario, both the uncertainties, as shown in \Fig~\ref{fig:co_uncertain
 \vspace{0.1cm}
 
 The utilization of aleatoric uncertainty does not lead to an improved performance, as evidenced in \Fig~\ref{fig:co_au}. However, it is worth noting that the accuracy, as shown in \Fig~\ref{fig:co_au_acc}, occasionally reaches $100\%$ for certain alteration levels. This is due to the fact that the unknown ratio values reach $100\%$, as seen in \Fig~\ref{fig:co_au_unkn}. In such cases, the uncertainty is conventionally set to the maximum value, as there are no actual predictions; only unknown values are present. This highlights the network inability to effectively handle this alteration. This behavior is further illustrated by the effectiveness metric in \Fig~\ref{fig:co_au_eff}.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.33\textwidth}
 		\centering
@@ -92,7 +92,7 @@ The utilization of aleatoric uncertainty does not lead to an improved performanc
 
 \Fig~\ref{fig:co_eu} illustrates the evaluation results using epistemic uncertainty. The accuracy trend, as shown in \Fig~\ref{fig:co_eu_acc}, does not exhibit any significant difference compared to the scenario without the use of uncertainty. This suggests that epistemic uncertainty is unable to identify uncertain situations effectively.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.33\textwidth}
 		\centering
@@ -118,7 +118,7 @@ The utilization of aleatoric uncertainty does not lead to an improved performanc
 
 \Tab~\ref{table:rob_co_eu} displays the robustness metrics.
 
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|| l | l ||} 
 		\hline
@@ -140,7 +140,7 @@ The utilization of aleatoric uncertainty does not lead to an improved performanc
 
 The results obtained when using standard deviation, as illustrated in \Fig~\ref{fig:co_vu}, exhibit the same behavior as when using aleatoric uncertainty.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}{.33\textwidth}
 		\centering
@@ -166,7 +166,7 @@ The results obtained when using standard deviation, as illustrated in \Fig~\ref{
 
 \Tab~\ref{table:rob_co_vu} gives the quantitative robustness measurements.
 
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|| l | l ||} 
 		\hline
@@ -188,7 +188,7 @@ The results obtained when using standard deviation, as illustrated in \Fig~\ref{
 
 Table~\ref{table:rob_co} presents a comparison of the computed metrics. It is evident that the network lacks robustness for any uncertainty type. In this scenario, a possible solution could be to change the network architecture or employ techniques for improving robustness, such as \textit{data augmentation}. Additionally, revising the alteration range and conducting another domain analysis may also be beneficial as the robustness is defined with respect to an alteration range.
 
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|| l | l | l | l ||} 
 		\hline

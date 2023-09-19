@@ -97,6 +97,16 @@
 		threshold = maxUnc * (1 - conf \_ level), \ with \ con \_ level \in [0,1]
 	\]
 	where $maxUnc$ is the maximum uncertainty that can occur and $conf_{level}$ is the confidence level, with $1$ representing the maximum.
+
+	When classification with uncertainty is performed the definition of accuracy changes in order to highlight the number of correct and unknown predictions.
+	
+	\begin{definition} (Extended accuracy).
+		Given a classifier $C$ and a set of input $D$, the accuracy of $C$ on $D$ is defined as:
+		\[
+			acc(C,D) = \frac{|{d \in D | C(d) = correctLabel(d)}|}{|D| - |{d \in D | C(d) = unknownLabel}|}
+		\] 
+		where $C(d)$ represents the classification output for the input $p$, and $correctLabel(d)$ gives the correct label for the input $d$.
+	\end{definition}
 	
 	However, some applications may need to make decisions at all times. Therefore, an alternative approach will be explored where classification is performed by penalizing the most uncertain output classes. This allows for decision-making even when uncertainty is present.
 	

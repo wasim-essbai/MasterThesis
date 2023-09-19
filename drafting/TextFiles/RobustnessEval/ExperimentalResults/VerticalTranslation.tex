@@ -6,13 +6,13 @@ Now the analogous alteration to the previous one will be analyzed, which is the 
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalBNN/VT/WU/acc}
+		\includegraphics[width=0.8\linewidth]{ImageFiles/EvalBNN/VT/WU/acc}
 		\caption{BNN}
 		\label{fig:vt_acc_wu_bnn}
 	\end{subfigure}%
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalANN/vert_trans_ann}
+		\includegraphics[width=0.8\linewidth]{ImageFiles/EvalANN/vert_trans_ann}
 		\caption{Standard NN}
 		\label{fig:vert_trans_ann}
 	\end{subfigure}
@@ -28,13 +28,13 @@ The robustness metrics computed with this alteration are $0.8625$ for the BNN an
 	\centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalBNN/VT/aleatoric}
+		\includegraphics[width=0.8\linewidth]{ImageFiles/EvalBNN/VT/aleatoric}
 		\caption{Aleatoric uncertainty}
 		\label{fig:vt_aleatoric}
 	\end{subfigure}%
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalBNN/VT/epistemic}
+		\includegraphics[width=0.8\linewidth]{ImageFiles/EvalBNN/VT/epistemic}
 		\caption{Epistemic uncertainty}
 		\label{fig:vt_epistemic}
 	\end{subfigure}
@@ -72,7 +72,7 @@ As it is possible to see in \Fig~\ref{fig:vt_au}, the use of aleatoric uncertain
 	\label{fig:vt_au}
 \end{figure}
 
-\Tab~\ref{table:rob_ht_au} indicates that the robustness in terms of accuracy increases, but the augmented robustness is very low due to the high unknown ratio reached.
+\Tab~\ref{table:rob_vt_au} indicates that the robustness in terms of accuracy increases, but the augmented robustness is very low due to the high unknown ratio reached.
 
 \begin{table}[h]
 	\centering
@@ -120,7 +120,7 @@ The same analysis is conducted for the epistemic uncertainty and the results are
 	\label{fig:vt_eu}
 \end{figure}
 
-\Tab~\ref{table:rob_ht_eu} displays the robustness metrics calculated through the utilization of epistemic uncertainty within the classification procedure. The results obtained resemble those from the previous scenario, which confirms the network inherent structural limitations.
+\Tab~\ref{table:rob_vt_eu} displays the robustness metrics calculated through the utilization of epistemic uncertainty within the classification procedure. The results obtained resemble those from the previous scenario, which confirms the network inherent structural limitations.
 
 \begin{table}[h]
 	\centering

@@ -1,1 +1,9 @@
 \subsection{Conclusions}
+
+In this section, we applied the theoretical methods developed in \Chap~\ref{chap:c4} to assess the robustness of NNs. We began by comparing the robustness between BNN and standard NN. The comparison revealed that both types of networks exhibited similar robustness levels, and the structural limitations of the BNN were still evident, as arisen when faced with translation alterations.
+
+Next, we explored the use of uncertainties estimated by the BNN to improve robustness in terms of accuracy. Our findings indicated that leveraging BNN estimated uncertainties could enhance robustness by helping the network identify uncertain situations and refrain from making incorrect predictions. Among the uncertainty types examined, aleatoric uncertainty generally performed better on average, while epistemic uncertainty proved ineffective at correctly identifying uncertain situations in most cases. Additionally, the use of standard deviation showed similar behavior to aleatoric uncertainty but with a more pessimistic outlook, which could be adjusted through proper confidence level tuning. This parameter was revealed to be crucial in the test setting, as it defines the trade-off between accuracy and the unknown ratio. In summary, aleatoric uncertainty emerged as the preferred metric due to its consistent performance and application independence.
+
+Furthermore, we demonstrated the utility of the effectiveness metric in our analysis. It provided a comprehensive view of network performance by considering both accuracy and the unknown ratio.
+
+Overall, the methods presented in this study offer a quantitative means of identifying and quantifying model weaknesses. They are versatile and adaptable to various applications, providing valuable insights into network robustness.

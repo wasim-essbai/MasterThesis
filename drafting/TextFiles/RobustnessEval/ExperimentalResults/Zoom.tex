@@ -48,7 +48,7 @@ The uncertainties estimated by the BNN exhibit a defined pattern in this case, a
 \textbf{Classification using aleatoric uncertainty}
 \vspace{0.1cm}
 
-\todo{wating loading}
+The utilization of aleatoric uncertainty yields the results shown in \Fig~\ref{fig:zo_au}. \Fig~\ref{fig:zo_au_acc} indicates a slight improvement in accuracy. However, there is a substantial increase in the unknown ratio, as depicted in \Fig~\ref{fig:zo_au_unkn}. This trade-off between accuracy and unknown ratio is further illustrated in \Fig~\ref{fig:zo_au_eff}, where the effectiveness metric reflects the degradation in performance.
 
 \begin{figure}[h]
 	\centering
@@ -74,7 +74,9 @@ The uncertainties estimated by the BNN exhibit a defined pattern in this case, a
 	\label{fig:zo_au}
 \end{figure}
 
-\Tab~\ref{table:rob_zo_au} presents the quantitative robustness measurements.
+
+\Tab~\ref{table:rob_zo_au} provides the quantitative robustness measurements. While there is a slight improvement in accuracy reflected in the $rob$ metric, the augmented robustness metric demonstrates the poor performance due to the substantial increase in the unknown ratio.
+
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|| l | l ||} 
@@ -82,9 +84,9 @@ The uncertainties estimated by the BNN exhibit a defined pattern in this case, a
 		\textbf{Parameter} & \textbf{Value} \\
 		\hline
 		\hline
-		$rob_{Zoom}$ & $0.7974$ \\
-		$robInd_{Zoom}$ & $0.8667$ \\
-		$robAug_{Zoom}$ & $0.7124$ \\	
+		$rob_{Zoom}$ & $0.7950$ \\
+		$robInd_{Zoom}$ & $0.8901$ \\
+		$robAug_{Zoom}$ & $0.7209$ \\	
 		\hline
 	\end{tabular}	
 	\caption{Robustness metrics for zoom when the aleatoric uncertainty is employed}
@@ -130,9 +132,9 @@ The outcomes obtained using epistemic uncertainty are displayed in \Fig~\ref{fig
 		\textbf{Parameter} & \textbf{Value} \\
 		\hline
 		\hline
-		$rob_{Zoom}$ & $0.7991$ \\
-		$robInd_{Zoom}$ & $0.8598$ \\
-		$robAug_{Zoom}$ & $0.7060$ \\	
+		$rob_{Zoom}$ & $0.7988$ \\
+		$robInd_{Zoom}$ & $0.8560$ \\
+		$robAug_{Zoom}$ & $0.7058$ \\	
 		\hline
 	\end{tabular}	
 	\caption{Robustness metrics for zoom alteration when the epistemic uncertainty is employed}
@@ -143,7 +145,9 @@ The outcomes obtained using epistemic uncertainty are displayed in \Fig~\ref{fig
 \textbf{Classification using standard deviation}
 \vspace{0.1cm}
 
-The results obtained when using standard deviation, as illustrated in \Fig~\ref{fig:zo_vu}, exhibit the same behavior as when using aleatoric uncertainty.
+The results obtained when using standard deviation, as illustrated in \Fig~\ref{fig:zo_vu}, exhibit the same behavior as when using aleatoric uncertainty. As always, the standard deviation is more pessimistic, leading to a better trend in accuracy, \Fig~\ref{fig:zo_vu_acc}, but balanced by a high unknown ratio, \Fig~\ref{fig:zo_vu_unkn}.
+
+\Fig~\ref{fig:zo_vu} exhibits the same behavior as when using aleatoric uncertainty. As usual, the standard deviation is more pessimistic, leading to a better trend in accuracy, \Fig~\ref{fig:zo_vu_acc}, but this is balanced by a high unknown ratio, seen in \Fig~\ref{fig:zo_vu_unkn}.
 
 \begin{figure}[h]
 	\centering
@@ -157,7 +161,7 @@ The results obtained when using standard deviation, as illustrated in \Fig~\ref{
 		\centering
 		\includegraphics[width=0.9\linewidth]{ImageFiles/EvalBNN/ZO/VU/unkn}
 		\caption{Unknown ratio using \\ standard deviation}
-		\label{fig:co_vu_unkn}
+		\label{fig:zo_vu_unkn}
 	\end{subfigure}%
 	\begin{subfigure}{.33\textwidth}
 		\centering
@@ -178,9 +182,9 @@ The results obtained when using standard deviation, as illustrated in \Fig~\ref{
 		\textbf{Parameter} & \textbf{Value} \\
 		\hline
 		\hline
-		$rob_{Zoom}$ & $0.8102$ \\
+		$rob_{Zoom}$ & $0.8101$ \\
 		$robInd_{Zoom}$ & $0.8432$ \\
-		$robAug_{Zoom}$ & $0.7032$ \\	
+		$robAug_{Zoom}$ & $0.7031$ \\	
 		\hline
 	\end{tabular}	
 	\caption{Robustness metrics for zoom when the standard deviation is employed}
@@ -191,7 +195,7 @@ The results obtained when using standard deviation, as illustrated in \Fig~\ref{
 \textbf{Comparison}
 \vspace{0.1cm}
 
-Table~\ref{table:rob_zo} presents a comparison of the computed metrics. It is evident that the network lacks robustness for any uncertainty type. In this scenario, a possible solution could be to change the network architecture or employ techniques for improving robustness, such as \textit{data augmentation}. Additionally, revising the alteration range and conducting another domain analysis may also be beneficial as the robustness is defined with respect to an alteration range.
+\Tab~\ref{table:rob_zo} provides a summary of the computed metrics. It is evident that the network is not robust against this alteration. In particular, the augmented robustness reflects the trade-off between accuracy and unknown ratio. In this scenario, aleatoric uncertainty provides the best $robAug$, while epistemic uncertainty demonstrates its inability to detect uncertain situations.
 
 \begin{table}[h]
 	\centering
@@ -200,9 +204,9 @@ Table~\ref{table:rob_zo} presents a comparison of the computed metrics. It is ev
 		\textbf{Parameter} & \textbf{Aleatoric} & \textbf{Epistemic} & \textbf{Standard deviation} \\
 		\hline
 		\hline
-		$rob_{Zoom}$ & $0.7974$ & $0.7991$ & $0.8102$ \\
-		$robInd_{Zoom}$ & $0.8667$ & $0.8598$ & $0.8432$ \\
-		$robAug_{Zoom}$ & $0.7125$ & $0.7060$ & $0.7032$ \\	
+		$rob_{Zoom}$ & $0.7950$ & $0.7988$ & $0.8101$ \\
+		$robInd_{Zoom}$ & $0.8901$ & $0.8560$ & $0.8432$ \\
+		$robAug_{Zoom}$ & $0.7209$ & $0.7058$ & $0.7031$ \\	
 		\hline
 	\end{tabular}	
 	\caption{Summary of the robustness metrics for zoom}

@@ -3,20 +3,21 @@ import torchbnn as bnn
 import numpy as np
 import torch.nn.functional as F
 
-def get_aleatoric(p_hat, device):
+def get_aleatoric(p_hat):
     mean_pred = torch.mean(p_hat, axis=0)
     pred_value = None
 
-    aleat_mat = torch.zeros(10, 10).to(device)
+    aleat_mat = torch.zeros(10, 10)
     for i in range(p_hat.shape[0]):
-        aleat_mat += torch.diag(p_hat[i]) - torch.outer(p_hat[i], p_hat[i])
-    return torch.mean(torch.diag(aleat_mat / p_hat.shape[0]))
+        p_hat_i = p_hat[i].cpu()
+        aleat_mat += torch.diag(p_hat_i.cpu()) - torch.outer(p_hat_i, p_hat_i)
+    return torch.mean(torch.diag(aleat_mat / p_hat.shape[0].cpu()))
 
 
-def get_epistemic_unc(p_hat, device):
+def get_epistemic_unc(p_hat):
     mean_pred = torch.mean(p_hat, axis=0)
 
-    epis_mat = torch.zeros(10, 10).to(device)
+    epis_mat = torch.zeros(10, 10)
     for i in range(p_hat.shape[0]):
         epis_mat += torch.outer((p_hat[i] - mean_pred), (p_hat[i] - mean_pred))
     return torch.mean(torch.diag(epis_mat / p_hat.shape[0]))
@@ -119,8 +120,8 @@ def test( model, device, test_loader, epsilon, cf ):
             if len(adv_examples) < 5:
                 adv_ex = perturbed_data.squeeze().detach().cpu().numpy()
                 adv_examples.append( (init_pred.item(), final_pred.item(), adv_ex) )
-        aleatoric_sum += get_aleatoric(p_hat, device)
-        epistemic_sum += get_epistemic_unc(p_hat, device)
+        aleatoric_sum += get_aleatoric(p_hat)
+        epistemic_sum += get_epistemic_unc(p_hat)
         progress += 1
 
     # Calculate final accuracy for this epsilon

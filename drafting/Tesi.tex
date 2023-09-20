@@ -11,7 +11,11 @@
 \usepackage{import}
 \usepackage{float}
 \usepackage{cite}
+\usepackage{fancyhdr}
 \usepackage[signatures,swapnames,sans]{frontespizio}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 
 \usepackage{todonotes}
 \usepackage{verbatim}
@@ -27,6 +31,16 @@
 \newcommand{\Eq}[0]{Eq.}
 \newcommand{\Def}[0]{Def.}
 \newcommand{\Chap}[0]{Chap.}
+
+\usepackage[standardsections]{scrhack}
+\usepackage[raggedright]{titlesec}
+
+\titleformat{\chapter}[display]
+{\bfseries\LARGE}
+{\filright{\huge\chaptertitlename} \huge\thechapter}
+{2ex}
+{\titlerule\vspace{0.8ex}\filright}
+[\vspace{0.8ex}\titlerule]
 
 \newtheorem{definition}{Definition}[section]
 \newcounter{thm}
@@ -59,7 +73,6 @@
 			\usepackage[T1]{fontenc}
 			\usepackage[utf8]{inputenc}
 			\usepackage{microtype}
-			\usepackage{lmodern}
 			\graphicspath{{img/}}
 			
 			\renewcommand{\frontinstitutionfont}{\fontsize{14}{17}\bfseries\scshape}
@@ -137,11 +150,13 @@
 	
 	\chapter{Conclusion}
 	
-	In conclusion, our investigation into the assessment of Bayesian Neural Networks (BNNs) robustness has revealed intriguing insights into their performance. When employed in a conventional manner, BNNs exhibit a level of robustness comparable to that of standard Neural Networks (NNs). However, the true potential of BNNs in enhancing model robustness emerges when we introduce the crucial element of uncertainty into the classification process.
+	In the course of our work, we developed and tested innovative techniques for assessing the robustness of NNs, which can be applied broadly to any MLM. Subsequently, the focus was put on MLMs which provide uncertainty estimations, specifically BNNs. This required us to incorporate uncertainty into the computed metrics. To accomplish this, we introduced the concept of \textit{effectiveness}, which measures performance in terms of both accuracy and unknown ratio.
 	
-	Our findings highlight that BNNs excel in situations characterized by ambiguity and unpredictability. By incorporating uncertainty into their computations, BNNs can effectively identify and respond to situations where the model's confidence may be compromised, unlike standard NNs which tend to provide unwavering predictions. This inherent capability to recognize uncertainty and adapt accordingly grants BNNs a distinct advantage in scenarios where making incorrect predictions could have significant consequences.
+	In conclusion, our investigation into the assessment of BNNs robustness has revealed interesting insights into their performance. When employed in a conventional manner, BNNs exhibit a level of robustness comparable to that of standard NNs. However, the true potential of BNNs in enhancing the robustness emerges when uncertainty is introduced into the classification process.
 	
-	In summary, our research underscores the significance of incorporating Bayesian Neural Networks into machine learning frameworks, particularly in domains where robustness is paramount. By embracing uncertainty, BNNs not only match the robustness of standard NNs but surpass them in recognizing and handling uncertain conditions, thereby showcasing their potential to enhance the reliability and trustworthiness of machine learning systems in real-world applications. As we continue to explore the capabilities of BNNs and harness their ability to navigate uncertainty, we open the door to new possibilities for creating more resilient and dependable artificial intelligence systems.
+	Our findings highlight that BNNs are particularly suitable in situations characterized by ambiguity and unpredictability. By incorporating uncertainty into their computations, BNNs can effectively identify and respond to situations where the model confidence may be compromised, unlike standard NNs which tend to provide steady predictions. This inherent capability to recognize uncertainty and adapt accordingly grants BNNs a distinct advantage in scenarios where making incorrect predictions could have significant consequences. This behavior is particularly desirable in safety-critical applications, such as the medical field, where it is preferable to halt the system and request intervention rather than making incorrect predictions. Nevertheless, BNNs can also prove beneficial in recognizing uncertain situations and executing appropriate procedures without halting the system.
+	
+	In summary, our research underlies the significance of incorporating BNNs into machine learning frameworks, particularly in domains where robustness is paramount. By embracing uncertainty, BNNs not only match the robustness of standard NNs but surpass them in recognizing and handling uncertain conditions, thereby showcasing their potential to enhance the reliability and trustworthiness of machine learning systems in real-world applications. Based on these considerations, it is evident that BNNs can be a way for creating more resilient and autonomous artificial intelligence systems.
 	
 	\import{./TextFiles/Conclusion/}{FutureWork.tex}
 	

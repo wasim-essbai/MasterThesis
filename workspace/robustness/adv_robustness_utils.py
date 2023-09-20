@@ -11,7 +11,7 @@ def get_aleatoric(p_hat):
     for i in range(p_hat.shape[0]):
         p_hat_i = p_hat[i].cpu()
         aleat_mat += torch.diag(p_hat_i.cpu()) - torch.outer(p_hat_i, p_hat_i)
-    return torch.mean(torch.diag(aleat_mat / p_hat.shape[0].cpu()))
+    return torch.mean(torch.diag(aleat_mat / p_hat.shape[0]))
 
 
 def get_epistemic_unc(p_hat):

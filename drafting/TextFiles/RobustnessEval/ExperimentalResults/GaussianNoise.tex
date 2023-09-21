@@ -78,7 +78,9 @@ This improvement in accuracy has a counterpart, which is the number of unknown p
 	\label{fig:gn_au}
 \end{figure}
 
-\Tab~\ref{table:rob_gn_au} provides a summary of the robustness metrics resulting from this evaluation. The improvement in accuracy is reflected in the robustness, which has increased by $0.02$. It is important to interpret these values correctly because the robustness computed without uncertainty is already good, given the high accuracy values. Therefore, an improvement of $0.02$ can be considered significant in this context.
+\Tab~\ref{table:rob_gn_au} provides a summary of the robustness metrics resulting from this evaluation. We use the notation $rob$ to represent robustness computed according to \Def~\ref{def:rob3}, $robInd$ indicates the robustness against indecision as presented in \Def~\ref{def:robind} and $robAug$ to denote augmented robustness as defined in \Def~\ref{def:robaug}.
+
+The improvement in accuracy is reflected in the robustness, which has increased by $0.02$. It is important to interpret these values correctly because the robustness computed without uncertainty is already good, given the high accuracy values. Therefore, an improvement of $0.02$ can be considered significant in this context.
 
 It is worth remembering that we do not penalize, and still reward, any accuracy value above $0$, as it is the minimum accepted accuracy. This is why we observe high robustness metrics. However, in this study, the specific robustness values are not the primary focus; rather, we aim to compare them among all the classification techniques.
 

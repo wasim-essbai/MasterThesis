@@ -1,6 +1,6 @@
 \section{Alterations}
 
-In this case study,the alterations to apply have been identified by considering common perturbations that could occur during image acquisition. It is important to note that the networks used in this study are designed for research purposes and are not intended for a specific application, therefore a precise domain analysis was not possible to perform. The alterations employed are inspired by the work of Arcaini et al. \cite{9176802}. Seven different alteration types are identified, which will be presented in this section. Each alteration is applied on the original test set, where the images pixels are normalized in the range $[0,1]$. For reference, in \Fig~\ref{fig:orig} is shown an example from the original set without any alteration.
+In this case study, the alterations to apply have been identified by considering common perturbations that could occur during image acquisition. It is important to note that the networks used in this study are designed for research purposes and are not intended for a specific application, therefore a precise domain analysis was not possible to perform. The alterations employed are inspired by the work of Arcaini et al. \cite{9176802}. Seven different alteration types are identified, which will be presented in this section. Each alteration is applied on the original test set, where the images pixels are normalized in the range $[0,1]$. For reference, in \Fig~\ref{fig:orig} is shown an example from the original set without any alteration.
 
 \begin{figure}[h]
 	\centering
@@ -11,7 +11,7 @@ In this case study,the alterations to apply have been identified by considering 
 
 \subsection{Translation}
 
-This alteration consists in translating all the pixels by a certain amount, which serves as the alteration level in this context. The translation can occur in both vertical and horizontal directions, and when combined, they result in a \textit{rotation}. However, for the purposes of this study, only vertical and horizontal translations will be taken into account. \Fig~\ref{fig:VT} illustrates the effect of vertical translation, while \Fig~\ref{fig:HT} shows an example of the horizontal translation effect.
+This alteration consists in translating all the pixels by a certain amount, which serves as the alteration level in this context. The translation can occur in both vertical and horizontal directions, and when combined, they result in a \textit{oblique} translation. However, for the purposes of this study, only vertical and horizontal translations will be taken into account. \Fig~\ref{fig:VT} illustrates the effect of vertical translation, while \Fig~\ref{fig:HT} shows an example of the horizontal translation effect.
 
 \begin{figure}[h]
 	\centering
@@ -44,13 +44,20 @@ The blur filter allows for the simulation of a camera losing focus, replicating 
 
 \subsection{Brightness}
 
-Brightness refers to the general level of lightness or darkness within an image. It is one of the fundamental elements of an image quality and it has a substantial impact on the visual appearance and transmission of information in an image. This alteration allows for the simulation of various lighting conditions, which is particularly important when the network operates in an environment where images can come from both light and dark bright setting. The alteration level for brightness is going to be expressed as the relative percentage to the original image brightness level. Negative percentage values indicate a reduction in brightness. The range of alteration values employed falls within the interval of $[-0.5, 0.5]$. \Fig~\ref{fig:Brightness} illustrates the effect of a positive brightness percentage application.
+Brightness refers to the general level of lightness or darkness within an image. It is one of the fundamental elements of an image quality and it has a substantial impact on the visual appearance and transmission of information in an image. This alteration allows for the simulation of various lighting conditions, which is particularly important when the network operates in an environment where images can come from both light and dark bright setting. The alteration level for brightness is going to be expressed as the relative percentage to the original image brightness level. Negative percentage values indicate a reduction in brightness. The range of alteration values employed falls within the interval of $[-0.5, 0.5]$. \Fig~\ref{fig:Brightness} illustrates the effect of a positive brightness percentage application while \Fig~\ref{fig:Brightness_neg} shows the effect of a negative brightness percentage.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ImageFiles/Alterations/Brightness}
 	\caption{Example of brightness with a positive percentage}
 	\label{fig:Brightness}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\linewidth]{ImageFiles/Alterations/Brightness_neg}
+	\caption{Example of brightness with a negative percentage}
+	\label{fig:Brightness_neg}
 \end{figure}
 
 \subsection{Zoom}
@@ -65,12 +72,20 @@ Zooming involves the action of either enlarging or reducing the size of a specif
 
 \subsection{Compression}
 
-Image compression refers to the process of reducing the size of a digital image file while trying to preserve its visual quality and content as much as possible. The primary goal of image compression is to minimize the storage space required for an image, simplifying the tasks of storage, transmission, and efficient display of digital images. Specifically, in this study, the employed method is JPEG compression, which is categorized as a lossy compression technique. In essence, this means that it achieves compression by eliminating certain image data considered less important. This action results in a smaller file size but it can potentially lead to the reduction in image quality, especially when compression is applied at high levels. The alteration level is going to be the compression coefficient, which determines the extent to which the image is compressed. This alteration simulates possible transmission errors, which could lead to a loss of information. In \Fig~\ref{fig:Compression}, an example is presented where the coefficient is set to the maximum value $100$, leading to the loss of all information. The alteration range used is $[0,100]$.
+Image compression refers to the process of reducing the size of a digital image file while trying to preserve its visual quality and content as much as possible. The primary goal of image compression is to minimize the storage space required for an image, simplifying the tasks of storage, transmission, and efficient display of digital images. Specifically, in this study, the employed method is JPEG compression, which is categorized as a lossy compression technique. In essence, this means that it achieves compression by eliminating certain image data considered less important. This action results in a smaller file size but it can potentially lead to the reduction in image quality, especially when compression is applied at high levels. The alteration level is going to be the compression coefficient, which determines the extent to which the image is compressed. This alteration simulates possible transmission errors, which could lead to a loss of information. 
+\Fig~\ref{fig:Compression_partial} presents the impact of compression at a level of $10$. It is important to highlight that this alteration changes the image significantly. In fact, \Fig~\ref{fig:Compression} illustrates an example where the coefficient is set to the maximum value $100$, leading to the loss of all information. The alteration range used is $[0,100]$.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\linewidth]{ImageFiles/Alterations/Compression_partial}
+	\caption{Example of compression}
+	\label{fig:Compression_partial}
+\end{figure}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ImageFiles/Alterations/Compression}
-	\caption{Example of compression}
+	\caption{Example of compression with highest alteration level}
 	\label{fig:Compression}
 \end{figure}
 

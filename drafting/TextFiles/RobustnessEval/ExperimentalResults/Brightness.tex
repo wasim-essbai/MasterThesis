@@ -52,6 +52,8 @@ The aleatoric uncertainty, as shown in \Fig~\ref{fig:br_aleatoric}, follows a tr
 
 When utilizing aleatoric uncertainty in the classification, the accuracy, \Fig~\ref{fig:br_au_acc}, increases substantially, reaching even higher values for low brightness percentages. However, there is always the trade-off of the unknown ratio, which is high for negative percentages, as shown in \Fig~\ref{fig:br_au_unkn}. In this particular case, the effectiveness metric, \Fig~\ref{fig:br_au_eff}, provides meaningful information. It follows the trend of the accuracy without uncertainty, demonstrating that the metric is capable of revealing the network weaknesses. Using this aleatoric uncertainty in this case has the effect of converting incorrect predictions into unknown predictions, but the ratio still follows the original trend.
 
+An interesting observation is that the network exhibits an asymmetric behavior, demonstrating greater robustness for positive brightness percentages. Notably, the drop in performance occurs exclusively with negative brightness percentages, while augmenting brightness yields slight benefits in terms of the unknown ratio and effectiveness. This suggests that increasing brightness might enhance the network confidence in its predictions.
+
 \begin{figure}[h]
 	\centering
 	\begin{subfigure}{.33\textwidth}
@@ -76,7 +78,7 @@ When utilizing aleatoric uncertainty in the classification, the accuracy, \Fig~\
 	\label{fig:br_au}
 \end{figure}
 
-\Tab~\ref{table:rob_br_au} offers a summary of the robustness metrics resulting from this evaluation. It is possible to note reflect the observations made regarding the unknown ratio, especially by the augmented robustness.
+\Tab~\ref{table:rob_br_au} offers a summary of the robustness metrics resulting from this evaluation. It is possible to note reflected the observations made regarding the unknown ratio, especially by the augmented robustness.
 
 \begin{table}[h]
 	\centering

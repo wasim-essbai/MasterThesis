@@ -24,7 +24,7 @@ When computing robustness, the results are $0.9331$ for the BNN and $0.9601$ for
 
 \Fig~\ref{fig:bl_uncertainty} shows the trend of uncertainty estimated by the BNN. In particular, \Fig~\ref{fig:bl_aleatoric} illustrates the aleatoric uncertainty trend, while \Fig~\ref{fig:bl_epistemic} presents the epistemic uncertainty.
 
-It is worth noting that in this case the uncertainty values have a different shape. The aleatoric uncertainty has a more outlined shape, similar to a ramp that starts to increase for a blurring radius around $0.50$, following a linear trajectory. The epistemic uncertainty increases for a blurring radius around $0.75$ more like a similarly to a function.
+It is worth noting that in this case the uncertainty values have a different shape. The aleatoric uncertainty has a more outlined shape, similar to a ramp that starts to increase for a blurring radius around $0.50$, following a linear trajectory. The epistemic uncertainty increases for a blurring radius around $0.75$ more like an exponential function.
 
 \begin{figure}[h]
 	\centering
@@ -211,9 +211,9 @@ With the standard deviation, as shown in \Fig~\ref{fig:bl_vu_acc}, it possible t
 		\textbf{Parameter} & \textbf{Aleatoric} & \textbf{Epistemic} & \textbf{Standard deviation} \\
 		\hline
 		\hline
-		$rob_{Blur}$ & $0.9616$ & $0.9160$ & $0.8590$ \\
-		$robInd_{Blur}$ & $0.9339$ & $0.9937$ & $0.9246$ \\
-		$robAug_{Blur}$ & $0.9803$ & $0.8728$ & $0.8275$ \\	
+		$rob_{Blur}$ & $0.9616$ & $0.9339$ & $0.9803$ \\
+		$robInd_{Blur}$ & $0.9160$ & $0.9937$ & $0.8728$ \\
+		$robAug_{Blur}$ & $0.8590$ & $0.9246$ & $0.8275$ \\	
 		\hline
 	\end{tabular}	
 	\caption{Summary of the robustness metrics for the blur alteration}

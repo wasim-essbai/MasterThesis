@@ -50,7 +50,7 @@ The next analysis will focus on evaluating whether the estimated uncertainty uti
 \textbf{Classification using aleatoric uncertainty}
 \vspace{0.1cm}
 
-In \Fig~\ref{fig:gn_au}, the results of the BNN evaluation on the dataset altered with gaussian noise are illustrated, where aleatoric uncertainty is utilized as a metric to implement the ``I don't know behavior". \Fig~\ref{fig:gn_au_acc} demonstrates that the accuracy still decreases linearly with the increase of noise variance. However, in this case, the accuracy degradation reaches a lower level. Comparing this with the case without the use of uncertainty in \Fig~\ref{fig:gn_acc_wu_bnn}, it is evident that the lowest accuracy reached is higher when uncertainty is employed.
+In \Fig~\ref{fig:gn_au}, the results of the BNN evaluation on the dataset altered with gaussian noise are illustrated, where aleatoric uncertainty is utilized as a metric to implement the ``I don't know" behavior. \Fig~\ref{fig:gn_au_acc} demonstrates that the accuracy still decreases linearly with the increase of noise variance. However, in this case, the accuracy degradation reaches a lower level. Comparing this with the case without the use of uncertainty in \Fig~\ref{fig:gn_acc_wu_bnn}, it is evident that the lowest accuracy reached is higher when uncertainty is employed.
 
 This improvement in accuracy has a counterpart, which is the number of unknown predictions, shown in \Fig~\ref{fig:gn_au_unkn}. The unknown ratio also increases linearly with the noise variance. The same behavior is exhibited by the effectiveness, as seen in \Fig~\ref{fig:gn_au_eff}. This trend aligns with the initial analysis of aleatoric uncertainty, which was observed to increase linearly with noise variance.
 
@@ -80,7 +80,7 @@ This improvement in accuracy has a counterpart, which is the number of unknown p
 
 \Tab~\ref{table:rob_gn_au} provides a summary of the robustness metrics resulting from this evaluation. The improvement in accuracy is reflected in the robustness, which has increased by $0.02$. It is important to interpret these values correctly because the robustness computed without uncertainty is already good, given the high accuracy values. Therefore, an improvement of $0.02$ can be considered significant in this context.
 
-It is worth remembering that we do not penalize and still reward any accuracy value above $0$, as it is the minimum accepted accuracy. This is why we observe high robustness metrics. However, in this study, the specific robustness values are not the primary focus; rather, we aim to compare them among all the classification techniques.
+It is worth remembering that we do not penalize, and still reward, any accuracy value above $0$, as it is the minimum accepted accuracy. This is why we observe high robustness metrics. However, in this study, the specific robustness values are not the primary focus; rather, we aim to compare them among all the classification techniques.
 
 \begin{table}[h]
 	\centering

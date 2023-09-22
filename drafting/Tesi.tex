@@ -17,6 +17,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{lmodern}
 
 \usepackage{todonotes}
 \usepackage{verbatim}
@@ -27,11 +28,7 @@
 \usepackage{subcaption}
 \usepackage[hidelinks]{hyperref}
 
-\newcommand{\Fig}[0]{Fig.}
-\newcommand{\Tab}[0]{Tab.}
-\newcommand{\Eq}[0]{Eq.}
-\newcommand{\Def}[0]{Def.}
-\newcommand{\Chap}[0]{Chap.}
+\usepackage[top=3cm,bottom=3cm,inner=3cm,outer=3cm]{geometry}
 
 \usepackage[standardsections]{scrhack}
 \usepackage[raggedright]{titlesec}
@@ -43,6 +40,20 @@
 {\titlerule\vspace{0.8ex}\filright}
 [\vspace{0.8ex}\titlerule]
 
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+	\null
+	\thispagestyle{empty}%
+	\addtocounter{page}{-1}%
+	\newpage}
+
+\newcommand{\Fig}[0]{Fig.}
+\newcommand{\Tab}[0]{Tab.}
+\newcommand{\Eq}[0]{Eq.}
+\newcommand{\Def}[0]{Def.}
+\newcommand{\Chap}[0]{Chap.}
+
 \newtheorem{definition}{Definition}[section]
 \newcounter{thm}
 \newtheorem{dfn}[thm]{Definition}
@@ -53,6 +64,7 @@
 \linespread{1.5}
 
 \begin{document}
+	\pagenumbering{gobble}
 	\frontmatter
 	
 	%\pdfbookmark{Title page}{titlepage}
@@ -83,14 +95,26 @@
 		\end{Preambolo*}
 	\end{frontespizio}
 	
-	\tableofcontents
-	\listoffigures
-	\mainmatter
+	\cleardoublepage
+	
+	\pagenumbering{roman}
 	
 	\chapter*{Abstract}
 	\addcontentsline{toc}{chapter}{Abstract} 
 	\import{./TextFiles/}{Abstract.tex}
 	
+	\chapter*{Acknowledgements}
+	\addcontentsline{toc}{chapter}{Acknowledgements} 
+	
+	
+	\tableofcontents
+	\listoffigures
+	\listoftables
+	
+	\afterpage{\blankpage}
+	
+	\mainmatter	
+
 	\chapter{Introduction}
 	\import{./TextFiles/}{Introduction.tex}
 	
@@ -158,9 +182,9 @@
 	
 	In the course of our work, we developed and tested innovative techniques for assessing the robustness of NNs, which can be applied broadly to any MLM. Subsequently, the focus was put on MLMs which provide uncertainty estimations, specifically BNNs. This required us to incorporate uncertainty into the computed metrics. To accomplish this, we introduced the concept of \textit{effectiveness}, which measures performance in terms of both accuracy and unknown ratio.
 	
-	In conclusion, our investigation into the assessment of BNNs robustness has revealed interesting insights into their performance. When employed in a conventional manner, BNNs exhibit a level of robustness comparable to that of standard NNs. However, the true potential of BNNs in enhancing the robustness emerges when uncertainty is introduced into the classification process.
+	Our investigation into the assessment of BNNs robustness has revealed interesting insights into their performance. When employed in a conventional manner, BNNs exhibit a level of robustness comparable to that of standard NNs. However, the true potential of BNNs in enhancing the robustness emerges when uncertainty is introduced into the classification process.
 	
-	Our findings highlight that BNNs are particularly suitable in situations characterized by ambiguity and unpredictability. By incorporating uncertainty into their computations, BNNs can effectively identify and respond to situations where the model confidence may be compromised, unlike standard NNs which tend to provide steady predictions. This inherent capability to recognize uncertainty and adapt accordingly grants BNNs a distinct advantage in scenarios where making incorrect predictions could have significant consequences. This behavior is particularly desirable in safety-critical applications, such as the medical field, where it is preferable to halt the system and request intervention rather than making incorrect predictions. Nevertheless, BNNs can also prove beneficial in recognizing uncertain situations and executing appropriate procedures without halting the system.
+	Our findings highlight that BNNs are particularly suitable in situations characterized by ambiguity and unpredictability. By incorporating uncertainty into their computations, BNNs can effectively identify and respond to situations where the model confidence may be compromised, unlike standard NNs which tend to provide steady predictions. This inherent capability to recognize uncertainty and adapt accordingly grants BNNs a distinct advantage in scenarios where making incorrect predictions could have significant consequences. This behavior is particularly desirable in safety-critical applications, such as the medical field, where it is preferable to halt the system and request for intervention rather than making incorrect predictions. Nevertheless, BNNs can also be useful in recognizing uncertain situations and executing appropriate procedures without halting the system.
 	
 	In summary, our research underlies the significance of incorporating BNNs into machine learning frameworks, particularly in domains where robustness is paramount. By embracing uncertainty, BNNs not only match the robustness of standard NNs but surpass them in recognizing and handling uncertain conditions, thereby showcasing their potential to enhance the reliability and trustworthiness of machine learning systems in real-world applications. Based on these considerations, it is evident that BNNs can be a way for creating more resilient and autonomous artificial intelligence systems.
 	

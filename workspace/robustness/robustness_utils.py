@@ -89,19 +89,31 @@ def evaluate_bnn(model, test_loader, classification_functions, conf_level=0.8):
         return accuracy, unknown_ratio, aleatoric, epistemic
 
 
-def evaluate_ann(model, test_loader):
+def evaluate_ann(model, test_loader, classification_functions, conf_level=0.8):
     with torch.no_grad():
         datasetLength = len(test_loader.dataset)
-        testCorrect = 0
+        testCorrect = torch.zeros(len(classification_functions))
+        testUnknown = torch.zeros(len(classification_functions))
 
         for data_hat, target_hat in test_loader:
             (data, target) = (data_hat.to(device), target_hat.to(device))
+            y = target_hat
+            
             pred = model(data.view(data.shape[0], -1))
 
             pred_values = torch.max(pred, 1).indices
-            testCorrect += torch.sum(pred_values == target)
+            for i in range(len(classification_functions)):
+                    cf = classification_functions[i]
+                    pred_value = cf(pred, conf_level)
+                    testCorrect[i] += torch.sum(pred_value == y)
+                    testUnknown[i] += torch.sum(pred_value == -1)
+        accuracy = []
+        unknown_ratio = []
+        for i in range(len(classification_functions)):
+            accuracy.append(torch.round(testCorrect[i] * 100 / (datasetLength - testUnknown[i]), decimals=2))
+            unknown_ratio.append(torch.round(testUnknown[i] * 100 / datasetLength, decimals=2))
 
-        return np.round(testCorrect * 100 / datasetLength, 2)
+        return accuracy, unknown_ratio
 
 
 def evaluate_alteration(model, alteration_name, classification_functions=None, is_bnn=True):
@@ -137,8 +149,10 @@ def evaluate_alteration(model, alteration_name, classification_functions=None, i
                 result_evaluation[i].aleatoric.append(aleatoric.cpu())
                 result_evaluation[i].epistemic.append(epistemic.cpu())
         else:
-            accuracy = evaluate_ann(model, test_loader)
-            result_evaluation[0].accuracy.append(accuracy.cpu())
+            accuracy, unknown_ratio = evaluate_ann(model, test_loader)
+            for i in range(len(accuracy)):
+              result_evaluation[i].accuracy.append(accuracy[i].cpu())
+              result_evaluation[i].unkn.append(unknown_ratio[i].cpu())
             #accuracy_list.append(evaluate_ann(model, test_loader))
             #result_evaluation
         step_list.append(float(step_dir))

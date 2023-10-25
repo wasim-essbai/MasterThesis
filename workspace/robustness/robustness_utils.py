@@ -149,7 +149,7 @@ def evaluate_alteration(model, alteration_name, classification_functions=None, i
                 result_evaluation[i].aleatoric.append(aleatoric.cpu())
                 result_evaluation[i].epistemic.append(epistemic.cpu())
         else:
-            accuracy, unknown_ratio = evaluate_ann(model, test_loader)
+            accuracy, unknown_ratio = evaluate_ann(model, test_loader, classification_functions)
             for i in range(len(accuracy)):
               result_evaluation[i].accuracy.append(accuracy[i].cpu())
               result_evaluation[i].unkn.append(unknown_ratio[i].cpu())

@@ -96,8 +96,8 @@ def evaluate_ann(model, test_loader, classification_functions, conf_level=0.8):
         testUnknown = torch.zeros(len(classification_functions))
 
         for data_hat, target_hat in test_loader:
-            (data, target) = (data_hat.to(device), target_hat.to(device))
-            y = target_hat
+            (data, target) = (data_hat, target_hat)
+            y = target
             
             pred = model(data.view(data.shape[0], -1))
 
@@ -140,7 +140,7 @@ def evaluate_alteration(model, alteration_name, classification_functions=None, i
                           train=False,
                           labels_root=base_path + '/',
                           transform=transforms.ToTensor()),
-            batch_size=128, shuffle=False)
+            batch_size=1, shuffle=False)
         if is_bnn:
             accuracy, unknown_ratio, aleatoric, epistemic = evaluate_bnn(model, test_loader, classification_functions)
             for i in range(len(accuracy)):

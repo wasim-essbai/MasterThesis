@@ -151,8 +151,8 @@ def evaluate_alteration(model, alteration_name, classification_functions=None, i
         else:
             accuracy, unknown_ratio = evaluate_ann(model, test_loader, classification_functions)
             for i in range(len(accuracy)):
-              result_evaluation[i].accuracy.append(accuracy[i].cpu())
-              result_evaluation[i].unkn.append(unknown_ratio[i].cpu())
+                result_evaluation[i].accuracy.append(accuracy[i])
+                result_evaluation[i].unkn.append(unknown_ratio[i])
             #accuracy_list.append(evaluate_ann(model, test_loader))
             #result_evaluation
         step_list.append(float(step_dir))
